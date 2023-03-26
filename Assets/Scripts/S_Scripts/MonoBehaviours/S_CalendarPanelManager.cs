@@ -121,7 +121,7 @@ public class S_CalendarPanelManager : MonoBehaviour
             HideNodesInDay();
             RectTransform sliderRect = (RectTransform)DayButtons[buttonIndex].transform.GetChild(0);
             currentCoroutines.Add(StartCoroutine(SliderChangeTo(sliderDefaultHeight, sliderRect)));
-            currentActiveDayButton = null;
+            //currentActiveDayButton = null;
         }
         else
         {
@@ -190,6 +190,9 @@ public class S_CalendarPanelManager : MonoBehaviour
     {
         float originHeight = RT.rect.height;
         int fixedFrameNumber = 20;
+
+        bool needResetActiveButton = height < originHeight;
+
         for (int i = 0; i < fixedFrameNumber; i++)
         {
             yield return new WaitForFixedUpdate();
@@ -201,6 +204,11 @@ public class S_CalendarPanelManager : MonoBehaviour
             }
 
             RT.sizeDelta = new Vector2(RT.rect.width, Mathf.Lerp(originHeight, height, (float)(i * i) / (float)fixedFrameNumber));
+        }
+
+        if (needResetActiveButton)
+        {
+            currentActiveDayButton = null;
         }
 
         RT.sizeDelta = new Vector2(RT.rect.width, height);
