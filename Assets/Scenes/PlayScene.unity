@@ -775,7 +775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &125550704
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2917,11 +2917,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 830521793279134413, guid: 35ff6bd0d9251c345854eb63ba65da59, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 830521793279134413, guid: 35ff6bd0d9251c345854eb63ba65da59, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 830521794006882141, guid: 35ff6bd0d9251c345854eb63ba65da59, type: 3}
       propertyPath: m_Name
@@ -2929,7 +2929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 830521794006882141, guid: 35ff6bd0d9251c345854eb63ba65da59, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 830521794006882210, guid: 35ff6bd0d9251c345854eb63ba65da59, type: 3}
       propertyPath: m_Pivot.x
@@ -3017,7 +3017,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 830521794202332066, guid: 35ff6bd0d9251c345854eb63ba65da59, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35ff6bd0d9251c345854eb63ba65da59, type: 3}
