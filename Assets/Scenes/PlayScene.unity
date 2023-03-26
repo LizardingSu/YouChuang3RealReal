@@ -273,7 +273,7 @@ RectTransform:
   - {fileID: 125550704}
   - {fileID: 1286878263}
   m_Father: {fileID: 259851986}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -845,6 +845,7 @@ MonoBehaviour:
   - {fileID: 803544921}
   - {fileID: 1934169678}
   SliderShowingHeight: 210
+  NodePrefab: {fileID: 6689593794865024805, guid: 61947bc9e91c454468d2015675138ec1, type: 3}
 --- !u!1 &259851982
 GameObject:
   m_ObjectHideFlags: 0
@@ -938,8 +939,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1322126728}
-  - {fileID: 15597630}
   - {fileID: 408379861}
+  - {fileID: 15597630}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1217,7 +1218,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 259851986}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
