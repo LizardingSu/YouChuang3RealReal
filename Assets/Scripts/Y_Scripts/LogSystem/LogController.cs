@@ -63,7 +63,7 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
 
     private void Update()
     {
-        Debug.Log(logEntries.Count);
+        //Debug.Log(logEntries.Count);
     }
 
     #region LoopScrollRect
