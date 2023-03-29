@@ -37,7 +37,7 @@ static public class LogEntryParser
         var nextIdx = ta[6]==""?-1:int.Parse(ta[6]);
         var charId = ta[2]==""?-1:int.Parse(ta[2]);
         //to do（控制人物立绘）
-        var emojiId = ta[3];
+        var emojiId = ta[3] == "" ? -1 : int.Parse(ta[3]);
 
         var name = ta[4];
         var log = ta[5];
@@ -51,7 +51,7 @@ static public class LogEntryParser
             for(int i = (int)curIdx; textLists[i][0] == '&'; i++)
             {
                 var data = textLists[i].Split(',');
-                //example: *this is A option^^10*this is B option^^11*InputWord^S^12
+                //example: |this is A option^10|this is B option^11|Inpu@tW@ord^12
                 totalLog += "|"+data[5]+"^"+ data[6];
             }
 
@@ -65,21 +65,21 @@ static public class LogEntryParser
             processState = ProcessState.Coffee;
         }
 
-        var characterState = CharacterState.Permanent;
+        var characterState = CharacterState.None;
         switch (charaPos)
         {
-            case "P":
-                characterState = CharacterState.Permanent;
+            case "None":
+                characterState = CharacterState.None;
                 break;
-            case "I":
+            case "In":
                 characterState = CharacterState.In;
                 break;
-            case "D":
+            case "Out":
                 characterState = CharacterState.Leave;
                 break;
         }
 
-        return new DiologueData(date, processState,idx, nextIdx, charId, 0, characterState, isSelect, name, log);
+        return new DiologueData(date, processState,idx, nextIdx, charId, 0, characterState, name, log);
     }
 
     public static IReadOnlyList<SelectContent> GetSelectContents(string Log)

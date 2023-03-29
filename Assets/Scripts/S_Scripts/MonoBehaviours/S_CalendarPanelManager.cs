@@ -47,9 +47,12 @@ public class S_CalendarPanelManager : MonoBehaviour
         InitAllDays();
 
         //
-        for (int i = 0; i < 5; i++)
+        if(currentNodes.Count == 0)
         {
-            currentNodes.Add(GameObject.Instantiate(NodePrefab, Vector3.zero, Quaternion.identity));
+            for (int i = 0; i < 5; i++)
+            {
+                currentNodes.Add(GameObject.Instantiate(NodePrefab, Vector3.zero, Quaternion.identity));
+            }
         }
     }
 

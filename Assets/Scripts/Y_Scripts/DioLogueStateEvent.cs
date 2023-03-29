@@ -6,8 +6,8 @@ using UnityEngine.Events;
 
 public enum CharacterState
 {
+    None,
     In,
-    Permanent,
     Leave
 }
 
@@ -35,17 +35,13 @@ public class DiologueData
     public int emojiID;
     public CharacterState charaState;
 
-
-    //选择相关
-    public bool isSelect;
-
     //文本信息
     public string name;
     public string log;
 
     //todo:animation
 
-    public DiologueData(uint date, ProcessState processState, uint idx, int nextIdx, int charaID, int emojiID, CharacterState charaState, bool isSelect, string name, string log)
+    public DiologueData(uint date, ProcessState processState, uint idx, int nextIdx, int charaID, int emojiID, CharacterState charaState, string name, string log)
     {
         this.date = date;
         this.processState = processState;
@@ -54,7 +50,6 @@ public class DiologueData
         this.charaID = charaID;
         this.emojiID = emojiID;
         this.charaState = charaState;
-        this.isSelect = isSelect;
         this.name = name;
         this.log = log;
     }

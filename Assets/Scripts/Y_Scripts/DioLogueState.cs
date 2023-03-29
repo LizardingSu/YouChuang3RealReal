@@ -77,7 +77,7 @@ public class DioLogueState : MonoBehaviour
         if (curData!=null)
         {
             var isEnd = curData.nextIdx == -1;
-            var isSelect = curData.isSelect == true;
+            var isSelect = curData.processState == ProcessState.Select;
 
             if (isEnd) return;
 

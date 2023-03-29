@@ -38,7 +38,7 @@ public class S_StateManager : MonoBehaviour
 
     public void CancelStateLog()
     {
-        
+        LogPanel.SetActive(false);
     }
 
     public void CancelStateCalendar()
@@ -63,7 +63,7 @@ public class S_StateManager : MonoBehaviour
 
     public void StateSwitchToLog()
     {
-        
+        LogPanel.SetActive(true);
         State = PlaySceneState.Log;
     }
 

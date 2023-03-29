@@ -59,7 +59,7 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
 
     private void onDiologueWillChange(DiologueData diologueData)
     {
-        if (diologueData.isSelect)
+        if (diologueData.processState == ProcessState.Select)
         {
             RemoveRange(diologueData.idx);
         }
@@ -67,11 +67,12 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
 
     private void onDiologueChanged(DiologueData diologueData)
     {
-        if (diologueData.processState == ProcessState.Coffee) return;
+        if (diologueData.processState == ProcessState.Coffee||diologueData.log == "") return;
 
         bool left = diologueData.charaID != (diologueData.charaID & 1);
+        bool isSelect = diologueData.processState == ProcessState.Select;
 
-        AddEntry(diologueData.date, diologueData.idx, left, diologueData.isSelect, diologueData.name, diologueData.log);
+        AddEntry(diologueData.date, diologueData.idx, left, isSelect, diologueData.name, diologueData.log);
     }
 
     public void RemoveRange(uint Idx)
