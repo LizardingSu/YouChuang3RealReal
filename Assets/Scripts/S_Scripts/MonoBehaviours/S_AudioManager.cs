@@ -17,4 +17,7 @@ public class S_AudioManager : MonoBehaviour
     {
         SEPlayer.volume = volume;
     }
+
+    public float GetBGMVolume() => BGMPlayer.volume;
+    public float GetSEVolume() => SEPlayer.volume;
 }

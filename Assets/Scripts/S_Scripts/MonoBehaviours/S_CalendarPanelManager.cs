@@ -36,9 +36,9 @@ public class S_CalendarPanelManager : MonoBehaviour
     private List<S_DayInCalendar> allDays = new List<S_DayInCalendar>();
 
     /// <summary>
-    /// Start
+    /// OnEnable
     /// </summary>
-    private void Start()
+    private void OnEnable()
     {
         sliderDefaultHeight = ((RectTransform)(DayButtons[0].GetComponent<RectTransform>().GetChild(0))).rect.height;
 
@@ -52,6 +52,8 @@ public class S_CalendarPanelManager : MonoBehaviour
             currentNodes.Add(GameObject.Instantiate(NodePrefab, Vector3.zero, Quaternion.identity));
         }
     }
+
+
 
     /// <summary>
     /// 获取对话数据创建相应的S_NodeInDay和S_DayInCalendar对象实例并以此初始化allDays列表
