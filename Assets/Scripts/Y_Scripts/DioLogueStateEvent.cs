@@ -1,8 +1,67 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class DiologueChangedData
+public enum CharacterState
 {
-    
+    In,
+    Permanent,
+    Leave
 }
+
+public enum ProcessState
+{
+    Coffee,
+    Select,
+    Diologue
+}
+//游戏进程所需要的所有数据
+public class DiologueData
+{
+    //当前天数
+    public uint date;
+    //DiologueData所包括的状态
+    public ProcessState processState;
+
+    //在文档中的位置以及下一个读取项（对于选项而言nextIdx无意义）
+    public uint idx;
+    public int nextIdx;
+
+
+    //出入场相关
+    public int charaID;
+    public int emojiID;
+    public CharacterState charaState;
+
+
+    //选择相关
+    public bool isSelect;
+
+    //文本信息
+    public string name;
+    public string log;
+
+    //todo:animation
+
+    public DiologueData(uint date, ProcessState processState, uint idx, int nextIdx, int charaID, int emojiID, CharacterState charaState, bool isSelect, string name, string log)
+    {
+        this.date = date;
+        this.processState = processState;
+        this.idx = idx;
+        this.nextIdx = nextIdx;
+        this.charaID = charaID;
+        this.emojiID = emojiID;
+        this.charaState = charaState;
+        this.isSelect = isSelect;
+        this.name = name;
+        this.log = log;
+    }
+}
+
+[Serializable]
+public class DialogueChangedEvent : UnityEvent<DiologueData> { }
+
+[Serializable]
+public class DialogueWillChangeEvent : UnityEvent<DiologueData> { }

@@ -8,4 +8,5 @@ public class S_CentralAccessor : MonoBehaviour
     public S_StateManager StateManager;
     public S_AudioManager AudioManager;
     public S_ProcessManager ProcessManager;
+    public DioLogueState _DioLogueState;
 }

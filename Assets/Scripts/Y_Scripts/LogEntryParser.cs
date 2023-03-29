@@ -4,5 +4,97 @@ using UnityEngine;
 
 static public class LogEntryParser
 {
+    /// <summary>
+    /// *对于选项：DiologueData中是第一个的Idx，nextIdx为-1，表明当前不能跳转
+    /// ta[0]:标示 #:对话 $:咖啡 &:选项 ？（非空）
+    /// ta[1]:对话ID 一次只会出现一个 表明了在Excel里的位置（非空）
+    /// ta[2]:人物ID 可以为空 会标注为-1 除了做咖啡和结尾应该不会出现这种情况？
+    /// ta[3]:表情ID 可以为空 为空为-1 除了做咖啡和结尾不会出现这种情况？ 控制人物立绘
+    /// ta[4]:名字 只有放到Text里的作用 可以为空？
+    /// ta[5]:内容 对话内容 含富文本 对于Input类型的会有@ @的情况 可以为空？ *对于选项会将多个内容合并成一个Log然后解析
+    /// ta[6]:跳转 除了最后一句话以外，不可能为空 *对于选项而言在生成DiologueData时会设为-1，等待后续选择选项之后再设为正常
+    /// ta[7]:出入场 I:进入 D;离去 P：固定位置
+    /// ta[8]:效果
+    /// </summary>
+    /// <param name="textLists"></param>
+    /// <param name="curIdx"></param>
+    /// <param name="date"></param>
+    /// <param name="isFirstTime"></param>
+    /// <returns></returns>
+    public static DiologueData GetDiologueDataAtIdx(List<string> textLists,uint curIdx,uint date)
+    {
+        var curtext = textLists[(int)curIdx];
+        var ta = curtext.Split(',');
 
+        bool isSelect = false;
+        var processState = ProcessState.Diologue;
+
+
+        var state = ta[0];
+        var charaPos = ta[7];
+
+        var idx = uint.Parse(ta[1]);
+        var nextIdx = ta[6]==""?-1:int.Parse(ta[6]);
+        var charId = ta[2]==""?-1:int.Parse(ta[2]);
+        //to do（控制人物立绘）
+        var emojiId = ta[3];
+
+        var name = ta[4];
+        var log = ta[5];
+        //select
+        if (state == "&")
+        {
+            processState = ProcessState.Select;
+            isSelect = true;
+            //将所有选项相关的话合并在一起然后等解析
+            var totalLog = "";
+            for(int i = (int)curIdx; textLists[i][0] == '&'; i++)
+            {
+                var data = textLists[i].Split(',');
+                //example: *this is A option^^10*this is B option^^11*InputWord^S^12
+                totalLog += "|"+data[5]+"^"+ data[6];
+            }
+
+            log = totalLog;
+
+            nextIdx = -1;
+
+        }
+        if (state == "$")
+        {
+            processState = ProcessState.Coffee;
+        }
+
+        var characterState = CharacterState.Permanent;
+        switch (charaPos)
+        {
+            case "P":
+                characterState = CharacterState.Permanent;
+                break;
+            case "I":
+                characterState = CharacterState.In;
+                break;
+            case "D":
+                characterState = CharacterState.Leave;
+                break;
+        }
+
+        return new DiologueData(date, processState,idx, nextIdx, charId, 0, characterState, isSelect, name, log);
+    }
+
+    public static IReadOnlyList<SelectContent> GetSelectContents(string Log)
+    {
+        List<SelectContent> contents = new List<SelectContent>();
+
+        var ta = Log.Split('|');
+        //ta[0]为空
+        for(int i = 1; i < ta.Length; i++)
+        {
+            var data = ta[i].Split('^');
+            //有@则表示是Input
+            contents.Add(new SelectContent(data[0].Contains('@'), data[0], uint.Parse(data[1])));
+        }
+
+        return contents;
+    }
 }

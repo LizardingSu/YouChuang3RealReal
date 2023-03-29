@@ -206,7 +206,7 @@
       "url": "https://packages.unity.cn"
     },
     "me.qiankanglai.loopscrollrect": {
-      "version": "1.1.2-p1",
+      "version": "1.1.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
