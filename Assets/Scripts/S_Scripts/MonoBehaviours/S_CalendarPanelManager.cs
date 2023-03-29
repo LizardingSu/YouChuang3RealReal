@@ -36,9 +36,9 @@ public class S_CalendarPanelManager : MonoBehaviour
     private List<S_DayInCalendar> allDays = new List<S_DayInCalendar>();
 
     /// <summary>
-    /// Start
+    /// OnEnable
     /// </summary>
-    private void Start()
+    private void OnEnable()
     {
         sliderDefaultHeight = ((RectTransform)(DayButtons[0].GetComponent<RectTransform>().GetChild(0))).rect.height;
 
@@ -52,6 +52,8 @@ public class S_CalendarPanelManager : MonoBehaviour
             currentNodes.Add(GameObject.Instantiate(NodePrefab, Vector3.zero, Quaternion.identity));
         }
     }
+
+
 
     /// <summary>
     /// 获取对话数据创建相应的S_NodeInDay和S_DayInCalendar对象实例并以此初始化allDays列表
@@ -113,6 +115,10 @@ public class S_CalendarPanelManager : MonoBehaviour
                 StopCoroutine(c);
             }
             currentCoroutines.Clear();
+            foreach (var button in DayButtons)
+            {
+                button.transform.GetChild(1).GetComponent<UnityEngine.UI.Button>().interactable = true;
+            }
         }
 
         //点击的是当前已激活项时
@@ -141,19 +147,19 @@ public class S_CalendarPanelManager : MonoBehaviour
     {
         HideNodesInDay();
         GameObject slider = DayButtons[currentActiveDayButton.Value].GetComponent<RectTransform>().GetChild(0).gameObject;
+        GameObject line = slider.transform.GetChild(0).gameObject;
         int currentNodeIndex = 0;
         foreach (S_NodeInDay node in allDays[currentActiveDayButton.Value].Nodes)
         {
             GameObject showedNode = currentNodes[currentNodeIndex];
 
             showedNode.SetActive(true);
-            showedNode.transform.SetParent(slider.transform);
+            showedNode.transform.SetParent(line.transform);
 
-            float sliderHeight = slider.GetComponent<RectTransform>().rect.height;
-            float sliderWidth = slider.GetComponent<RectTransform>().rect.width;
+            float lineHeight = line.GetComponent<RectTransform>().rect.height;
 
-            float posX = slider.GetComponent<RectTransform>().rect.width / 2 - showedNode.transform.GetChild(0).GetComponent<RectTransform>().rect.width / 2;
-            float posY = sliderHeight / 2 - sliderWidth - (sliderHeight - sliderWidth) * node.CalculateLocationInFloat();
+            float posX = 0;
+            float posY = lineHeight / 2 - lineHeight * node.CalculateLocationInFloat();
 
             showedNode.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, posY);
             
@@ -188,10 +194,11 @@ public class S_CalendarPanelManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator SliderChangeTo(float height, RectTransform RT)
     {
+        RT.parent.GetChild(1).GetComponent<UnityEngine.UI.Button>().interactable = false;
         float originHeight = RT.rect.height;
         int fixedFrameNumber = 20;
 
-        bool needResetActiveButton = height < originHeight;
+        bool shortening = height < originHeight;
 
         for (int i = 0; i < fixedFrameNumber; i++)
         {
@@ -200,18 +207,20 @@ public class S_CalendarPanelManager : MonoBehaviour
             if (i == fixedFrameNumber / 2)
             {
                 RT.sizeDelta = new Vector2(RT.rect.width, height);
+                if (!shortening)
                 ShowNodesInDay();
             }
 
             RT.sizeDelta = new Vector2(RT.rect.width, Mathf.Lerp(originHeight, height, (float)(i * i) / (float)fixedFrameNumber));
         }
 
-        if (needResetActiveButton)
+        if (shortening)
         {
             currentActiveDayButton = null;
         }
 
         RT.sizeDelta = new Vector2(RT.rect.width, height);
+        RT.parent.GetChild(1).GetComponent<UnityEngine.UI.Button>().interactable = true;
         currentCoroutines.Clear();
     }
 }
