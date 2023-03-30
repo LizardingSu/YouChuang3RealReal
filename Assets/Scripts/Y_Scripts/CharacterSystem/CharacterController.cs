@@ -69,7 +69,7 @@ public class CharacterController : MonoBehaviour
             {
                 WindowsCharacters[curPlace].transform.SetAsLastSibling();
                 WindowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
-
+                SortWindowsPos();
                 curPlace = WindowsCharacters.FindIndex(x => x.CharID == -1);
             }
         }
@@ -87,12 +87,14 @@ public class CharacterController : MonoBehaviour
             {
                 var obj = WindowsCharacters.Find(x => x.CharID == charID);
                 obj.SetAllDatas(false);
+                SortWindowsPos();
             }
 
         }
         else
         {
-
+            if (charID > 1)
+                WindowsCharacters.Find(x => x.CharID == charID)?.transform.SetAsLastSibling();
         }
             
     }
@@ -100,6 +102,7 @@ public class CharacterController : MonoBehaviour
 
     private void SortWindowsPos()
     {
+        var list = WindowsCharacters.FindAll(x => x.CharID != -1);
 
     }
 }
