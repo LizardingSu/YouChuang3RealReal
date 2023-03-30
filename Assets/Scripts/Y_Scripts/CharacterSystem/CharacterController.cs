@@ -59,18 +59,18 @@ public class CharacterController : MonoBehaviour
         {
             if(charID == 0)
             {
-                ChuanShu.SetAllDatas(true, charID,"", emojiID);
+                ChuanShu.SetAllDatas(true, charID,"µ©Ï¦", emojiID);
             }
             else if(charID == 1)
             {
-                DanXi.SetAllDatas(true, charID, "",emojiID);
+                DanXi.SetAllDatas(true, charID, "´«Êé",emojiID);
             }
             else
             {
                 WindowsCharacters[curPlace].transform.SetAsFirstSibling();
+               
                 WindowsCharacters[curPlace].SetAllDatas(true, charID, "", emojiID);
-
-                curPlace = WindowsCharacters.FindIndex(x=>x.CharID == -1);
+                curPlace = WindowsCharacters.FindIndex(x => x.CharID == -1);
             }
         }
         else if(state == CharacterState.Leave)
