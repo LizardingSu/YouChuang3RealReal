@@ -19,8 +19,6 @@ public class CharacterEntryController : MonoBehaviour
 
         if (imageID == -1 || active == false) return;
 
-        Debug.Log(imageID);
-        Debug.Log("Character/" + name + "/" + name + imageID);
         var tex = Resources.Load<Texture2D>("Character/" + name + "/" + name + imageID);
         image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
         GetComponent<RectTransform>().sizeDelta = new Vector2(tex.width,tex.height);

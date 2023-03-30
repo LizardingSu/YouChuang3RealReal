@@ -12,6 +12,7 @@ public class CharacterController : MonoBehaviour
     public CharacterEntryController DanXi;
     public CharacterEntryController ChuanShu;
     public List<CharacterEntryController> WindowsCharacters = new List<CharacterEntryController>(3);
+    public List<int> charSortedList = new List<int>(3);
 
     public ConfigCharacterFile characterFiles;
 
@@ -36,14 +37,24 @@ public class CharacterController : MonoBehaviour
         }
 
         m_diologueState = m_central._DioLogueState;
+        m_diologueState.dialogueWillChange.AddListener(WillChangeCharacter);
         m_diologueState.dialogueChanged.AddListener(ChangeCharacters);
     }
 
     private void OnDestroy()
     {
+        m_diologueState.dialogueWillChange.RemoveListener(WillChangeCharacter);
         m_diologueState.dialogueChanged.RemoveListener(ChangeCharacters);
     }
+   
+    //无法处理回环情况
+   private void WillChangeCharacter(DiologueData data)
+    {
+        if(data.processState == ProcessState.Select)
+        {
 
+        }
+    }
    private void ChangeCharacters(DiologueData data)
     {
         if (data.processState == ProcessState.Coffee) return;
@@ -69,6 +80,9 @@ public class CharacterController : MonoBehaviour
             {
                 WindowsCharacters[curPlace].transform.SetAsLastSibling();
                 WindowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
+
+                charSortedList.Add(charID);
+
                 SortWindowsPos();
                 curPlace = WindowsCharacters.FindIndex(x => x.CharID == -1);
             }
@@ -87,6 +101,9 @@ public class CharacterController : MonoBehaviour
             {
                 var obj = WindowsCharacters.Find(x => x.CharID == charID);
                 obj.SetAllDatas(false);
+
+                charSortedList.Remove(charID);
+
                 SortWindowsPos();
             }
 
@@ -119,15 +136,14 @@ public class CharacterController : MonoBehaviour
 
     private void SortWindowsPos()
     {
-        var listCount = WindowsCharacters.FindAll(x => x.CharID != -1).Count;
+        var listCount = charSortedList.Count;
 
-        var parent = WindowsCharacters[0].transform.parent;
         var place = 637 / (listCount + 1);
 
-        for (int i = parent.childCount-1; i >=0; i--)
+        for (int i = listCount - 1; i >=0; i--)
         {
-            var m = parent.childCount - i;
-            parent.GetChild(i).GetComponent<RectTransform>().anchoredPosition = new Vector2(m * place, -365);
+            var m = listCount - i;
+            WindowsCharacters.Find(x => x.CharID == charSortedList[i]).GetComponent<RectTransform>().anchoredPosition = new Vector2(m * place, -365);
         }
     }
 }
