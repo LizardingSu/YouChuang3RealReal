@@ -1591,7 +1591,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accessor: {fileID: 1765219807}
   GamePanel: {fileID: 374283987}
-  frameNumber: 100
+  frameNumber: 30
   GamePanelShowedPosY: -174
   GamePanelOriginPosY: 0
 --- !u!114 &374283990
