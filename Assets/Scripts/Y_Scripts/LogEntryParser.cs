@@ -26,7 +26,6 @@ static public class LogEntryParser
         var curtext = textLists[(int)curIdx];
         var ta = curtext.Split(',');
 
-        bool isSelect = false;
         var processState = ProcessState.Diologue;
 
 
@@ -45,7 +44,7 @@ static public class LogEntryParser
         if (state == "&")
         {
             processState = ProcessState.Select;
-            isSelect = true;
+
             //将所有选项相关的话合并在一起然后等解析
             var totalLog = "";
             for(int i = (int)curIdx; textLists[i][0] == '&'; i++)

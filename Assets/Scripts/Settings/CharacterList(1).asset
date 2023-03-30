@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646d5d1a33a94514199b431854e6a2f6, type: 3}
-  m_Name: CharacterList
+  m_Name: CharacterList(1)
   m_EditorClassIdentifier: 
   characterList:
   - id: 0
-    name: "\u4F20\u4E66\r"
+    name: "\u4F20\u4E66"
   - id: 1
-    name: "\u65E6\u5915\r"
+    name: "\u65E6\u5915"
   - id: 2
-    name: "\u7D22\u9AA5\r"
+    name: "\u7D22\u9AA5"
   - id: 3
-    name: "\u6714\u671B\r"
+    name: "\u6714\u671B"

@@ -39,14 +39,13 @@ public class ExcelImportHelper:EditorWindow
                 for(int i = 1; i < textList.Length-1; i++)
                 {
                     var ta = textList[i].Split(',');
+                    ta[1] = ta[1].Substring(0, ta[1].Length - 1);
                     config.characterList.Add(new CData(uint.Parse(ta[0]), ta[1]));
                 }
 
                 var outname = "CharacterList";
                 var dirpath = "Assets/Scripts/Settings/";
                 var outpath = dirpath+outname+".asset";
-
-                Debug.Log(config.characterList.Count);
 
                 for (uint i = 1; File.Exists(outpath); i++)
                     outpath = dirpath + outname + "(" + i + ")" + ".asset";

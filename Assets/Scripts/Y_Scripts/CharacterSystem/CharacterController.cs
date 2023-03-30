@@ -59,18 +59,17 @@ public class CharacterController : MonoBehaviour
         {
             if(charID == 0)
             {
-                ChuanShu.SetAllDatas(true, charID,"´«Êé", emojiID);
+                ChuanShu.SetAllDatas(true, charID,name, emojiID);
             }
             else if(charID == 1)
             {
-                DanXi.SetAllDatas(true, charID, "µ©Ï¦",emojiID);
+                DanXi.SetAllDatas(true, charID, name,emojiID);
             }
             else
             {
-                WindowsCharacters[curPlace].transform.SetAsFirstSibling();
-                WindowsCharacters[curPlace].gameObject.SetActive(false);
-
+                WindowsCharacters[curPlace].transform.SetAsLastSibling();
                 WindowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
+
                 curPlace = WindowsCharacters.FindIndex(x => x.CharID == -1);
             }
         }
@@ -96,5 +95,11 @@ public class CharacterController : MonoBehaviour
 
         }
             
+    }
+
+
+    private void SortWindowsPos()
+    {
+
     }
 }
