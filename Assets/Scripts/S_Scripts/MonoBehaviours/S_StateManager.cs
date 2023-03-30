@@ -23,7 +23,10 @@ public class S_StateManager : MonoBehaviour
     public GameObject NotePanel;
 
     //右侧区域
-    public GameObject RightArea;
+    //public GameObject RightArea;
+
+    //右侧Note界面
+    public GameObject NoteScene;
 
     //SYJ于demo测试中使用的图片
     public Sprite DefaultScene;
@@ -49,7 +52,7 @@ public class S_StateManager : MonoBehaviour
     public void CancelStateNote()
     {
         NotePanel.SetActive(false);
-        RightArea.GetComponent<Image>().sprite = DefaultScene;
+        NoteScene.SetActive(false);
     }
     #endregion
 
@@ -77,7 +80,7 @@ public class S_StateManager : MonoBehaviour
     public void StateSwitchToNote()
     {
         NotePanel.SetActive(true);
-        RightArea.GetComponent<Image>().sprite = NotePanelScene;
+        NoteScene.SetActive(true);
         State = PlaySceneState.Note;
     }
     #endregion

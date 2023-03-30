@@ -59,18 +59,17 @@ public class CharacterController : MonoBehaviour
         {
             if(charID == 0)
             {
-                ChuanShu.SetAllDatas(true, charID,"传书", emojiID);
+                ChuanShu.SetAllDatas(true, charID,"旦夕", emojiID);
             }
             else if(charID == 1)
             {
-                DanXi.SetAllDatas(true, charID, "旦夕",emojiID);
+                DanXi.SetAllDatas(true, charID, "传书",emojiID);
             }
             else
             {
                 WindowsCharacters[curPlace].transform.SetAsFirstSibling();
-                WindowsCharacters[curPlace].gameObject.SetActive(false);
-
-                WindowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
+               
+                WindowsCharacters[curPlace].SetAllDatas(true, charID, "", emojiID);
                 curPlace = WindowsCharacters.FindIndex(x => x.CharID == -1);
             }
         }
@@ -78,11 +77,11 @@ public class CharacterController : MonoBehaviour
         {
             if (charID == 0)
             {
-                ChuanShu.SetAllDatas(false, 0,"传书", -1);
+                ChuanShu.SetAllDatas(false, 1,"", -1);
             }
             else if (charID == 1)
             {
-                DanXi.SetAllDatas(false,1,"旦夕",-1);
+                DanXi.SetAllDatas(false,1,"",-1);
             }
             else
             {

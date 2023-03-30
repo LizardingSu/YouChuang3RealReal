@@ -8,11 +8,11 @@ public class S_CoffeeGame : MonoBehaviour
 
     public GameObject GamePanel;
 
+    public int frameNumber = 30;
+
     public float GamePanelShowedPosY;
 
-    private float GamePanelOriginPosY;
-
-    private int frameNumber = 30;
+    public float GamePanelOriginPosY;
 
     private void Start()
     {
@@ -25,7 +25,6 @@ public class S_CoffeeGame : MonoBehaviour
     {
         if (data.processState == ProcessState.Coffee)
         {
-            GamePanel.SetActive(true);
             StartCoroutine(ShowGamePanel());
         }
         else
@@ -44,9 +43,9 @@ public class S_CoffeeGame : MonoBehaviour
     {
         for (int i = 1; i <= frameNumber; i++)
         {
-            float currentY = Mathf.Lerp(GamePanelOriginPosY, GamePanelShowedPosY, i / frameNumber);
+            float currentY = Mathf.Lerp(GamePanelOriginPosY, GamePanelShowedPosY, (float)i / (float)frameNumber);
             GamePanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(GamePanel.GetComponent<RectTransform>().anchoredPosition.x, currentY);
-            yield return null;
+            yield return 0;
         }
     }
 
@@ -54,10 +53,24 @@ public class S_CoffeeGame : MonoBehaviour
     {
         for (int i = 1; i <= frameNumber; i++)
         {
-            float currentY = Mathf.Lerp(GamePanelShowedPosY, GamePanelOriginPosY, i / frameNumber);
+            float currentY = Mathf.Lerp(GamePanelShowedPosY, GamePanelOriginPosY, (float)i / (float)frameNumber);
             GamePanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(GamePanel.GetComponent<RectTransform>().anchoredPosition.x, currentY);
-            yield return null;
+            yield return 0;
         }
-        GamePanel.SetActive(false);
+    }
+
+    private void Update()
+    {
+        //≤‚ ‘
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            //var test = new DiologueData(0, ProcessState.Coffee, 0, 0, 0, 0, CharacterState.In, null, null);
+            StartCoroutine(ShowGamePanel());
+            //GameObject.Find("Main Camera").GetComponent<AudioSource>().Play();
+        }
+        else if (Input.GetKeyDown(KeyCode.E)) 
+        {
+            StartCoroutine(HideGamePanel());
+        }
     }
 }
