@@ -9,8 +9,9 @@ public class CharacterEntryController : MonoBehaviour
     public int CharID;
     public string Name;
     public int ImageID;
-    public void SetAllDatas(bool active,int charID =-1,string name = "",int imageID=-1)
+    public void SetAllDatas(bool active,int charID = -1,string name = "",int imageID = -1)
     {
+        Debug.Log(imageID);
         CharID = charID;
         Name = name;
         ImageID = imageID;
@@ -18,8 +19,9 @@ public class CharacterEntryController : MonoBehaviour
 
         if (imageID == -1 || active == false) return;
 
-        Debug.Log("Character/" + name + "/" + name + 0);
-        var tex = Resources.Load<Texture2D>("Character/" + name + "/" + name + 0);
+        Debug.Log(imageID);
+        Debug.Log("Character/" + name + "/" + name + imageID);
+        var tex = Resources.Load<Texture2D>("Character/" + name + "/" + name + imageID);
         image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
         GetComponent<RectTransform>().sizeDelta = new Vector2(tex.width,tex.height);
     }

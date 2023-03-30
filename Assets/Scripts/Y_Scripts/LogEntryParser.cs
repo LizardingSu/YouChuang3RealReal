@@ -78,7 +78,7 @@ static public class LogEntryParser
                 break;
         }
 
-        return new DiologueData(date, processState,idx, nextIdx, charId, 0, characterState, name, log);
+        return new DiologueData(date, processState,idx, nextIdx, charId, emojiId, characterState, name, log);
     }
 
     public static IReadOnlyList<SelectContent> GetSelectContents(string Log)

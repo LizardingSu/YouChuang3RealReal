@@ -42,6 +42,7 @@ public class S_StateManager : MonoBehaviour
     public void CancelStateLog()
     {
         LogPanel.SetActive(false);
+        GameObject.Find("MainManager").GetComponent<DioLogueState>().SetButtonsActive(false);
     }
 
     public void CancelStateCalendar()
@@ -68,6 +69,7 @@ public class S_StateManager : MonoBehaviour
     {
         LogPanel.SetActive(true);
         State = PlaySceneState.Log;
+        GameObject.Find("MainManager").GetComponent<DioLogueState>().SetButtonsActive(true);
     }
 
     public void StateSwitchToCalendar()

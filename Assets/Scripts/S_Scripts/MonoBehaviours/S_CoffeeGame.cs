@@ -26,6 +26,8 @@ public class S_CoffeeGame : MonoBehaviour
         if (data.processState == ProcessState.Coffee)
         {
             StartCoroutine(ShowGamePanel());
+            DioLogueState ds = accessor._DioLogueState;
+            ds.SetButtonsActive(false);
         }
         else
         {
@@ -37,6 +39,8 @@ public class S_CoffeeGame : MonoBehaviour
     {
         StartCoroutine(HideGamePanel());
         accessor._DioLogueState.UpdateDiologue();
+        DioLogueState ds = accessor._DioLogueState;
+        ds.SetButtonsActive(true);
     }
 
     IEnumerator ShowGamePanel()
@@ -64,13 +68,11 @@ public class S_CoffeeGame : MonoBehaviour
         //≤‚ ‘
         if (Input.GetKeyDown(KeyCode.G))
         {
-            //var test = new DiologueData(0, ProcessState.Coffee, 0, 0, 0, 0, CharacterState.In, null, null);
-            StartCoroutine(ShowGamePanel());
-            //GameObject.Find("Main Camera").GetComponent<AudioSource>().Play();
+            
         }
         else if (Input.GetKeyDown(KeyCode.E)) 
         {
-            StartCoroutine(HideGamePanel());
+            EndCoffeeGame();    
         }
     }
 }

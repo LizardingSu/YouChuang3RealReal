@@ -32,14 +32,20 @@ public class DioLogueState : MonoBehaviour
     public uint date;
     public DiologueData curData;
 
-    public Button panel_button;
+    public Button[] update_button;
 
     public void Awake()
     {
         //test
         Init(0, "Text/Test");
 
-        panel_button.onClick.AddListener(UpdateDiologue);
+        foreach (var button in update_button)
+            button.onClick.AddListener(UpdateDiologue);
+
+        if (GameObject.Find("MainManager").GetComponent<S_StateManager>().State != PlaySceneState.Log)
+            SetButtonsActive(false);
+        else
+            SetButtonsActive(true);
     }
 
     public void OnDestroy()
@@ -47,7 +53,8 @@ public class DioLogueState : MonoBehaviour
         textList.Clear();
 
         ReadedList = null;
-        panel_button.onClick.RemoveListener(UpdateDiologue);
+        foreach (var button in update_button)
+            button.onClick.RemoveListener(UpdateDiologue);
     }
 
     public void Init(uint day,string path)
@@ -112,5 +119,11 @@ public class DioLogueState : MonoBehaviour
         curData.nextIdx = (int)nextIdx;
 
         UpdateDiologue();
+    }
+
+    public void SetButtonsActive(bool active)
+    {
+        foreach (var button in update_button)
+            button.enabled = active;
     }
 }

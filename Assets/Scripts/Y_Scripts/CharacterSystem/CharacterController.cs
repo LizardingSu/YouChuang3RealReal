@@ -48,9 +48,9 @@ public class CharacterController : MonoBehaviour
     {
         if (data.processState == ProcessState.Coffee) return;
 
+
         var state = data.charaState;
         var charID = data.charaID;
-
         var emojiID = data.emojiID;
 
         var name = characterFiles.characterList[charID].name;
@@ -93,8 +93,25 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
-            if (charID > 1)
-                WindowsCharacters.Find(x => x.CharID == charID)?.transform.SetAsLastSibling();
+            if (charID == 0)
+            {
+                if (ChuanShu.gameObject.activeSelf)
+                    ChuanShu.SetAllDatas(true, 0, "´«Êé", emojiID);
+            }
+            else if (charID == 1)
+            {
+                if (DanXi.gameObject.activeSelf)
+                    DanXi.SetAllDatas(true, 1, "µ©Ï¦", emojiID);
+            }
+            else
+            {
+                var c = WindowsCharacters.Find(x => x.CharID == charID);
+                if (c)
+                {
+                    c.transform.SetAsLastSibling();
+                    c.SetAllDatas(true, charID, name, emojiID);
+                }
+            }
         }
             
     }
@@ -102,7 +119,15 @@ public class CharacterController : MonoBehaviour
 
     private void SortWindowsPos()
     {
-        var list = WindowsCharacters.FindAll(x => x.CharID != -1);
+        var listCount = WindowsCharacters.FindAll(x => x.CharID != -1).Count;
 
+        var parent = WindowsCharacters[0].transform.parent;
+        var place = 637 / (listCount + 1);
+
+        for (int i = parent.childCount-1; i >=0; i--)
+        {
+            var m = parent.childCount - i;
+            parent.GetChild(i).GetComponent<RectTransform>().anchoredPosition = new Vector2(m * place, -365);
+        }
     }
 }
