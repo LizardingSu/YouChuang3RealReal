@@ -47,6 +47,12 @@ public class S_StateManager : MonoBehaviour
 
     public void CancelStateCalendar()
     {
+        List<GameObject> nodeList = CalendarPanel.GetComponent<S_CalendarPanelManager>().currentNodes;
+        for (int i = 0; i < nodeList.Count; i++)
+        {
+            nodeList[i].SetActive(false);
+        }
+        
         CalendarPanel.SetActive(false);
     }
 

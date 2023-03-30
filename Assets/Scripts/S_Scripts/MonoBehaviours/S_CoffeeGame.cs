@@ -49,7 +49,7 @@ public class S_CoffeeGame : MonoBehaviour
         {
             float currentY = Mathf.Lerp(GamePanelOriginPosY, GamePanelShowedPosY, (float)i / (float)frameNumber);
             GamePanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(GamePanel.GetComponent<RectTransform>().anchoredPosition.x, currentY);
-            yield return 0;
+            yield return new WaitForFixedUpdate();
         }
     }
 
@@ -59,7 +59,7 @@ public class S_CoffeeGame : MonoBehaviour
         {
             float currentY = Mathf.Lerp(GamePanelShowedPosY, GamePanelOriginPosY, (float)i / (float)frameNumber);
             GamePanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(GamePanel.GetComponent<RectTransform>().anchoredPosition.x, currentY);
-            yield return 0;
+            yield return new  WaitForFixedUpdate();
         }
     }
 

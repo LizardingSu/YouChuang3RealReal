@@ -30,7 +30,7 @@ public class S_CalendarPanelManager : MonoBehaviour
     private int? currentActiveDayButton = null;
 
     //当前所有实例化的节点预制体
-    private List<GameObject> currentNodes = new List<GameObject>();
+    public List<GameObject> currentNodes = new List<GameObject>();
 
     //存放整个游戏流程16天节点数据的列表
     private List<S_DayInCalendar> allDays = new List<S_DayInCalendar>();
