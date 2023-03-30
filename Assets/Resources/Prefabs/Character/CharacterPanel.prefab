@@ -91,6 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 1063396439737640435}
   CharID: 0
+  Name: 
   ImageID: 0
 --- !u!1 &1063396440236169888
 GameObject:
@@ -265,6 +266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 1063396440298546601}
   CharID: 0
+  Name: 
   ImageID: 0
 --- !u!1 &1063396440318697951
 GameObject:
@@ -357,6 +359,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 1063396440318697949}
   CharID: 0
+  Name: 
   ImageID: 0
 --- !u!1 &1063396440880073633
 GameObject:
@@ -449,6 +452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 1063396440880073639}
   CharID: 0
+  Name: 
   ImageID: 0
 --- !u!1 &1063396441143939789
 GameObject:
@@ -629,4 +633,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 1063396441273491456}
   CharID: 0
+  Name: 
   ImageID: 0
