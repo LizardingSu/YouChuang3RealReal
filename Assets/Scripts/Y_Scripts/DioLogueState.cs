@@ -37,7 +37,7 @@ public class DioLogueState : MonoBehaviour
     public void Awake()
     {
         //test
-        Init(0, "Text/test");
+        Init(0, "Text/Test");
 
         panel_button.onClick.AddListener(UpdateDiologue);
     }
@@ -69,7 +69,7 @@ public class DioLogueState : MonoBehaviour
     }
 
     //跳转到下一条对话/选项/做咖啡
-    private void UpdateDiologue()
+    public void UpdateDiologue()
     {
         //for test
         var isStart = ReadedList[0] == 0;

@@ -50,6 +50,7 @@ public class CharacterController : MonoBehaviour
 
         var state = data.charaState;
         var charID = data.charaID;
+
         var emojiID = data.emojiID;
 
         var name = characterFiles.characterList[charID].name;
@@ -58,16 +59,16 @@ public class CharacterController : MonoBehaviour
         {
             if(charID == 0)
             {
-                ChuanShu.SetAllDatas(true, charID, emojiID);
+                ChuanShu.SetAllDatas(true, charID,"", emojiID);
             }
             else if(charID == 1)
             {
-                DanXi.SetAllDatas(true, charID, emojiID);
+                DanXi.SetAllDatas(true, charID, "",emojiID);
             }
             else
             {
                 WindowsCharacters[curPlace].transform.SetAsFirstSibling();
-                WindowsCharacters[curPlace].SetAllDatas(true, charID, emojiID);
+                WindowsCharacters[curPlace].SetAllDatas(true, charID, "", emojiID);
 
                 curPlace = WindowsCharacters.FindIndex(x=>x.CharID == -1);
             }
@@ -76,11 +77,11 @@ public class CharacterController : MonoBehaviour
         {
             if (charID == 0)
             {
-                ChuanShu.SetAllDatas(false, 1, -1);
+                ChuanShu.SetAllDatas(false, 1,"", -1);
             }
             else if (charID == 1)
             {
-                DanXi.SetAllDatas(false,1,-1);
+                DanXi.SetAllDatas(false,1,"",-1);
             }
             else
             {

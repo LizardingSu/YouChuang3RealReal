@@ -35,7 +35,10 @@ public class InputFieldController : MonoBehaviour
     public void OnClick()
     {
         if (singleInput.textBox.textInfo.characterCount != charNum || singleInput.textBox.text != correct)
+        {
+            singleInput.inputField.ActivateInputField();
             return;
+        }
 
         m_dioState.OnSelectionSelect(Idx, nextIdx);
     }

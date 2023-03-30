@@ -320,7 +320,7 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b6c5b6db7b3a8214a82c4ae306f66a26, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5f7af82964837044d8d120df36783018, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -453,10 +453,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Wow
+  m_text: "\u6211\u662F\u50BB\u903C\u554A\u554A\u554A\u6211\u662F\u50BB\u903C\u5982\u4F60\u6240\u613F\u96E8\u843D"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b6c5b6db7b3a8214a82c4ae306f66a26, type: 2}
-  m_sharedMaterial: {fileID: 8356676061243158695, guid: b6c5b6db7b3a8214a82c4ae306f66a26, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5f7af82964837044d8d120df36783018, type: 2}
+  m_sharedMaterial: {fileID: -7238328961564341917, guid: 5f7af82964837044d8d120df36783018, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
