@@ -25,8 +25,8 @@ public class S_StateManager : MonoBehaviour
     //右侧区域
     //public GameObject RightArea;
 
-    //右侧Note界面
-    public GameObject NoteScene;
+    ////右侧Note界面
+    //public GameObject NoteScene;
 
     //SYJ于demo测试中使用的图片
     public Sprite DefaultScene;
@@ -58,8 +58,17 @@ public class S_StateManager : MonoBehaviour
 
     public void CancelStateNote()
     {
+        if (NotePanel.GetComponent<S_NotePanelManager>().CurrentActiveItem != null)
+        {
+            NotePanel.GetComponent<S_NotePanelManager>().CurrentActiveItem.GetComponent<Image>().material = null;
+            NotePanel.GetComponent<S_NotePanelManager>().CurrentActiveItem = null;
+        }
+        else
+        {
+            NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("BlackMask").gameObject.SetActive(false);
+            NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("DialogBoxes").gameObject.SetActive(false);
+        }
         NotePanel.SetActive(false);
-        NoteScene.SetActive(false);
     }
     #endregion
 
@@ -88,7 +97,9 @@ public class S_StateManager : MonoBehaviour
     public void StateSwitchToNote()
     {
         NotePanel.SetActive(true);
-        NoteScene.SetActive(true);
+        NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("BlackMask").gameObject.SetActive(true);
+        NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("DialogBoxes").gameObject.SetActive(true);
+        //NoteScene.SetActive(true);
         State = PlaySceneState.Note;
     }
     #endregion

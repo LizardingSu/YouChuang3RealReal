@@ -9,6 +9,11 @@ public class S_NotePanelManager : MonoBehaviour
 
     public Material OutlineMaterial;
 
+    public S_CentralAccessor Accessor;
+
+    [HideInInspector]
+    public GameObject CurrentActiveItem = null;
+
     private Dictionary<string, GameObject> ElementsInNote = new Dictionary<string, GameObject>();
 
     public void SwitchOutline(GameObject g)
@@ -21,6 +26,22 @@ public class S_NotePanelManager : MonoBehaviour
         {
             g.GetComponent<Image>().material = OutlineMaterial;
         }
+    }
+
+    public void ItemClickedInNotePanel(S_ItemWithInfo item)
+    {
+        if (CurrentActiveItem == null)
+        {
+            NoteScene.transform.Find("BlackMask").gameObject.SetActive(false);
+            NoteScene.transform.Find("DialogBoxes").gameObject.SetActive(false);
+        }
+        else
+        {
+            CurrentActiveItem.GetComponent<Image>().material = null;
+        }
+
+        CurrentActiveItem = NoteScene.transform.Find(item.ToString()).gameObject;
+        CurrentActiveItem.GetComponent<Image>().material = OutlineMaterial;
     }
 
     private void Awake()
