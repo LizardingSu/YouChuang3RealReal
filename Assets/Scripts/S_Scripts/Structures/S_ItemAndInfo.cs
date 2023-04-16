@@ -7,7 +7,7 @@ using UnityEngine;
 public struct S_ItemAndInfo
 {
     [SerializeField]
-    S_ItemWithInfo Item;
+    public S_ItemWithInfo Item;
     [SerializeField]
-    string Info;
+    public string Info;
 }
