@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,6 +32,8 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
 {
     public S_CentralAccessor centralAccessor;
     private DioLogueState diologueState;
+
+    public RightLogController rightLogController;
 
     public LogEntryController logEntryPrefab;
     private LoopScrollRect scrollRect;
@@ -73,6 +76,8 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         bool isSelect = diologueData.processState == ProcessState.Select;
 
         AddEntry(diologueData.date, diologueData.idx, left, isSelect, diologueData.name, diologueData.log);
+
+        rightLogController.Init(logEntries.Last());
     }
 
     public void RemoveRange(uint Idx)

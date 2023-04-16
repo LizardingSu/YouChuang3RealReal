@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class SingleInput : MonoBehaviour
@@ -21,6 +22,14 @@ public class SingleInput : MonoBehaviour
     public void Init(uint pointSize,uint largerSize,Vector2 pos ,int charNum)
     {
         textBox.fontSize = pointSize;
+        if(pointSize == 30)
+        {
+            textBox.characterSpacing = 20;
+        }
+        else
+        {
+            textBox.characterSpacing = 4;
+        }
         inputField.characterLimit = charNum;
         inputField.ActivateInputField();
 

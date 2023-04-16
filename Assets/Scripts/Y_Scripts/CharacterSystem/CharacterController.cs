@@ -10,8 +10,14 @@ public class CharacterController : MonoBehaviour
     public S_CentralAccessor m_central;
     private DioLogueState m_diologueState;
 
-    public CharacterEntryController DanXi;
-    public CharacterEntryController ChuanShu;
+    /// <summary>
+    /// 收到最下方为 -1000
+    /// 收到下面为 -80
+    /// 正常为0
+    /// </summary>
+    public CharacterEntryController Left;
+    public CharacterEntryController Right;
+
     public List<CharacterEntryController> WindowsCharacters = new List<CharacterEntryController>(3);
     public List<int> charSortedList = new List<int>(3);
 
@@ -20,16 +26,9 @@ public class CharacterController : MonoBehaviour
     //控制当前空余的窗口
     private int curPlace = 0;
 
+
     private void Awake()
     {
-        DanXi.CharID = -1;
-        DanXi.ImageID = -1;
-        DanXi.gameObject.SetActive(false);
-
-        ChuanShu.CharID = -1;
-        ChuanShu.ImageID = -1;
-        ChuanShu.gameObject.SetActive(false);
-
         for(int i = 0; i < WindowsCharacters.Count; i++)
         {
             WindowsCharacters[i].CharID = -1;
@@ -48,22 +47,10 @@ public class CharacterController : MonoBehaviour
         m_diologueState.dialogueChanged.RemoveListener(ChangeCharacters);
     }
    
-    //无法处理回环情况
+    //无法处理回环情况,但是没有这种情况
    private void WillChangeCharacter(DiologueData data)
     {
-        if(data.processState == ProcessState.Select)
-        {
-            if (data.charaID == 0)
-            {
-                if (ChuanShu.gameObject.activeSelf)
-                    ChuanShu.SetAllDatas(true, 0, "传书", data.emojiID);
-            }
-            else if (data.charaID == 1)
-            {
-                if (DanXi.gameObject.activeSelf)
-                    DanXi.SetAllDatas(true, 1, "旦夕", data.emojiID);
-            }
-        }
+       
     }
    private void ChangeCharacters(DiologueData data)
     {
@@ -78,57 +65,42 @@ public class CharacterController : MonoBehaviour
 
         if (state == CharacterState.In)
         {
-            if(charID == 0)
+            if(charID <= 1)
             {
-                ChuanShu.SetAllDatas(true, charID,name, emojiID);
-            }
-            else if(charID == 1)
-            {
-                DanXi.SetAllDatas(true, charID, name,emojiID);
+                
             }
             else
             {
                 WindowsCharacters[curPlace].transform.SetAsLastSibling();
                 WindowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
-
                 charSortedList.Add(charID);
-
                 SortWindowsPos();
                 curPlace = WindowsCharacters.FindIndex(x => x.CharID == -1);
+
+
             }
         }
         else if(state == CharacterState.Leave)
         {
-            if (charID == 0)
+            if (charID <= 1)
             {
-                ChuanShu.SetAllDatas(false, 0,"传书", -1);
-            }
-            else if (charID == 1)
-            {
-                DanXi.SetAllDatas(false,1,"旦夕",-1);
+                
             }
             else
             {
                 var obj = WindowsCharacters.Find(x => x.CharID == charID);
                 obj.SetAllDatas(false);
-
                 charSortedList.Remove(charID);
-
                 SortWindowsPos();
+
             }
 
         }
         else
         {
-            if (charID == 0)
+            if (charID <= 1)
             {
-                if (ChuanShu.gameObject.activeSelf)
-                    ChuanShu.SetAllDatas(true, 0, "传书", emojiID);
-            }
-            else if (charID == 1)
-            {
-                if (DanXi.gameObject.activeSelf)
-                    DanXi.SetAllDatas(true, 1, "旦夕", emojiID);
+               
             }
             else
             {

@@ -27,20 +27,21 @@ public class SelectController : MonoBehaviour
     public bool isSelect = false;
     public bool isFirstTime = true;
 
-    public void Init(LogEntry logEntry)
+    public void Init(LogEntry logEntry,bool isSelectable)
     {
         if (!isFirstTime) return;
 
         isSelect = true;
         isFirstTime = false;
+
         //先销毁所有子物体（用处在于可以避免重复生成）
-        //if (transform.childCount != 0)
-        //{
-        //    foreach(Transform child in this.transform)
-        //    {
-        //        Destroy(child.gameObject);
-        //    }
-        //}
+        if (transform.childCount != 0&&isSelectable)
+        {
+            foreach (Transform child in this.transform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
 
         var selectContents = LogEntryParser.GetSelectContents(logEntry.Log);
 
@@ -53,12 +54,12 @@ public class SelectController : MonoBehaviour
             if (!item.isInput)
             {
                 var db = Instantiate(selectDioPrefab, transform);
-                db.Init(p+": "+item.log,logEntry.Idx,item.nextIdx);
+                db.Init(p+": "+item.log,logEntry.Idx,item.nextIdx,isSelectable);
             }
             else
             {
                 var dbI = Instantiate(inputFieldPrefab, transform);
-                dbI.Init(item.log, p + ": ", logEntry.Idx,item.nextIdx);
+                dbI.Init(item.log, p + ": ", logEntry.Idx,item.nextIdx,isSelectable);
 
             }
         }

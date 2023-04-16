@@ -30,14 +30,26 @@ public class diologueButtonController : MonoBehaviour
         button.onClick.RemoveListener(OnClick);
     }
 
-    public void Init(string text,uint idx,uint nextIdx)
+    public void Init(string text, uint idx, uint nextIdx, bool isSelectable)
     {
         Idx = idx;
         textBox.text = text;
         this.nextIdx = nextIdx;
+
+
+        if (!isSelectable)
+        {
+            button.interactable = false;
+            textBox.fontSize = 22;
+        }
+        else
+        {
+            button.interactable = true;
+            textBox.fontSize = 30;
+        }
     }
 
-    public void OnClick()
+        public void OnClick()
     {
         m_dioState.OnSelectionSelect(Idx, nextIdx);
     }

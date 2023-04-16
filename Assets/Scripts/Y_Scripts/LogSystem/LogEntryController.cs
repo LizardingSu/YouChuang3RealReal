@@ -38,7 +38,7 @@ public class LogEntryController : MonoBehaviour
 
             m_dio.gameObject.SetActive(false);
             m_selectController.gameObject.SetActive(true);
-            m_selectController.Init(logEntry);
+            m_selectController.Init(logEntry,false);
         }
         else
         {

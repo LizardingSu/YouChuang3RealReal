@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Windows.WebCam.VideoCapture;
@@ -46,34 +48,44 @@ public class InputFieldController : MonoBehaviour
     private void Update()
     {
     }
-    public void Init(string text,string head,uint Idx,uint nextIdx)
+    public void Init(string text,string head,uint Idx,uint nextIdx,bool isSelectable)
     {
+        float charSize = 22;
+        if (isSelectable)
+        {
+            charSize = 30;
+        }
+
         this.Idx = Idx;
         this.nextIdx = nextIdx;
         var ta = text.Split('@');
 
+        Detail.fontSize = charSize;
         Detail.text = head + ta[0];
 
         correct = ta[1];
         charNum = ta[1].Length;
 
-        var space = "<size=28>";
+        var space = "<size="+Convert.ToString(charSize*1.25)+">";
         for (int i = 0; i < charNum; i++)
         {
             space += "_";
         }
         Detail.text += space + "</size>"+ ta[2];
 
-        StartCoroutine(InitInputField());
+        StartCoroutine(InitInputField(charSize));
+
+        if (!isSelectable) button.interactable = false;
+        else button.interactable = true;
     }
 
-    private IEnumerator InitInputField()
+    private IEnumerator InitInputField(float charSize)
     {
         yield return null;
         var pos = GetTextPos();
         //往上调一点
-        pos.y += 5;
-        singleInput.Init(22, 28, pos, charNum);
+        pos.y += charSize*0.25f;
+        singleInput.Init((uint)charSize, (uint)(charSize*1.25), pos, charNum);
 
     }
 
