@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,7 +53,16 @@ public class CharacterController : MonoBehaviour
     {
         if(data.processState == ProcessState.Select)
         {
-
+            if (data.charaID == 0)
+            {
+                if (ChuanShu.gameObject.activeSelf)
+                    ChuanShu.SetAllDatas(true, 0, "´«Êé", data.emojiID);
+            }
+            else if (data.charaID == 1)
+            {
+                if (DanXi.gameObject.activeSelf)
+                    DanXi.SetAllDatas(true, 1, "µ©Ï¦", data.emojiID);
+            }
         }
     }
    private void ChangeCharacters(DiologueData data)
