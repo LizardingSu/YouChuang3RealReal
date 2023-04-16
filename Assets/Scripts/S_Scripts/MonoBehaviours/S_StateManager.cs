@@ -69,6 +69,7 @@ public class S_StateManager : MonoBehaviour
             NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("DialogBoxes").gameObject.SetActive(false);
         }
         NotePanel.SetActive(false);
+        NotePanel.transform.Find("InfoBox").gameObject.SetActive(false);
     }
     #endregion
 
@@ -99,6 +100,7 @@ public class S_StateManager : MonoBehaviour
         NotePanel.SetActive(true);
         NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("BlackMask").gameObject.SetActive(true);
         NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("DialogBoxes").gameObject.SetActive(true);
+        NotePanel.transform.Find("DefaultText").gameObject.SetActive(true);
         //NoteScene.SetActive(true);
         State = PlaySceneState.Note;
     }

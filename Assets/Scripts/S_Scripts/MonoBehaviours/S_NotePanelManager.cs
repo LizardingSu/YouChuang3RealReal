@@ -34,6 +34,8 @@ public class S_NotePanelManager : MonoBehaviour
         {
             NoteScene.transform.Find("BlackMask").gameObject.SetActive(false);
             NoteScene.transform.Find("DialogBoxes").gameObject.SetActive(false);
+            transform.Find("DefaultText").gameObject.SetActive(false);
+            transform.Find("InfoBox").gameObject.SetActive(true);
         }
         else
         {
@@ -42,6 +44,26 @@ public class S_NotePanelManager : MonoBehaviour
 
         CurrentActiveItem = NoteScene.transform.Find(item.ToString()).gameObject;
         CurrentActiveItem.GetComponent<Image>().material = OutlineMaterial;
+
+        string[] discription = null;
+        foreach (var i in Accessor.DataManager.ItemInfo.ItemInfoList1)
+        {
+            if (i.Item == item)
+            {
+                discription = i.Info.Split('/');
+                break;
+            }
+        }
+
+        GameObject ItemNameText = transform.Find("InfoBox").Find("ItemName").gameObject;
+        GameObject ItemInfoText = transform.Find("InfoBox").Find("ItemInfo").gameObject;
+
+        ItemNameText.GetComponent<Text>().text = discription[0];
+        ItemInfoText.GetComponent<Text>().text = "";
+        for (int i = 1; i < discription.Length; i++)
+        {
+            ItemInfoText.GetComponent<Text>().text += discription[i] + '\n' + '\n';
+        }
     }
 
     private void Awake()
