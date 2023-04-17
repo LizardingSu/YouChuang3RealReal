@@ -29,8 +29,11 @@ public class S_StateManager : MonoBehaviour
     //public GameObject NoteScene;
 
     //SYJ于demo测试中使用的图片
-    public Sprite DefaultScene;
-    public Sprite NotePanelScene;
+    //public Sprite DefaultScene;
+    //public Sprite NotePanelScene;
+
+    public GameObject MainScene;
+    public GameObject NoteScene;
 
     //切换状态时首先调用游戏场景中当前状态对应的状态取消函数
     #region 状态取消函数
@@ -70,6 +73,8 @@ public class S_StateManager : MonoBehaviour
         }
         NotePanel.SetActive(false);
         NotePanel.transform.Find("InfoBox").gameObject.SetActive(false);
+        MainScene.SetActive(true);
+        NoteScene.SetActive(false);
     }
     #endregion
 
@@ -97,6 +102,8 @@ public class S_StateManager : MonoBehaviour
 
     public void StateSwitchToNote()
     {
+        MainScene.SetActive(false);
+        NoteScene.SetActive(true);
         NotePanel.SetActive(true);
         NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("BlackMask").gameObject.SetActive(true);
         NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("DialogBoxes").gameObject.SetActive(true);
