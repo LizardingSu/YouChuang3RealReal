@@ -34,6 +34,15 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
     private DioLogueState diologueState;
 
     public RightLogController rightLogController;
+    /// <summary>
+    /// 多种情况时间：
+    /// 升起：delay+showTime
+    /// 收起：hideTime
+    /// </summary>
+    public float hideTime = 0.5f;
+    public float showTime = 0.5f;
+    [Tooltip("控制的是重新升起对话框之前的等待时间")]
+    public float delay = 0.6f;
 
     public LogEntryController logEntryPrefab;
     private LoopScrollRect scrollRect;
@@ -66,18 +75,43 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         {
             RemoveRange(diologueData.idx);
         }
+        //前提，做咖啡做完之后必进对话，不然要改
+        if(diologueData.processState == ProcessState.Coffee)
+        {
+            //延迟升起
+            StartCoroutine(MoveUpRightPanel(delay));
+        }
     }
 
     private void onDiologueChanged(DiologueData diologueData)
     {
-        if (diologueData.processState == ProcessState.Coffee||diologueData.log == "") return;
+        //做咖啡的时候收起
+        if (diologueData.processState == ProcessState.Coffee)
+        {
+            rightLogController.MoveDown(hideTime);
+            return;
+        }
+
+        if (diologueData.log == "") return;
 
         bool left = diologueData.charaID != (diologueData.charaID & 1);
         bool isSelect = diologueData.processState == ProcessState.Select;
 
         AddEntry(diologueData.date, diologueData.idx, left, isSelect, diologueData.name, diologueData.log);
-
         rightLogController.Init(logEntries.Last());
+
+        //第一次阅读
+        if (diologueData.idx == 0)
+        {
+            //延迟升起
+            StartCoroutine(MoveUpRightPanel(delay));
+        }
+    }
+
+    private IEnumerator MoveUpRightPanel(float time)
+    {
+        yield return new WaitForSeconds(time);
+        rightLogController.MoveUp(showTime);
     }
 
     public void RemoveRange(uint Idx)

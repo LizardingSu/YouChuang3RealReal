@@ -3,7 +3,7 @@ Shader "YU_UI/FadeShader"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _MyMask("MyMask",Range(0,0.7)) = 0.7
+        _MyMask("MyMask",Range(0,0.75)) = 0
     }
     SubShader
     {

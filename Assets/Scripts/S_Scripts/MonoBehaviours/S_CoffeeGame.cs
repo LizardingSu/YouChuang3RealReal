@@ -38,9 +38,9 @@ public class S_CoffeeGame : MonoBehaviour
     public void EndCoffeeGame()
     {
         StartCoroutine(HideGamePanel());
+        StartCoroutine(SetButtonsActive(1.2f, true));
         accessor._DioLogueState.UpdateDiologue();
-        DioLogueState ds = accessor._DioLogueState;
-        ds.SetButtonsActive(true);
+        
     }
 
     IEnumerator ShowGamePanel()
@@ -61,6 +61,13 @@ public class S_CoffeeGame : MonoBehaviour
             GamePanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(GamePanel.GetComponent<RectTransform>().anchoredPosition.x, currentY);
             yield return new  WaitForFixedUpdate();
         }
+    }
+
+    IEnumerator SetButtonsActive(float delay,bool active)
+    {
+        yield return new WaitForSeconds(delay);
+        DioLogueState ds = accessor._DioLogueState;
+        ds.SetButtonsActive(active);
     }
 
     private void Update()

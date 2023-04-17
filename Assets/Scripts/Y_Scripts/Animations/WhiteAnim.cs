@@ -2,22 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
-public class Animator : MonoBehaviour
+public class WhiteAnim : MonoBehaviour
 {
     public Material material;
     public float rollingSpeed = 0.5f;
     public float fadeSpeed = 0.2f;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        if (material)
+            material.SetFloat("_MyMask", 0);
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    void FixedUpdate()
     {
-        float curPos = Time.time * rollingSpeed;
+        float curPos = Time.fixedTime * rollingSpeed;
 
         material.mainTextureOffset = new Vector2(curPos * 1280.0f / 908.0f, curPos);
     }
@@ -32,7 +35,7 @@ public class Animator : MonoBehaviour
         else
         {
             //最大长度：0.7
-            if (curMask == 0.7f) return;
+            if (curMask == 0.75f) return;
         }
 
         StartCoroutine(BeginFadeOrReFill(isFade));
@@ -40,8 +43,8 @@ public class Animator : MonoBehaviour
 
     private IEnumerator BeginFadeOrReFill(bool isFade)
     {
-        float end = isFade ? 0 : 0.7f;
-        float current = isFade ? 0.7f : 0;
+        float end = isFade ? 0 : 0.75f;
+        float current = isFade ? 0.75f : 0;
         if (isFade)
         {
             while (current >= end)
@@ -52,7 +55,7 @@ public class Animator : MonoBehaviour
                     
                 }
 
-                    yield return null;
+                yield return new WaitForFixedUpdate();
                 material.SetFloat("_MyMask", current);
                 current = current - fadeSpeed;
             }
@@ -61,8 +64,8 @@ public class Animator : MonoBehaviour
         {
             while (current <= end)
             {
-                if (current > 0.7f) current = 0.7f;
-                yield return null;
+                if (current > 0.75f) current = 0.75f;
+                yield return new WaitForFixedUpdate();
                 material.SetFloat("_MyMask", current);
                 current = current + fadeSpeed;
             }
