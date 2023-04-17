@@ -40,7 +40,7 @@ public class S_ProcessManager : MonoBehaviour
     }
 
     //将m_Saving写入硬盘
-    public void WriteSaving()
+    private void WriteSaving()
     {
         if (!Directory.Exists(Application.persistentDataPath + "/ApodaSaving"))
         {
@@ -63,7 +63,7 @@ public class S_ProcessManager : MonoBehaviour
     }
 
     //读取硬盘中的存档并修改m_Saving
-    public bool ReadSaving()
+    private bool ReadSaving()
     {
         BinaryFormatter bf = new BinaryFormatter();
 
