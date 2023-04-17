@@ -8351,8 +8351,8 @@ MonoBehaviour:
   LogPanel: {fileID: 46212474}
   CalendarPanel: {fileID: 125550703}
   NotePanel: {fileID: 1286878262}
-  DefaultScene: {fileID: 21300000, guid: ca489ccd21af40b43ad7dd0e6932eeaa, type: 3}
-  NotePanelScene: {fileID: 21300000, guid: b269c44ed8995f4489c8ee8895101958, type: 3}
+  MainScene: {fileID: 1388609664}
+  NoteScene: {fileID: 1028557788}
 --- !u!114 &1765219807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8396,6 +8396,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e473bd3f41a4fa4d83998c5a43b65fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Accessor: {fileID: 1765219807}
+  m_Saving: {fileID: 11400000, guid: 0bc453997656fbe42a474237a6559674, type: 2}
 --- !u!114 &1765219810
 MonoBehaviour:
   m_ObjectHideFlags: 0
