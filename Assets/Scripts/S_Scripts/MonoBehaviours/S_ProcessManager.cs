@@ -20,14 +20,35 @@ public class S_ProcessManager : MonoBehaviour
     //存档文件
     public S_GameSaving m_Saving;
 
-    public void Save()
+    public void Save(int id,string option)
     {
-        //先根据游戏内数据修改m_Saving
+        bool exist = false;
+        int existIndex = 0;
 
+        //先根据游戏内数据修改m_Saving
+        foreach (var str in m_Saving.Choices)
+        {
+            if (str.ID == id)
+            {
+                exist = true;
+                break;
+            }
+            existIndex++;
+        }
+
+        if (exist)
+        {
+            m_Saving.Choices.RemoveAt(existIndex);
+            m_Saving.Choices.Add(new S_ChoiceMade(id, option));
+        }
+        else
+        {
+            m_Saving.Choices.Add(new S_ChoiceMade(id, option));
+        }
         WriteSaving();
     }
 
-    public void Load()
+    public void Load(int id = -1)
     {
         if (ReadSaving())
         {

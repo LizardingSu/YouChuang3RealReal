@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObject/”Œœ∑¥Êµµ")]
 public class S_GameSaving : ScriptableObject
 {
-    
+    public List<S_ChoiceMade> Choices;
 }
