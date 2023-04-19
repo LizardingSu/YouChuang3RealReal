@@ -9,9 +9,11 @@ using UnityEngine.UI;
 public class WhiteAnim : MonoBehaviour
 {
     public Material material;
+    public RawImage image;
     public float rollingSpeed = 0.5f;
     public float time = 1f;
     private float mask = 0f;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -26,6 +28,9 @@ public class WhiteAnim : MonoBehaviour
 
         material.SetFloat("_MyMask", mask);
         material.mainTextureOffset = new Vector2(curPos * 1280.0f / 908.0f, curPos);
+
+        if (mask <= 0.02f) image.color = new Color(1,1,1,0);
+        else image.color = new Color(1,1,1,1);
     }
 
     public void FadeAndReFill(bool isFade)

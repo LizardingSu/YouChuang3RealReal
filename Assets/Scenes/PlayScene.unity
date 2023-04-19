@@ -3938,6 +3938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 92ecd50aa9abc0c42b0f42a5780b53c5, type: 2}
+  image: {fileID: 760411409}
   rollingSpeed: 0.03
   time: 0.6
 --- !u!1 &775395812

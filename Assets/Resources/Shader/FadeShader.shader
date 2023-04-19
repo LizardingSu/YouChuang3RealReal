@@ -53,8 +53,8 @@ Shader "YU_UI/FadeShader"
                 float Cos = dot(diagonal,i.screenUV.xy)/(length(i.screenUV)*length(diagonal));
                 float Sin = sqrt(1 - Cos*Cos);
 
-                float Length = length(i.screenUV)*Sin;
-                clip(_MyMask - Length-0.02);
+                float Length = abs(length(i.screenUV)*Sin);
+                clip(_MyMask - Length - 0.02);
 
                 return col;
             }
