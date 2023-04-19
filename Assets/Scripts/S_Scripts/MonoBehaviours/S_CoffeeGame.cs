@@ -38,7 +38,9 @@ public class S_CoffeeGame : MonoBehaviour
     public void EndCoffeeGame()
     {
         StartCoroutine(HideGamePanel());
-        StartCoroutine(SetButtonsActive(1.2f, true));
+        DioLogueState ds = accessor._DioLogueState;
+        ds.SetButtonsActive(true);
+        //StartCoroutine(SetButtonsActive(1.2f, true));
         accessor._DioLogueState.UpdateDiologue();
         
     }

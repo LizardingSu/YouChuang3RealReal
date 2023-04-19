@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
@@ -20,7 +21,11 @@ public class S_ProcessManager : MonoBehaviour
     //存档文件
     public S_GameSaving m_Saving;
 
-    public void Save(int id,string option)
+    public void Awake()
+    { 
+    }
+
+    public void Save(int id,int option)
     {
         bool exist = false;
         int existIndex = 0;
@@ -50,9 +55,30 @@ public class S_ProcessManager : MonoBehaviour
 
     public void Load(int id = -1)
     {
+        if (!File.Exists(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt"))
+        {
+            Accessor._DioLogueState.ReadToCurrentID(0, -1);
+            return;
+        }
+
+        Debug.Log(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt");
+
         if (ReadSaving())
         {
-            //然后根据m_Saving修改游戏内数据
+            int idx;
+            int day;
+
+            {
+                if (id == -1)
+                    id = m_Saving.Choices.Last().ID;
+
+                idx = id % 1000;
+                day = (id - idx) / 1000;
+            }
+
+            Accessor._DioLogueState.ReadToCurrentID(day, idx);
+
+
         }
         else
         {

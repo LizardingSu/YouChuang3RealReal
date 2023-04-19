@@ -61,6 +61,8 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         diologueState = centralAccessor._DioLogueState;
         diologueState.dialogueChanged.AddListener(onDiologueChanged);
         diologueState.dialogueWillChange.AddListener(onDiologueWillChange);
+
+        diologueState.LoadScene(0);
     }
 
     private void OnDestroy()
@@ -71,42 +73,55 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
 
     private void onDiologueWillChange(DiologueData diologueData)
     {
-        if (diologueData.processState == ProcessState.Select)
-        {
-            RemoveRange(diologueData.idx);
-        }
         //前提，做咖啡做完之后必进对话，不然要改
         if(diologueData.processState == ProcessState.Coffee)
         {
-            //延迟升起
-            StartCoroutine(MoveUpRightPanel(delay));
+            //延迟升起，但是在auto模式下不需要收起，因为没有必要
+            if (diologueState.state == DiologueState.Normal)
+                StartCoroutine(MoveUpRightPanel(delay));
         }
     }
 
     private void onDiologueChanged(DiologueData diologueData)
     {
-        //做咖啡的时候收起
-        if (diologueData.processState == ProcessState.Coffee)
+        if (diologueData.processState == ProcessState.Select)
         {
-            rightLogController.MoveDown(hideTime);
-            return;
+            Debug.Log(diologueData.idx);
+            centralAccessor.ProcessManager.Save((int)(diologueData.date) * 1000 + (int)diologueData.idx, -1);
         }
+        else if (diologueData.processState == ProcessState.Coffee)
+        {
+            //做咖啡的时候收起，但是在auto模式下不需要收起，因为没有必要
+            if(diologueState.state == DiologueState.Normal)
+            {
+                rightLogController.MoveDown(hideTime);
+            }
+            return;
+        }   
 
         if (diologueData.log == "") return;
 
         bool left = diologueData.charaID != (diologueData.charaID & 1);
         bool isSelect = diologueData.processState == ProcessState.Select;
 
-        AddEntry(diologueData.date, diologueData.idx, left, isSelect, diologueData.name, diologueData.log);
-        rightLogController.Init(logEntries.Last());
+        logEntries.Add(new LogEntry(diologueData.date, diologueData.idx, left, isSelect, diologueData.name, diologueData.log));
+
+        //当读取的时候，只需要最后一句话的时候init一下就可以
+        if(diologueState.state == DiologueState.Normal)
+        {
+            RefillToButtom();
+            rightLogController.Init(logEntries.Last());
+        }
 
         //第一次阅读
         if (diologueData.idx == 0)
         {
+           
             //延迟升起
             StartCoroutine(MoveUpRightPanel(delay));
         }
     }
+
 
     private IEnumerator MoveUpRightPanel(float time)
     {
@@ -114,27 +129,24 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         rightLogController.MoveUp(showTime);
     }
 
-    public void RemoveRange(uint Idx)
+    //public void RemoveRange(uint Idx)
+    //{
+    //    logEntries.RemoveAll(x => x.Idx > Idx);
+
+    //    scrollRect.totalCount = logEntries.Count;
+
+    //}
+
+    public void RefillToButtom()
     {
-        logEntries.RemoveAll(x => x.Idx > Idx);
-
-        scrollRect.totalCount = logEntries.Count;
-
+        StartCoroutine(Refill());
     }
 
-    public void AddEntry(uint date,uint idx,bool left,bool select,string name,string log)
+    private IEnumerator Refill()
     {
-
-        logEntries.Add(new LogEntry(date,idx,left,select,name,log));
-
-        //我根本不知道这个是什么原理，但他就是能正常运作，位置和顺序都不能变，我觉得跟帧数有关，等再次出bug我再改...
-        RefillToButtom();
-        //scrollRect.SrollToCell(logEntries.Count - 1, 10000);
-        scrollRect.verticalNormalizedPosition = 1;
-
-    }
-    private void RefillToButtom()
-    {
+        yield return null;
+        yield return null;
+        yield return null;
         scrollRect.totalCount = logEntries.Count;
         scrollRect.RefillCellsFromEnd();
         scrollRect.verticalNormalizedPosition = 1;

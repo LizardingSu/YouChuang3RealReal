@@ -43,8 +43,7 @@ public class InputFieldController : MonoBehaviour
             {
                 m_dioState.OnSelectionSelect(Idx, kvp.Value);
                 return;
-            }
-                
+            }       
         }
     }
 

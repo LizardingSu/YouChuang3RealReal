@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -9,7 +10,8 @@ public class WhiteAnim : MonoBehaviour
 {
     public Material material;
     public float rollingSpeed = 0.5f;
-    public float fadeSpeed = 0.2f;
+    public float time = 1f;
+    private float mask = 0f;
     // Start is called before the first frame update
     void Awake()
     {
@@ -22,6 +24,7 @@ public class WhiteAnim : MonoBehaviour
     {
         float curPos = Time.fixedTime * rollingSpeed;
 
+        material.SetFloat("_MyMask", mask);
         material.mainTextureOffset = new Vector2(curPos * 1280.0f / 908.0f, curPos);
     }
 
@@ -38,38 +41,14 @@ public class WhiteAnim : MonoBehaviour
             if (curMask == 0.75f) return;
         }
 
-        StartCoroutine(BeginFadeOrReFill(isFade));
+        BeginFadeOrReFill(isFade);
     }
 
-    private IEnumerator BeginFadeOrReFill(bool isFade)
+    private void BeginFadeOrReFill(bool isFade)
     {
         float end = isFade ? 0 : 0.75f;
-        float current = isFade ? 0.75f : 0;
-        if (isFade)
-        {
-            while (current >= end)
-            {
-                if (current < 0)
-                {
-                    current = 0;
-                    
-                }
 
-                yield return new WaitForFixedUpdate();
-                material.SetFloat("_MyMask", current);
-                current = current - fadeSpeed;
-            }
-        }
-        else
-        {
-            while (current <= end)
-            {
-                if (current > 0.75f) current = 0.75f;
-                yield return new WaitForFixedUpdate();
-                material.SetFloat("_MyMask", current);
-                current = current + fadeSpeed;
-            }
-        }
+        DOTween.To(()=> mask,x => mask = x,end,time);
       
     }
 }

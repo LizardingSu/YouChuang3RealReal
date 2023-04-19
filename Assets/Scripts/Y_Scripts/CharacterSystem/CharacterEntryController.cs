@@ -24,7 +24,6 @@ public class CharacterEntryController : MonoBehaviour
     public int ImageID;
     public void SetAllDatas(bool active,int charID = -1,string name = "",int imageID = -1)
     {
-        Debug.Log(imageID);
         CharID = charID;
         Name = name;
         ImageID = imageID;

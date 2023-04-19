@@ -5,17 +5,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static UnityEngine.Windows.WebCam.VideoCapture;
 
+//不好说
+public enum DiologueState
+{
+    Normal,
+    Auto,
+}
 public class DioLogueState : MonoBehaviour
 {
-    //不好说
-    public enum State
-    {
-        Normal,
-        Auto,
-        FastForward
-    }
+
 
     public List<string> textList = new List<string>();
     /// <summary>
@@ -34,11 +33,14 @@ public class DioLogueState : MonoBehaviour
 
     public Button[] update_button;
 
+    public S_CentralAccessor centralAccessor;
+    public S_CoffeeGame coffee;
+    public LogController logController;
+
+    public DiologueState state = DiologueState.Normal;  
+
     public void Awake()
     {
-        //test
-        Init(0, "Text/Test");
-
         foreach (var button in update_button)
             button.onClick.AddListener(UpdateDiologue);
 
@@ -48,6 +50,12 @@ public class DioLogueState : MonoBehaviour
             SetButtonsActive(true);
     }
 
+    public void LoadScene(uint day)
+    {
+        //test
+        centralAccessor.ProcessManager.Load();
+    }
+
     public void OnDestroy()
     {
         textList.Clear();
@@ -55,6 +63,59 @@ public class DioLogueState : MonoBehaviour
         ReadedList = null;
         foreach (var button in update_button)
             button.onClick.RemoveListener(UpdateDiologue);
+    }
+
+    public void ReadToCurrentID(int day, int Idx)
+    {
+        if (textList.Count == 0 || date != day)
+        {
+            Init((uint)day, "Text/Test");
+        }     
+
+        if(Idx == -1)
+        {
+            return;
+        }
+
+        state = DiologueState.Auto;
+
+        if(curData == null)
+        {
+            UpdateDiologue();
+        }
+
+        while (curData.idx != Idx)
+        {
+            Debug.Log(curData.idx + "  " + Idx);
+
+            UpdateDiologue();
+
+            if(curData.processState == ProcessState.Coffee)
+            {
+                coffee.EndCoffeeGame();
+            }
+
+            if(curData.processState == ProcessState.Select)
+            {
+                var choices = centralAccessor.ProcessManager.m_Saving.Choices;
+                foreach(var choice in choices)
+                {
+                    var id = choice.ID;
+                    var idx = id % 1000;
+                    var today = (id - idx) / 1000;
+                    if(idx == curData.idx&&today == curData.date)
+                    {
+                        OnSelectionSelect((uint)idx, (uint)choice.Choice);
+                        break;
+                    }
+                }
+            }
+        }
+
+        logController.rightLogController.Init(logController.logEntries.Last());
+        logController.RefillToButtom();
+
+        state = DiologueState.Normal;
     }
 
     public void Init(uint day,string path)
@@ -119,6 +180,11 @@ public class DioLogueState : MonoBehaviour
         curData.nextIdx = (int)nextIdx;
 
         UpdateDiologue();
+
+        if(state == DiologueState.Normal)
+        {
+            centralAccessor.ProcessManager.Save((int)Idx, (int)nextIdx);
+        }
     }
 
     public void SetButtonsActive(bool active)

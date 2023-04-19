@@ -29,13 +29,13 @@ public class SelectController : MonoBehaviour
 
     public void Init(LogEntry logEntry,bool isSelectable)
     {
-        if (!isFirstTime) return;
+        //if (!isFirstTime && !isSelectable) return;
 
         isSelect = true;
         isFirstTime = false;
 
         //先销毁所有子物体（用处在于可以避免重复生成）
-        if (transform.childCount != 0&&isSelectable)
+        if (transform.childCount != 0)
         {
             foreach (Transform child in this.transform)
             {

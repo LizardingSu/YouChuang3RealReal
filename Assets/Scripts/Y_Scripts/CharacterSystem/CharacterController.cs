@@ -74,7 +74,10 @@ public class CharacterController : MonoBehaviour
         //同样的，如果后续不是对话就会出错
         if (data.processState == ProcessState.Coffee)
         {
-            whiteMask.FadeAndReFill(false);
+            if(diologueState.state == DiologueState.Normal)
+            {
+                whiteMask.FadeAndReFill(false);
+            }
             isCoffeeBefore = true;
         }
     }
@@ -87,34 +90,44 @@ public class CharacterController : MonoBehaviour
             whiteMask.FadeAndReFill(false);
         }
 
-        //如果是做咖啡阶段，收起
-        if (data.processState == ProcessState.Coffee)
-        {
-            if (left.curState == CurState.HIDE)
-                left.MoveDown(hideAllTime - hideNameTime);
-            else
-                left.MoveDown(hideAllTime);
-
-            if (right.curState == CurState.HIDE)
-                right.MoveDown(hideAllTime - hideNameTime);
-            else
-                right.MoveDown(hideAllTime);
-
-            StartCoroutine(FoldWhite(whiteFoldDelay));
-            return;
-        }
-
         var state = data.charaState;
         var charID = data.charaID;
         var emojiID = data.emojiID;
 
         var name = characterFiles.characterList[charID].name;
 
-        if (isCoffeeBefore)
+        if(diologueState.state == DiologueState.Normal)
         {
-            isCoffeeBefore = false;
-            StartCoroutine(ShowUpAfterCoffee(data,delay));
-            return;
+            //如果是做咖啡阶段，收起
+            if (data.processState == ProcessState.Coffee)
+            {
+                if (left.curState == CurState.HIDE)
+                    left.MoveDown(hideAllTime - hideNameTime);
+                else
+                    left.MoveDown(hideAllTime);
+
+                if (right.curState == CurState.HIDE)
+                    right.MoveDown(hideAllTime - hideNameTime);
+                else
+                    right.MoveDown(hideAllTime);
+
+                StartCoroutine(FoldWhite(whiteFoldDelay));
+                return;
+            }
+
+            if (isCoffeeBefore)
+            {
+                isCoffeeBefore = false;
+                StartCoroutine(ShowUpAfterCoffee(data, delay));
+                return;
+            }
+        }
+        else
+        {
+            if (isCoffeeBefore)
+            {
+                isCoffeeBefore = false;
+            }
         }
 
         if (state == CharacterState.In)

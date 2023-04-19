@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class S_ChoiceMade
 {
     public int ID;
-    public string Choice;
+    public int Choice;
 
     public S_ChoiceMade()
     {
-        ID = 0;
-        Choice = string.Empty;
+        ID = -1;
+        Choice = -1;
     }
 
-    public S_ChoiceMade(int id, string choice)
+    public S_ChoiceMade(int id, int choice)
     {
         ID = id;
         Choice = choice;
