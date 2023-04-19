@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,7 +52,8 @@ static public class LogEntryParser
             {
                 var data = textLists[i].Split(',');
                 //example: |this is A option^10|this is B option^11|Inpu@tW@ord^12
-                totalLog += "|"+data[5]+"^"+ data[6];
+                var st = data[6] != "" ? data[6] : Convert.ToString(0);
+                totalLog += "|"+data[5]+"^"+ st;
             }
 
             log = totalLog;

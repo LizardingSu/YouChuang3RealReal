@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Windows.WebCam.VideoCapture;
 
 public class InputFieldController : MonoBehaviour
 {
@@ -15,10 +15,9 @@ public class InputFieldController : MonoBehaviour
     public TMP_Text Detail;
     public SingleInput singleInput;
 
-    public string correct;
-    public int charNum;
+    public Dictionary<string,uint> correctAndNextIdx = new Dictionary<string, uint>();
+    public int maxcharNum = 0;
     public uint Idx;
-    public uint nextIdx;
 
     private DioLogueState m_dioState;
 
@@ -36,13 +35,17 @@ public class InputFieldController : MonoBehaviour
     }
     public void OnClick()
     {
-        if (singleInput.textBox.textInfo.characterCount != charNum || singleInput.textBox.text != correct)
-        {
-            singleInput.inputField.ActivateInputField();
-            return;
-        }
+        singleInput.inputField.ActivateInputField();
 
-        m_dioState.OnSelectionSelect(Idx, nextIdx);
+        foreach (KeyValuePair<string,uint> kvp in correctAndNextIdx)
+        {
+            if(singleInput.textBox.textInfo.characterCount <= maxcharNum && singleInput.textBox.text == kvp.Key)
+            {
+                m_dioState.OnSelectionSelect(Idx, kvp.Value);
+                return;
+            }
+                
+        }
     }
 
     private void Update()
@@ -57,21 +60,27 @@ public class InputFieldController : MonoBehaviour
         }
 
         this.Idx = Idx;
-        this.nextIdx = nextIdx;
         var ta = text.Split('@');
 
         Detail.fontSize = charSize;
         Detail.text = head + ta[0];
 
-        correct = ta[1];
-        charNum = ta[1].Length;
+        string logLast = ta[ta.Length - 1];
+
+        for(int i = 1;i<ta.Length - 1; i++)
+        {
+            var option = ta[i].Split('-');
+            correctAndNextIdx.Add(option[0], uint.Parse(option[1]));
+            maxcharNum = maxcharNum >= option[0].Count()?maxcharNum : option[0].Count();
+        }
+
 
         var space = "<size="+Convert.ToString(charSize*1.25)+">";
-        for (int i = 0; i < charNum; i++)
+        for (int i = 0; i < maxcharNum; i++)
         {
             space += "_";
         }
-        Detail.text += space + "</size>"+ ta[2];
+        Detail.text += space + "</size>"+ logLast;
 
         StartCoroutine(InitInputField(charSize));
 
@@ -85,7 +94,7 @@ public class InputFieldController : MonoBehaviour
         var pos = GetTextPos();
         //往上调一点
         pos.y += charSize*0.25f;
-        singleInput.Init((uint)charSize, (uint)(charSize*1.25), pos, charNum);
+        singleInput.Init((uint)charSize, (uint)(charSize*1.25), pos, maxcharNum);
 
     }
 
