@@ -84,7 +84,8 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
 
     private void onDiologueChanged(DiologueData diologueData)
     {
-        if (diologueData.processState == ProcessState.Select)
+        //如果是快进模式 就不需要保存
+        if (diologueData.processState == ProcessState.Select&&diologueState.state == DiologueState.Normal)
         {
             Debug.Log(diologueData.idx);
             centralAccessor.ProcessManager.Save((int)(diologueData.date) * 1000 + (int)diologueData.idx, -1);

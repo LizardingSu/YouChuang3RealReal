@@ -88,28 +88,28 @@ public class DioLogueState : MonoBehaviour
         {
             Debug.Log(curData.idx + "  " + Idx);
 
-            UpdateDiologue();
-
-            if(curData.processState == ProcessState.Coffee)
+            if (curData.processState == ProcessState.Coffee)
             {
                 coffee.EndCoffeeGame();
             }
 
-            if(curData.processState == ProcessState.Select)
+            if (curData.processState == ProcessState.Select)
             {
                 var choices = centralAccessor.ProcessManager.m_Saving.Choices;
-                foreach(var choice in choices)
+                foreach (var choice in choices)
                 {
                     var id = choice.ID;
                     var idx = id % 1000;
                     var today = (id - idx) / 1000;
-                    if(idx == curData.idx&&today == curData.date)
+                    if (idx == curData.idx && today == curData.date)
                     {
                         OnSelectionSelect((uint)idx, (uint)choice.Choice);
                         break;
                     }
                 }
             }
+
+            UpdateDiologue();
         }
 
         logController.rightLogController.Init(logController.logEntries.Last());

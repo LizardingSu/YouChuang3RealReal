@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d13b9c3542fd4e46b8cdf5c8a1214d1, type: 3}
   m_Name: GameSaving
   m_EditorClassIdentifier: 
+  Choices: []
