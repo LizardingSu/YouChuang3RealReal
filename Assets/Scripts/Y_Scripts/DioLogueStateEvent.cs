@@ -15,7 +15,8 @@ public enum ProcessState
 {
     Coffee,
     Select,
-    Diologue
+    Diologue,
+    Branch
 }
 //游戏进程所需要的所有数据
 public class DiologueData

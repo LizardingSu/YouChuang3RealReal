@@ -90,13 +90,7 @@ public class CharacterController : MonoBehaviour
             whiteMask.FadeAndReFill(false);
         }
 
-        var state = data.charaState;
-        var charID = data.charaID;
-        var emojiID = data.emojiID;
-
-        var name = characterFiles.characterList[charID].name;
-
-        if(diologueState.state == DiologueState.Normal)
+        if (diologueState.state == DiologueState.Normal)
         {
             //如果是做咖啡阶段，收起
             if (data.processState == ProcessState.Coffee)
@@ -124,114 +118,120 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
-            if (isCoffeeBefore)
-            {
-                isCoffeeBefore = false;
-            }
+            if (isCoffeeBefore) isCoffeeBefore = false;
         }
 
-        if (state == CharacterState.In)
+        if(data.processState == ProcessState.Select||data.processState == ProcessState.Diologue) 
         {
-            if(charID > 1)
+            var state = data.charaState;
+            var charID = data.charaID;
+            var emojiID = data.emojiID;
+
+            var name = characterFiles.characterList[charID].name;
+
+            if (state == CharacterState.In)
             {
-                windowsCharacters[curPlace].transform.SetAsLastSibling();
-                windowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
-                charSortedList.Add(charID);
-                SortWindowsPos();
-                curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
-
-                //可能存在当前角色In的时候，左侧已经有对话框出现了，此时只需要ShowName时间而不是MoveUp时间，并且另一侧如果已经有对话框，则需要MoveDown
-                if (left.curState == CurState.HIDE)
-                    left.MoveUp(showNameTime);
-                else if(left.curState == CurState.DOWN)
-                    left.MoveUp(showAllTime);
-
-                if (right.curState == CurState.UP)
-                    right.MoveHideName(hideNameTime);
-
-                left.SetAllDatas(true, charID, name);
-                left.SetName(data.name);
-            }
-            else
-            {
-                //同理
-                if (right.curState == CurState.HIDE)
-                    right.MoveUp(showNameTime);
-                else if(right.curState == CurState.DOWN)
-                    right.MoveUp(showAllTime);
-
-                if (left.curState == CurState.UP)
-                    left.MoveHideName(hideNameTime);
-
-                right.SetAllDatas(true, charID, name);
-                right.SetName(data.name);
-            }
-        }
-        else if(state == CharacterState.Leave)
-        {
-            if (right.CharID == charID)
-            {
-                if (right.curState == CurState.HIDE)
-                    right.MoveDown(hideAllTime - hideNameTime);
-                else if(right.curState == CurState.UP)
-                    right.MoveDown(hideAllTime);
-
-                right.SetAllDatas(true);
-                right.SetName("");
-            }
-            else if (left.CharID == charID)
-            {
-                if (left.curState == CurState.HIDE)
-                    left.MoveDown(hideAllTime-hideNameTime);
-                else if (left.curState == CurState.UP)
-                    left.MoveDown(hideAllTime);
-                left.SetAllDatas(true);
-                left.SetName("");
-            }
-
-            if (charID > 1)
-            {
-                var obj = windowsCharacters.Find(x => x.CharID == charID);
-                obj.SetAllDatas(false);
-                charSortedList.Remove(charID);
-                SortWindowsPos();
-            }
-        }
-        else
-        {
-            if (charID > 1)
-            {
-                var c = windowsCharacters.Find(x => x.CharID == charID);
-                if (c)
+                if (charID > 1)
                 {
-                    c.transform.SetAsLastSibling();
-                    c.SetAllDatas(true, charID, name, emojiID);
+                    windowsCharacters[curPlace].transform.SetAsLastSibling();
+                    windowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
+                    charSortedList.Add(charID);
+                    SortWindowsPos();
+                    curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
+
+                    //可能存在当前角色In的时候，左侧已经有对话框出现了，此时只需要ShowName时间而不是MoveUp时间，并且另一侧如果已经有对话框，则需要MoveDown
+                    if (left.curState == CurState.HIDE)
+                        left.MoveUp(showNameTime);
+                    else if (left.curState == CurState.DOWN)
+                        left.MoveUp(showAllTime);
+
+                    if (right.curState == CurState.UP)
+                        right.MoveHideName(hideNameTime);
+
+                    left.SetAllDatas(true, charID, name);
+                    left.SetName(data.name);
+                }
+                else
+                {
+                    //同理
+                    if (right.curState == CurState.HIDE)
+                        right.MoveUp(showNameTime);
+                    else if (right.curState == CurState.DOWN)
+                        right.MoveUp(showAllTime);
+
+                    if (left.curState == CurState.UP)
+                        left.MoveHideName(hideNameTime);
+
+                    right.SetAllDatas(true, charID, name);
+                    right.SetName(data.name);
+                }
+            }
+            else if (state == CharacterState.Leave)
+            {
+                if (right.CharID == charID)
+                {
+                    if (right.curState == CurState.HIDE)
+                        right.MoveDown(hideAllTime - hideNameTime);
+                    else if (right.curState == CurState.UP)
+                        right.MoveDown(hideAllTime);
+
+                    right.SetAllDatas(true);
+                    right.SetName("");
+                }
+                else if (left.CharID == charID)
+                {
+                    if (left.curState == CurState.HIDE)
+                        left.MoveDown(hideAllTime - hideNameTime);
+                    else if (left.curState == CurState.UP)
+                        left.MoveDown(hideAllTime);
+                    left.SetAllDatas(true);
+                    left.SetName("");
                 }
 
-                //可能会出现第一次出现对话框时还没有In的情况
-                if (left.curState == CurState.HIDE)
-                    left.MoveUp(showNameTime);
-                else if(left.curState == CurState.DOWN)
-                    left.MoveUp(showAllTime);
-
-                if (right.curState == CurState.UP)
-                    right.MoveHideName(hideNameTime);
-
-                left.SetAllDatas(true, charID, name);
-                left.SetName(data.name);
+                if (charID > 1)
+                {
+                    var obj = windowsCharacters.Find(x => x.CharID == charID);
+                    obj.SetAllDatas(false);
+                    charSortedList.Remove(charID);
+                    SortWindowsPos();
+                }
             }
             else
             {
-                if (right.curState == CurState.HIDE)
-                    right.MoveUp(showNameTime);
-                else if (right.curState == CurState.DOWN)
-                    right.MoveUp(showAllTime);
+                if (charID > 1)
+                {
+                    var c = windowsCharacters.Find(x => x.CharID == charID);
+                    if (c)
+                    {
+                        c.transform.SetAsLastSibling();
+                        c.SetAllDatas(true, charID, name, emojiID);
+                    }
 
-                if (left.curState == CurState.UP)
-                    left.MoveHideName(hideNameTime);
+                    //可能会出现第一次出现对话框时还没有In的情况
+                    if (left.curState == CurState.HIDE)
+                        left.MoveUp(showNameTime);
+                    else if (left.curState == CurState.DOWN)
+                        left.MoveUp(showAllTime);
 
-                right.SetAllDatas(true, charID, name);
-                right.SetName(data.name);
+                    if (right.curState == CurState.UP)
+                        right.MoveHideName(hideNameTime);
+
+                    left.SetAllDatas(true, charID, name);
+                    left.SetName(data.name);
+                }
+                else
+                {
+                    if (right.curState == CurState.HIDE)
+                        right.MoveUp(showNameTime);
+                    else if (right.curState == CurState.DOWN)
+                        right.MoveUp(showAllTime);
+
+                    if (left.curState == CurState.UP)
+                        left.MoveHideName(hideNameTime);
+
+                    right.SetAllDatas(true, charID, name);
+                    right.SetName(data.name);
+                }
             }
         }
     }

@@ -56,12 +56,6 @@ public class S_ProcessManager : MonoBehaviour
 
     public void LoadLog(int id = -1)
     {
-        if (!File.Exists(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt"))
-        {
-            Accessor._DioLogueState.ReadToCurrentID(1, -1);
-            return;
-        }
-
         Debug.Log(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt");
 
         if (ReadSaving())
@@ -78,12 +72,12 @@ public class S_ProcessManager : MonoBehaviour
             }
 
             Accessor._DioLogueState.ReadToCurrentID(day, idx);
-
-
         }
         else
         {
             Debug.Log("存档读取失败，文件不存在");
+            Accessor._DioLogueState.ReadToCurrentID(1, -1);
+            return;
         }
     }
 

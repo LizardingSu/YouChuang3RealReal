@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ static public class LogEntryParser
     /// ta[2]:人物ID 可以为空 会标注为-1 除了做咖啡和结尾应该不会出现这种情况？
     /// ta[3]:表情ID 可以为空 为空为-1 除了做咖啡和结尾不会出现这种情况？ 控制人物立绘
     /// ta[4]:名字 只有放到Text里的作用 可以为空？
-    /// ta[5]:内容 对话内容 含富文本 对于Input类型的会有@ @的情况 可以为空？ *对于选项会将多个内容合并成一个Log然后解析
+    /// ta[5]:内容 对话内容 含富文本 对于Input类型的会有@ @的情况 可以为空？ *对于选项会将多个内容合并成一个Log然后解析 *对于分支会做一个妙妙的合并
     /// ta[6]:跳转 除了最后一句话以外，不可能为空 *对于选项而言在生成DiologueData时会设为-1，等待后续选择选项之后再设为正常
     /// ta[7]:出入场 I:进入 D;离去 P：固定位置
     /// ta[8]:效果
@@ -61,6 +62,10 @@ static public class LogEntryParser
             nextIdx = -1;
 
         }
+        if(state == "*")
+        {
+            processState=ProcessState.Branch;
+        }
         if (state == "$")
         {
             processState = ProcessState.Coffee;
@@ -97,5 +102,28 @@ static public class LogEntryParser
         }
 
         return contents;
+    }
+
+    public static uint GetNextIdxFromBranch(List<S_ChoiceMade> Choices,string Log)
+    {
+        var dif = Log.Split('|');
+        foreach(var s in dif)
+        {
+            var m = s.Split('=');
+            foreach (var choice in Choices)
+            {
+                if(choice.ID == int.Parse(m[0]))
+                {
+                    var n = m[1].Split('^');
+                    if (int.Parse(n[0]) == choice.Choice)
+                    {
+                        Debug.Log(n[1]);
+                        return uint.Parse(n[1]);
+                    }
+                }
+            }
+        }
+
+        return 0;
     }
 }

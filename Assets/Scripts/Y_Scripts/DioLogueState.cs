@@ -70,7 +70,7 @@ public class DioLogueState : MonoBehaviour
     {
         if (textList.Count == 0 || date != day)
         {
-            Init((uint)day, "Text/Test");
+            Init((uint)day, "Text/T");
         }     
 
         if(Idx == -1)
@@ -174,6 +174,15 @@ public class DioLogueState : MonoBehaviour
 
         curData = diologueData;
         ReadedList[curData.idx] = 1;
+
+        //如果curData为Branch，自动进行到下一句话
+        if(curData.processState == ProcessState.Branch)
+        {
+            Debug.Log("InBranch");
+            curData.nextIdx = (int)LogEntryParser.GetNextIdxFromBranch(centralAccessor.ProcessManager.m_Saving.Choices,curData.log);
+
+            UpdateDiologue();
+        }
     }
 
     public void OnSelectionSelect(uint Idx, uint nextIdx,string answer = "")
