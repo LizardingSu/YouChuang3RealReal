@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using TMPro;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,11 +17,13 @@ public class InputFieldController : MonoBehaviour
     public uint Idx;
 
     private DioLogueState m_dioState;
+    private S_ProcessManager m_processManager;
 
 
     private void Awake()
     {
         m_dioState = GameObject.Find("MainManager").GetComponent<DioLogueState>();
+        m_processManager = GameObject.Find("MainManager").GetComponent<S_ProcessManager>();
 
         button.onClick.AddListener(OnClick);
     }
@@ -41,15 +40,12 @@ public class InputFieldController : MonoBehaviour
         {
             if(singleInput.textBox.textInfo.characterCount <= maxcharNum && singleInput.textBox.text == kvp.Key)
             {
-                m_dioState.OnSelectionSelect(Idx, kvp.Value);
+                m_dioState.OnSelectionSelect(Idx, kvp.Value, kvp.Key);
                 return;
             }       
         }
     }
 
-    private void Update()
-    {
-    }
     public void Init(string text,string head,uint Idx,uint nextIdx,bool isSelectable)
     {
         float charSize = 22;
@@ -73,7 +69,6 @@ public class InputFieldController : MonoBehaviour
             maxcharNum = maxcharNum >= option[0].Count()?maxcharNum : option[0].Count();
         }
 
-
         var space = "<size="+Convert.ToString(charSize*1.25)+">";
         for (int i = 0; i < maxcharNum; i++)
         {
@@ -85,6 +80,23 @@ public class InputFieldController : MonoBehaviour
 
         if (!isSelectable) button.interactable = false;
         else button.interactable = true;
+
+        foreach(var choice in m_processManager.m_Saving.Choices)
+        {
+            var idx = choice.ID % 1000;
+            var day = (choice.ID - idx) / 1000;
+            if(day == m_dioState.date)
+            {
+                if(idx == Idx)
+                {
+                    if (choice.Answer != "")
+                    {
+                        singleInput.inputField.text = choice.Answer;
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     private IEnumerator InitInputField(float charSize)

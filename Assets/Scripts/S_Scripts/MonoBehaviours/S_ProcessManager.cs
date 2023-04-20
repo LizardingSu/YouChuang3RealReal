@@ -21,12 +21,10 @@ public class S_ProcessManager : MonoBehaviour
     //´æµµÎÄ¼þ
     public S_GameSaving m_Saving;
 
-    public void Awake()
-    { 
-    }
-
-    public void Save(int id,int option)
+    public void Save(int id,int option,string answer)
     {
+        Debug.Log(id + "  " + answer);
+
         bool exist = false;
         int existIndex = 0;
 
@@ -43,21 +41,24 @@ public class S_ProcessManager : MonoBehaviour
 
         if (exist)
         {
+            if (m_Saving.Choices[existIndex].Answer!=""&&answer == "")
+                answer = m_Saving.Choices[existIndex].Answer;
+
             m_Saving.Choices.RemoveAt(existIndex);
-            m_Saving.Choices.Add(new S_ChoiceMade(id, option));
+            m_Saving.Choices.Add(new S_ChoiceMade(id, option,answer));
         }
         else
         {
-            m_Saving.Choices.Add(new S_ChoiceMade(id, option));
+            m_Saving.Choices.Add(new S_ChoiceMade(id, option,answer));
         }
         WriteSaving();
     }
 
-    public void Load(int id = -1)
+    public void LoadLog(int id = -1)
     {
         if (!File.Exists(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt"))
         {
-            Accessor._DioLogueState.ReadToCurrentID(0, -1);
+            Accessor._DioLogueState.ReadToCurrentID(1, -1);
             return;
         }
 

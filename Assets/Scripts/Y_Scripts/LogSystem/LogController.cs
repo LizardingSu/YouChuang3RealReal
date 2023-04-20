@@ -49,9 +49,6 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
 
     public List<LogEntry> logEntries = new List<LogEntry>();
 
-    //button for test
-    private Button panel_button;
-
     private void Awake()
     {
         scrollRect = GetComponentInChildren<LoopScrollRect>();
@@ -62,7 +59,8 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         diologueState.dialogueChanged.AddListener(onDiologueChanged);
         diologueState.dialogueWillChange.AddListener(onDiologueWillChange);
 
-        diologueState.LoadScene(0);
+        //test
+        diologueState.LoadScene(1);
     }
 
     private void OnDestroy()
@@ -87,8 +85,7 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         //如果是快进模式 就不需要保存
         if (diologueData.processState == ProcessState.Select&&diologueState.state == DiologueState.Normal)
         {
-            Debug.Log(diologueData.idx);
-            centralAccessor.ProcessManager.Save((int)(diologueData.date) * 1000 + (int)diologueData.idx, -1);
+            centralAccessor.ProcessManager.Save((int)(diologueData.date) * 1000 + (int)diologueData.idx, -1,"");
         }
         else if (diologueData.processState == ProcessState.Coffee)
         {
