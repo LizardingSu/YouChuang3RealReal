@@ -52,16 +52,25 @@ public class S_ProcessManager : MonoBehaviour
             m_Saving.Choices.Add(new S_ChoiceMade(id, option,answer));
         }
         WriteSaving();
+
+        Accessor.StateManager.CalendarPanel.GetComponent<S_CalendarPanelManager>().InitAllDays();
+        //Accessor.StateManager.CalendarPanel.GetComponent<S_CalendarPanelManager>().InitDayButtons();
+    }
+
+    public void Load()
+    {
+        if (ReadSaving())
+        {
+
+        }
+        else
+        {
+            Debug.Log("存档读取失败，文件不存在");
+        }
     }
 
     public void LoadLog(int id = -1)
     {
-        if (!File.Exists(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt"))
-        {
-            Accessor._DioLogueState.ReadToCurrentID(1, -1);
-            return;
-        }
-
         Debug.Log(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt");
 
         if (ReadSaving())
@@ -84,6 +93,8 @@ public class S_ProcessManager : MonoBehaviour
         else
         {
             Debug.Log("存档读取失败，文件不存在");
+            Accessor._DioLogueState.ReadToCurrentID(1, -1);
+            return;
         }
     }
 
@@ -131,7 +142,20 @@ public class S_ProcessManager : MonoBehaviour
         }
         else
         {
+            m_Saving.Choices.Clear();
             return false;
+        }
+    }
+
+    public void DeleteSaving()
+    {
+        if (File.Exists(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt"))
+        {
+            File.Delete(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt");
+        }
+        else
+        {
+            Debug.Log("存档删除失败，存档文件不存在");
         }
     }
 }

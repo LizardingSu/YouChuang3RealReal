@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public Sprite DefaultNode;
     public Sprite ActiveNode;
@@ -14,6 +14,19 @@ public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         transform.GetChild(1).gameObject.SetActive(true);
         transform.GetChild(0).GetComponent<Image>().sprite = ActiveNode;
         transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(ActiveNode.rect.width, ActiveNode.rect.height);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        S_CalendarPanelManager calendarPanel = transform.parent.parent.parent.parent.GetComponent<S_CalendarPanelManager>();
+
+        int day = calendarPanel.currentActiveDayButton.Value + 1;
+        int id = calendarPanel.allDays[day - 1].Nodes[calendarPanel.currentNodes.IndexOf(this.gameObject)].ID;
+
+        Debug.Log("day" + day);
+        Debug.Log("ID" + id);
+
+        calendarPanel.Accessor._DioLogueState.ReadToCurrentID(day, 0);
     }
 
     public void OnPointerExit(PointerEventData eventData)

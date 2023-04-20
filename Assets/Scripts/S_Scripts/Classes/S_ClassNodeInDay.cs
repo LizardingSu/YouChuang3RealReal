@@ -6,22 +6,22 @@ using UnityEngine;
 public class S_NodeInDay
 {
     public S_DayInCalendar WhichDay { get; private set; }
-    public string Name { get; private set; }
+    public int ID { get; private set; }
     public string Description { get; private set; }
     public int Location { get; set; }
 
     public S_NodeInDay()
     {
         WhichDay = null;
-        Name = string.Empty;
+        ID = 0;
         Description = string.Empty;
         Location = 0;
     }
 
-    public S_NodeInDay(S_DayInCalendar whichDay, string name, string description, int location)
+    public S_NodeInDay(S_DayInCalendar whichDay, int id, string description, int location)
     {
         WhichDay = whichDay;
-        Name = name;
+        ID = id;
         Description = description;
         Location = location;
     }

@@ -24,19 +24,19 @@ public class S_CalendarPanelManager : MonoBehaviour
     private float sliderDefaultHeight;
 
     //当前解锁天数
-    private int dayNumber = 0;
+    public int dayNumber = 0;
 
     //当前正在进行的slider协程
     private List<Coroutine> currentCoroutines= new List<Coroutine>();
 
     //当前已激活的天数按钮
-    private int? currentActiveDayButton = null;
+    public int? currentActiveDayButton = null;
 
     //当前所有实例化的节点预制体
     public List<GameObject> currentNodes = new List<GameObject>();
 
     //存放整个游戏流程16天节点数据的列表
-    private List<S_DayInCalendar> allDays = new List<S_DayInCalendar>();
+    public List<S_DayInCalendar> allDays = new List<S_DayInCalendar>();
 
     /// <summary>
     /// OnEnable
@@ -45,20 +45,11 @@ public class S_CalendarPanelManager : MonoBehaviour
     {
         sliderDefaultHeight = ((RectTransform)(DayButtons[0].GetComponent<RectTransform>().GetChild(0))).rect.height;
 
-        dayNumber = 0;
-        foreach (var i in Accessor.ProcessManager.m_Saving.Choices)
-        {
-            int id = i.ID;
-            if (dayNumber < (id / 1000))
-            {
-                dayNumber = id / 1000;
-            }
-        }
+        //dayNumber = 0;
 
-        //test
-        Debug.Log(dayNumber);
-        InitDayButtons(dayNumber);
+        //Debug.Log(dayNumber);
         InitAllDays();
+        InitDayButtons();
 
         //
         if(currentNodes.Count == 0)
@@ -77,15 +68,26 @@ public class S_CalendarPanelManager : MonoBehaviour
     /// </summary>
     public void InitAllDays()
     {
-        //测试代码
+        dayNumber = 0;
+        foreach (var i in Accessor.ProcessManager.m_Saving.Choices)
+        {
+            int id = i.ID;
+            if (dayNumber < (id / 1000))
+            {
+                dayNumber = id / 1000;
+            }
+        }
+
+        allDays.Clear();
         for (int i = 0; i < dayNumber; i++)
         {
+            
             S_DayInCalendar day = new S_DayInCalendar(new List<S_NodeInDay>(), 100);
             foreach (var cho in Accessor.ProcessManager.m_Saving.Choices)
             {
-                if ((cho.ID / 1000) == i)
+                if ((cho.ID / 1000) == i + 1)
                 {
-                    day.Nodes.Add(new S_NodeInDay(day, "node", "点击跳转1", 0));
+                    day.Nodes.Add(new S_NodeInDay(day, cho.ID, "点击跳转1", 0));
                 }
 
                 for (int j = 1; j <= day.Nodes.Count; j++)
@@ -99,18 +101,28 @@ public class S_CalendarPanelManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 使前day天的日期按钮可见且可操作
+    /// 使前dayNumber天的日期按钮可见且可操作
     /// </summary>
-    /// <param name="day"></param>
-    public void InitDayButtons(int day)
+    public void InitDayButtons()
     {
-        dayNumber = day;
+        //dayNumber = day;
 
         GameObject button;
         GameObject slider;
         GameObject mask;
 
-        for (int i = 0; i < day; i++)
+        for (int i = 0; i < 16; i++)
+        {
+            slider = DayButtons[i].GetComponent<RectTransform>().GetChild(0).gameObject;
+            button = DayButtons[i].GetComponent<RectTransform>().GetChild(1).gameObject;
+            mask = DayButtons[i].GetComponent<RectTransform>().GetChild(2).gameObject;
+
+            slider.SetActive(false);
+            button.SetActive(false);
+            mask.SetActive(true);
+        }
+
+        for (int i = 0; i < dayNumber; i++)
         {
             slider = DayButtons[i].GetComponent<RectTransform>().GetChild(0).gameObject;
             button = DayButtons[i].GetComponent<RectTransform>().GetChild(1).gameObject;
@@ -159,9 +171,10 @@ public class S_CalendarPanelManager : MonoBehaviour
         {
             currentActiveDayButton = buttonIndex;
             HideNodesInDay();
-            InitDayButtons(dayNumber);
+            InitDayButtons();
 
             RectTransform sliderRect = (RectTransform)DayButtons[buttonIndex].transform.GetChild(0);
+            Debug.Log("slider" + sliderDefaultHeight);
             currentCoroutines.Add(StartCoroutine(SliderChangeTo(SliderShowingHeight, sliderRect)));
         }
     }
@@ -175,8 +188,11 @@ public class S_CalendarPanelManager : MonoBehaviour
         GameObject slider = DayButtons[currentActiveDayButton.Value].GetComponent<RectTransform>().GetChild(0).gameObject;
         GameObject line = slider.transform.GetChild(0).gameObject;
         int currentNodeIndex = 0;
+        Debug.Log(currentActiveDayButton);
+        Debug.Log(allDays[currentActiveDayButton.Value].Nodes.Count);
         foreach (S_NodeInDay node in allDays[currentActiveDayButton.Value].Nodes)
         {
+
             GameObject showedNode = currentNodes[currentNodeIndex];
 
             showedNode.SetActive(true);
@@ -195,7 +211,9 @@ public class S_CalendarPanelManager : MonoBehaviour
             text.GetComponent<Text>().text = node.Description;
             dialogBox.SetActive(false);
 
-            currentNodes.Add(showedNode);
+            Debug.Log(currentNodes.Count);
+
+            //currentNodes.Add(showedNode);
 
             currentNodeIndex++;
         }
