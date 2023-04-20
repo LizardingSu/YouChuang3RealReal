@@ -51,16 +51,16 @@ public class DioLogueState : MonoBehaviour
         else
             SetButtonsActive(true);
 
+        //for Test
+        LoadScene(1);
     }
 
     //test
-    private IEnumerator LoadScene(uint day)
+    private void LoadScene(uint day)
     {
-        yield return null;
-        yield return null;
         date = day;
         //test
-        centralAccessor.ProcessManager.LoadLog();
+        Init(day, "Text/T");
     }
 
     public void OnDestroy()
