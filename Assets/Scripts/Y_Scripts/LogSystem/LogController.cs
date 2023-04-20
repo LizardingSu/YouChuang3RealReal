@@ -59,8 +59,6 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         diologueState.dialogueChanged.AddListener(onDiologueChanged);
         diologueState.dialogueWillChange.AddListener(onDiologueWillChange);
 
-        //test
-        diologueState.LoadScene(1);
     }
 
     private void OnDestroy()
@@ -152,6 +150,13 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         scrollRect.totalCount = logEntries.Count;
         scrollRect.RefillCellsFromEnd();
         scrollRect.verticalNormalizedPosition = 1;
+    }
+
+    public void Clear()
+    {
+        logEntries.Clear();
+        scrollRect.ClearCells();
+        RefillToButtom();
     }
 
     #region LoopScrollRect

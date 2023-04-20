@@ -1315,6 +1315,7 @@ MonoBehaviour:
   Accessor: {fileID: 1765219807}
   SliderShowingHeight: 250
   NodePrefab: {fileID: 6689593794865024805, guid: 61947bc9e91c454468d2015675138ec1, type: 3}
+  dayNumber: 0
   currentNodes: []
 --- !u!1 &168452342
 GameObject:
@@ -8460,6 +8461,7 @@ MonoBehaviour:
   - {fileID: 759485588}
   - {fileID: 1388609667}
   centralAccessor: {fileID: 1765219807}
+  characterController: {fileID: 1388609666}
   coffee: {fileID: 374283989}
   logController: {fileID: 759485590}
   state: 0

@@ -67,6 +67,12 @@ public class CharacterController : MonoBehaviour
         diologueState.dialogueWillChange.RemoveListener(WillChangeCharacter);
         diologueState.dialogueChanged.RemoveListener(ChangeCharacters);
     }
+
+    public void Clear()
+    {
+        curPlace = 0;
+        charSortedList.Clear();
+    }
    
     //无法处理回环情况,但是没有这种情况
    private void WillChangeCharacter(DiologueData data)

@@ -34,6 +34,8 @@ public class DioLogueState : MonoBehaviour
     public Button[] update_button;
 
     public S_CentralAccessor centralAccessor;
+
+    public CharacterController characterController;
     public S_CoffeeGame coffee;
     public LogController logController;
 
@@ -48,10 +50,14 @@ public class DioLogueState : MonoBehaviour
             SetButtonsActive(false);
         else
             SetButtonsActive(true);
+
     }
 
-    public void LoadScene(uint day)
+    //test
+    private IEnumerator LoadScene(uint day)
     {
+        yield return null;
+        yield return null;
         date = day;
         //test
         centralAccessor.ProcessManager.LoadLog();
@@ -71,7 +77,11 @@ public class DioLogueState : MonoBehaviour
         if (textList.Count == 0 || date != day)
         {
             Init((uint)day, "Text/T");
-        }     
+        }
+
+        {
+           Clear();
+        }
 
         if(Idx == -1)
         {
@@ -202,5 +212,18 @@ public class DioLogueState : MonoBehaviour
     {
         foreach (var button in update_button)
             button.enabled = active;
+    }
+
+    private void Clear()
+    {
+        curData = null;
+        characterController.Clear();
+        logController.Clear();
+
+        for(int i = 0; i < ReadedList.Length; i++)
+        {
+            ReadedList[i] = 0;
+        }
+
     }
 }
