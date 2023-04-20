@@ -53,7 +53,7 @@ public class DioLogueState : MonoBehaviour
     public void LoadScene(uint day)
     {
         //test
-        centralAccessor.ProcessManager.Load();
+        centralAccessor.ProcessManager.LoadLog();
     }
 
     public void OnDestroy()

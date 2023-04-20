@@ -11,6 +11,9 @@ public class S_CalendarPanelManager : MonoBehaviour
     //存放16天对应按钮的数组
     public GameObject[] DayButtons;
 
+    //accessor
+    public S_CentralAccessor Accessor;
+
     //slider伸长的长度
     public float SliderShowingHeight;
 
@@ -42,8 +45,19 @@ public class S_CalendarPanelManager : MonoBehaviour
     {
         sliderDefaultHeight = ((RectTransform)(DayButtons[0].GetComponent<RectTransform>().GetChild(0))).rect.height;
 
+        dayNumber = 0;
+        foreach (var i in Accessor.ProcessManager.m_Saving.Choices)
+        {
+            int id = i.ID;
+            if (dayNumber < (id / 1000))
+            {
+                dayNumber = id / 1000;
+            }
+        }
+
         //test
-        InitDayButtons(9);
+        Debug.Log(dayNumber);
+        InitDayButtons(dayNumber);
         InitAllDays();
 
         //
@@ -64,13 +78,22 @@ public class S_CalendarPanelManager : MonoBehaviour
     public void InitAllDays()
     {
         //测试代码
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < dayNumber; i++)
         {
-            S_DayInCalendar day = new S_DayInCalendar(new List<S_NodeInDay>(), 400);
-            S_NodeInDay node1 = new S_NodeInDay(day, "node1", "点击跳转1", (i + 1) * 10);
-            S_NodeInDay node2 = new S_NodeInDay(day, "node2", "点击跳转2", (i + 1) * 20);
-            day.Nodes.Add(node1);
-            day.Nodes.Add(node2);
+            S_DayInCalendar day = new S_DayInCalendar(new List<S_NodeInDay>(), 100);
+            foreach (var cho in Accessor.ProcessManager.m_Saving.Choices)
+            {
+                if ((cho.ID / 1000) == i)
+                {
+                    day.Nodes.Add(new S_NodeInDay(day, "node", "点击跳转1", 0));
+                }
+
+                for (int j = 1; j <= day.Nodes.Count; j++)
+                {
+                    day.Nodes[j - 1].Location = (int)((float)j / (float)(day.Nodes.Count + 1) * 100f);
+                }
+            }
+            
             allDays.Add(day);
         }
     }

@@ -96,7 +96,7 @@ public class S_StateManager : MonoBehaviour
     public void StateSwitchToCalendar()
     {
         CalendarPanel.SetActive(true);
-        CalendarPanel.GetComponent<S_CalendarPanelManager>().InitDayButtons(9);     //测试数据，之后会根据存档进行初始化
+        //CalendarPanel.GetComponent<S_CalendarPanelManager>().InitDayButtons(9);     //测试数据，之后会根据存档进行初始化
         State = PlaySceneState.Calendar;
     }
 

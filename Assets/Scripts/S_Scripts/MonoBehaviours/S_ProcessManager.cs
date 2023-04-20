@@ -21,10 +21,6 @@ public class S_ProcessManager : MonoBehaviour
     //存档文件
     public S_GameSaving m_Saving;
 
-    public void Awake()
-    { 
-    }
-
     public void Save(int id,int option)
     {
         bool exist = false;
@@ -53,11 +49,23 @@ public class S_ProcessManager : MonoBehaviour
         WriteSaving();
     }
 
-    public void Load(int id = -1)
+    public void Load()
+    {
+        if (ReadSaving())
+        {
+
+        }
+        else
+        {
+            Debug.Log("存档读取失败，文件不存在");
+        }
+    }
+
+    public void LoadLog(int id = -1)
     {
         if (!File.Exists(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt"))
         {
-            Accessor._DioLogueState.ReadToCurrentID(0, -1);
+            Accessor._DioLogueState.ReadToCurrentID(1, -1);
             return;
         }
 
@@ -85,6 +93,8 @@ public class S_ProcessManager : MonoBehaviour
             Debug.Log("存档读取失败，文件不存在");
         }
     }
+
+
 
     //将m_Saving写入硬盘
     private void WriteSaving()
@@ -132,5 +142,17 @@ public class S_ProcessManager : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public void DeleteSaving()
+    {
+        if (File.Exists(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt"))
+        {
+            File.Delete(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt");
+        }
+        else
+        {
+            Debug.Log("存档删除失败，存档文件不存在");
+        }    
     }
 }

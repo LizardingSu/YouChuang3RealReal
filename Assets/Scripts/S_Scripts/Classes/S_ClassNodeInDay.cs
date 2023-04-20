@@ -8,7 +8,7 @@ public class S_NodeInDay
     public S_DayInCalendar WhichDay { get; private set; }
     public string Name { get; private set; }
     public string Description { get; private set; }
-    public int Location { get; private set; }
+    public int Location { get; set; }
 
     public S_NodeInDay()
     {

@@ -62,7 +62,7 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         diologueState.dialogueChanged.AddListener(onDiologueChanged);
         diologueState.dialogueWillChange.AddListener(onDiologueWillChange);
 
-        diologueState.LoadScene(0);
+        diologueState.LoadScene(1);
     }
 
     private void OnDestroy()
