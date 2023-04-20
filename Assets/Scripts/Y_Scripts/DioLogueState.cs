@@ -52,6 +52,7 @@ public class DioLogueState : MonoBehaviour
 
     public void LoadScene(uint day)
     {
+        date = day;
         //test
         centralAccessor.ProcessManager.LoadLog();
     }
@@ -122,7 +123,8 @@ public class DioLogueState : MonoBehaviour
     {
         if(textList.Count!=0) textList.Clear();
 
-        date = day;
+        if (date != day)
+            date = day;
 
         var textAsset = Resources.Load<TextAsset>(path+day);
         var ta = textAsset.text.Split('\n');
@@ -174,7 +176,7 @@ public class DioLogueState : MonoBehaviour
         ReadedList[curData.idx] = 1;
     }
 
-    public void OnSelectionSelect(uint Idx, uint nextIdx)
+    public void OnSelectionSelect(uint Idx, uint nextIdx,string answer = "")
     {
         curData = LogEntryParser.GetDiologueDataAtIdx(textList, Idx, date);
         curData.nextIdx = (int)nextIdx;
@@ -183,7 +185,7 @@ public class DioLogueState : MonoBehaviour
 
         if(state == DiologueState.Normal)
         {
-            centralAccessor.ProcessManager.Save((int)Idx, (int)nextIdx);
+            centralAccessor.ProcessManager.Save((int)(date) * 1000 + (int)Idx, (int)nextIdx,answer);
         }
     }
 

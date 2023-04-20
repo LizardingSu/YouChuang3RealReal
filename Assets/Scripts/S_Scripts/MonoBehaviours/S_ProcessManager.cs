@@ -21,8 +21,10 @@ public class S_ProcessManager : MonoBehaviour
     //存档文件
     public S_GameSaving m_Saving;
 
-    public void Save(int id,int option)
+    public void Save(int id,int option,string answer)
     {
+        Debug.Log(id + "  " + answer);
+
         bool exist = false;
         int existIndex = 0;
 
@@ -39,26 +41,17 @@ public class S_ProcessManager : MonoBehaviour
 
         if (exist)
         {
+            if (m_Saving.Choices[existIndex].Answer!=""&&answer == "")
+                answer = m_Saving.Choices[existIndex].Answer;
+
             m_Saving.Choices.RemoveAt(existIndex);
-            m_Saving.Choices.Add(new S_ChoiceMade(id, option));
+            m_Saving.Choices.Add(new S_ChoiceMade(id, option,answer));
         }
         else
         {
-            m_Saving.Choices.Add(new S_ChoiceMade(id, option));
+            m_Saving.Choices.Add(new S_ChoiceMade(id, option,answer));
         }
         WriteSaving();
-    }
-
-    public void Load()
-    {
-        if (ReadSaving())
-        {
-
-        }
-        else
-        {
-            Debug.Log("存档读取失败，文件不存在");
-        }
     }
 
     public void LoadLog(int id = -1)
@@ -93,8 +86,6 @@ public class S_ProcessManager : MonoBehaviour
             Debug.Log("存档读取失败，文件不存在");
         }
     }
-
-
 
     //将m_Saving写入硬盘
     private void WriteSaving()
@@ -142,17 +133,5 @@ public class S_ProcessManager : MonoBehaviour
         {
             return false;
         }
-    }
-
-    public void DeleteSaving()
-    {
-        if (File.Exists(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt"))
-        {
-            File.Delete(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt");
-        }
-        else
-        {
-            Debug.Log("存档删除失败，存档文件不存在");
-        }    
     }
 }
