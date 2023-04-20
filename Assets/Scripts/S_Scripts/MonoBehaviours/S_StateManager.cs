@@ -55,7 +55,10 @@ public class S_StateManager : MonoBehaviour
         {
             nodeList[i].SetActive(false);
         }
-        
+
+        CalendarPanel.GetComponent<S_CalendarPanelManager>().InitDayButtons();
+        CalendarPanel.GetComponent<S_CalendarPanelManager>().currentActiveDayButton = null;
+
         CalendarPanel.SetActive(false);
     }
 
@@ -96,7 +99,8 @@ public class S_StateManager : MonoBehaviour
     public void StateSwitchToCalendar()
     {
         CalendarPanel.SetActive(true);
-        CalendarPanel.GetComponent<S_CalendarPanelManager>().InitDayButtons(9);     //测试数据，之后会根据存档进行初始化
+        CalendarPanel.GetComponent<S_CalendarPanelManager>().InitAllDays();
+        CalendarPanel.GetComponent<S_CalendarPanelManager>().InitDayButtons();
         State = PlaySceneState.Calendar;
     }
 
