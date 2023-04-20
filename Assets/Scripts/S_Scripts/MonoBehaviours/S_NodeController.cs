@@ -26,7 +26,7 @@ public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         Debug.Log("day" + day);
         Debug.Log("ID" + id);
 
-        calendarPanel.Accessor._DioLogueState.ReadToCurrentID(day, 0);
+        //calendarPanel.Accessor._DioLogueState.ReadToCurrentID(day, 0);
     }
 
     public void OnPointerExit(PointerEventData eventData)
