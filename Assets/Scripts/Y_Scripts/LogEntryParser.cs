@@ -52,7 +52,7 @@ static public class LogEntryParser
             for(int i = (int)curIdx; textLists[i][0] == '&'; i++)
             {
                 var data = textLists[i].Split(',');
-                //example: |this is A option^10|this is B option^11|Inpu@tW@ord^12
+                //example: |this is A option^10|this is B option^11|Inpu@C-12@ord^0
                 var st = data[6] != "" ? data[6] : Convert.ToString(0);
                 totalLog += "|"+data[5]+"^"+ st;
             }
@@ -65,6 +65,7 @@ static public class LogEntryParser
         if(state == "*")
         {
             processState=ProcessState.Branch;
+            //log:
         }
         if (state == "$")
         {

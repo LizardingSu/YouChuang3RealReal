@@ -19,6 +19,8 @@ public class InputFieldController : MonoBehaviour
     private DioLogueState m_dioState;
     private S_ProcessManager m_processManager;
 
+    public bool FirstTime = true;
+
 
     private void Awake()
     {
@@ -36,9 +38,16 @@ public class InputFieldController : MonoBehaviour
     {
         singleInput.inputField.ActivateInputField();
 
+        //如果是第一次点击，则固定不会触发下一句对话
+        if (FirstTime)
+        {
+            FirstTime = false;
+            return;
+        }
+
         foreach (KeyValuePair<string,uint> kvp in correctAndNextIdx)
         {
-            if(singleInput.textBox.textInfo.characterCount <= maxcharNum && singleInput.textBox.text == kvp.Key)
+            if(singleInput.textBox.textInfo.characterCount <= maxcharNum && singleInput.textBox.text.ToLower() == kvp.Key.ToLower())
             {
                 m_dioState.OnSelectionSelect(Idx, kvp.Value, kvp.Key);
                 return;
@@ -46,7 +55,7 @@ public class InputFieldController : MonoBehaviour
         }
     }
 
-    public void Init(string text,string head,uint Idx,uint nextIdx,bool isSelectable)
+    public void Init(string text,string head,uint Idx,bool isSelectable)
     {
         float charSize = 22;
         if (isSelectable)
@@ -78,9 +87,11 @@ public class InputFieldController : MonoBehaviour
 
         StartCoroutine(InitInputField(charSize));
 
+        //如果是右侧panel，则可以点，如果是左侧则不可以
         if (!isSelectable) button.interactable = false;
         else button.interactable = true;
 
+        //如果存档里发现已经填过词了，则会自动填上去
         foreach(var choice in m_processManager.m_Saving.Choices)
         {
             var idx = choice.ID % 1000;

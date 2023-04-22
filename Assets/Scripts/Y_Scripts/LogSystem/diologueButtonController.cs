@@ -36,7 +36,7 @@ public class diologueButtonController : MonoBehaviour
         textBox.text = text;
         this.nextIdx = nextIdx;
 
-
+        //如果是右侧，则可以点，左侧则不可以
         if (!isSelectable)
         {
             button.interactable = false;

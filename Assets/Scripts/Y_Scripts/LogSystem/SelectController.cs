@@ -25,14 +25,10 @@ public class SelectController : MonoBehaviour
     public InputFieldController inputFieldPrefab;
 
     public bool isSelect = false;
-    public bool isFirstTime = true;
 
     public void Init(LogEntry logEntry,bool isSelectable)
     {
-        //if (!isFirstTime && !isSelectable) return;
-
         isSelect = true;
-        isFirstTime = false;
 
         //先销毁所有子物体（用处在于可以避免重复生成）
         if (transform.childCount != 0)
@@ -59,7 +55,7 @@ public class SelectController : MonoBehaviour
             else
             {
                 var dbI = Instantiate(inputFieldPrefab, transform);
-                dbI.Init(item.log, p + ": ", logEntry.Idx,item.nextIdx,isSelectable);
+                dbI.Init(item.log, p + ": ", logEntry.Idx,isSelectable);
 
             }
         }

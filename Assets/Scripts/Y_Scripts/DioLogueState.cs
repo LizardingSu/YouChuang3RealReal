@@ -17,13 +17,13 @@ public class DioLogueState : MonoBehaviour
 
 
     public List<string> textList = new List<string>();
+
     /// <summary>
     /// 记录所有已经阅读过的对话
     /// 存在一个问题，那就是对于被移除的选项Log不会进行重新加载，不能支持非线性的流程，但是解决起来很简单(已解决，性能不太好)
+    /// 另一个问题，没用
     /// </summary>
     public ushort[] ReadedList;
-    //not Use
-    public List<DiologueData> selectDatas = new List<DiologueData>();
 
     public DialogueWillChangeEvent dialogueWillChange;
     public DialogueChangedEvent dialogueChanged;
@@ -35,6 +35,7 @@ public class DioLogueState : MonoBehaviour
 
     public S_CentralAccessor centralAccessor;
 
+    //控制的东西
     public CharacterController characterController;
     public S_CoffeeGame coffee;
     public LogController logController;
@@ -46,21 +47,32 @@ public class DioLogueState : MonoBehaviour
         foreach (var button in update_button)
             button.onClick.AddListener(UpdateDiologue);
 
-        if (GameObject.Find("MainManager").GetComponent<S_StateManager>().State != PlaySceneState.Log)
+        if (centralAccessor.StateManager.State != PlaySceneState.Log)
             SetButtonsActive(false);
         else
             SetButtonsActive(true);
 
-        //for Test
-        LoadScene(1);
+        StartCoroutine(LoadScene());
     }
-
     //test
-    private void LoadScene(uint day)
+    private IEnumerator LoadScene()
     {
-        date = day;
+        yield return null;
+        var pm = centralAccessor.ProcessManager;
+        pm.Load();
+        if (pm.m_Saving.Choices.Count != 0)
+        {
+            date = (uint)pm.m_Saving.Choices.Last().ID / (uint)1000;
+        }
+        else
+        {
+            date = 1;
+        }
+
+        Debug.Log(date);
+
         //test
-        Init(day, "Text/T");
+        Init(date, "Text/T");
     }
 
     public void OnDestroy()
@@ -79,9 +91,7 @@ public class DioLogueState : MonoBehaviour
             Init((uint)day, "Text/T");
         }
 
-        {
-           Clear();
-        }
+        Clear();
 
         if(Idx == -1)
         {
@@ -99,12 +109,12 @@ public class DioLogueState : MonoBehaviour
         {
             Debug.Log(curData.idx + "  " + Idx);
 
+            //如果是这两者，则说明不会自动到下一句话，所以必须触发他的下一句条件
             if (curData.processState == ProcessState.Coffee)
             {
                 coffee.EndCoffeeGame();
             }
-
-            if (curData.processState == ProcessState.Select)
+            else if (curData.processState == ProcessState.Select)
             {
                 var choices = centralAccessor.ProcessManager.m_Saving.Choices;
                 foreach (var choice in choices)
@@ -157,15 +167,7 @@ public class DioLogueState : MonoBehaviour
         if (curData!=null)
         {
             var isEnd = curData.nextIdx == -1;
-            var isSelect = curData.processState == ProcessState.Select;
-
             if (isEnd) return;
-
-            //当前为选项且没有做选择
-            if (isSelect && isEnd)
-            {
-                return;
-            }
 
             dialogueWillChange.Invoke(curData);
         }
@@ -214,13 +216,14 @@ public class DioLogueState : MonoBehaviour
             button.enabled = active;
     }
 
+    //清除characterController,logController所有状态
     private void Clear()
     {
-        curData = null;
         characterController.Clear();
         logController.Clear();
 
-        for(int i = 0; i < ReadedList.Length; i++)
+        curData = null;
+        for (int i = 0; i < ReadedList.Length; i++)
         {
             ReadedList[i] = 0;
         }

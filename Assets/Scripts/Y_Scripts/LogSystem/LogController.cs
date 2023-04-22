@@ -60,7 +60,6 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         diologueState.dialogueWillChange.AddListener(onDiologueWillChange);
 
     }
-
     private void OnDestroy()
     {
         diologueState.dialogueChanged.RemoveListener(onDiologueChanged);
@@ -69,7 +68,7 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
 
     private void onDiologueWillChange(DiologueData diologueData)
     {
-        //前提，做咖啡做完之后必进对话，不然要改
+        //前提，做咖啡做完之后必进对话，不然要改 如果前一个是做咖啡，则需要把Panel移动下去
         if(diologueData.processState == ProcessState.Coffee)
         {
             //延迟升起，但是在auto模式下不需要收起，因为没有必要
@@ -105,7 +104,6 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         bool isSelect = diologueData.processState == ProcessState.Select;
 
         logEntries.Add(new LogEntry(diologueData.date, diologueData.idx, left, isSelect, diologueData.name, diologueData.log));
-
         //当读取的时候，只需要最后一句话的时候init一下就可以
         if(diologueState.state == DiologueState.Normal)
         {
@@ -115,33 +113,21 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
 
         //第一次阅读
         if (diologueData.idx == 0)
-        {
-           
+        {       
             //延迟升起
             StartCoroutine(MoveUpRightPanel(delay));
         }
     }
-
-
     private IEnumerator MoveUpRightPanel(float time)
     {
         yield return new WaitForSeconds(time);
         rightLogController.MoveUp(showTime);
     }
 
-    //public void RemoveRange(uint Idx)
-    //{
-    //    logEntries.RemoveAll(x => x.Idx > Idx);
-
-    //    scrollRect.totalCount = logEntries.Count;
-
-    //}
-
     public void RefillToButtom()
     {
         StartCoroutine(Refill());
     }
-
     private IEnumerator Refill()
     {
         yield return null;
@@ -152,6 +138,7 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         scrollRect.verticalNormalizedPosition = 1;
     }
 
+    //清除LogEntries，ScrollRect里的所有Cells
     public void Clear()
     {
         logEntries.Clear();

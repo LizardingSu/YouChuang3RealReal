@@ -77,13 +77,15 @@ public class CharacterController : MonoBehaviour
     //无法处理回环情况,但是没有这种情况
    private void WillChangeCharacter(DiologueData data)
     {
-        //同样的，如果后续不是对话就会出错
+        //如果后续不是对话就会出错
         if (data.processState == ProcessState.Coffee)
         {
+            //如果是正常读的时候，则需要白幕布消失，如果不是则不需要
             if(diologueState.state == DiologueState.Normal)
             {
                 whiteMask.FadeAndReFill(false);
             }
+            //根据之前是不是咖啡来判断后续
             isCoffeeBefore = true;
         }
     }
@@ -127,6 +129,7 @@ public class CharacterController : MonoBehaviour
             if (isCoffeeBefore) isCoffeeBefore = false;
         }
 
+        //如果是对话或者选择阶段才进入
         if(data.processState == ProcessState.Select||data.processState == ProcessState.Diologue) 
         {
             var state = data.charaState;
@@ -242,6 +245,7 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    //升起所有characterPanel
     private IEnumerator ShowUpAfterCoffee(DiologueData data,float time)
     {
         var state = data.charaState;
