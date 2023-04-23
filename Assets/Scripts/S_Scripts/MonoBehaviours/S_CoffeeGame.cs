@@ -23,7 +23,7 @@ public class S_CoffeeGame : MonoBehaviour
 
     public void StartCoffeeGame(DiologueData data)
     {
-        if (data.processState == ProcessState.Coffee && accessor._DioLogueState.state == DiologueState.Normal)
+        if (data.processState == ProcessState.Coffee && accessor._DioLogueState.state == DioState.Normal)
         {
             StartCoroutine(ShowGamePanel());
             DioLogueState ds = accessor._DioLogueState;
@@ -37,7 +37,7 @@ public class S_CoffeeGame : MonoBehaviour
 
     public void EndCoffeeGame()
     {
-        if (accessor._DioLogueState.state == DiologueState.Normal)
+        if (accessor._DioLogueState.state == DioState.Normal)
         {
             StartCoroutine(HideGamePanel());
             DioLogueState ds = accessor._DioLogueState;

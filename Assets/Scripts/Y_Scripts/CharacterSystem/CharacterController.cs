@@ -72,6 +72,17 @@ public class CharacterController : MonoBehaviour
     {
         curPlace = 0;
         charSortedList.Clear();
+
+        foreach(var c in windowsCharacters)
+            c.SetAllDatas(false);
+
+        //全部移动下去
+        left.MoveDown(0);
+        left.SetAllDatas(true);
+        right.MoveDown(0);
+        right.SetAllDatas(true);
+
+        whiteMask.material.SetFloat("_MyMask", 0);
     }
    
     //无法处理回环情况,但是没有这种情况
@@ -81,7 +92,7 @@ public class CharacterController : MonoBehaviour
         if (data.processState == ProcessState.Coffee)
         {
             //如果是正常读的时候，则需要白幕布消失，如果不是则不需要
-            if(diologueState.state == DiologueState.Normal)
+            if(diologueState.state == DioState.Normal)
             {
                 whiteMask.FadeAndReFill(false);
             }
@@ -98,7 +109,8 @@ public class CharacterController : MonoBehaviour
             whiteMask.FadeAndReFill(false);
         }
 
-        if (diologueState.state == DiologueState.Normal)
+        //如果当前是coffee情况
+        if (diologueState.state == DioState.Normal)
         {
             //如果是做咖啡阶段，收起
             if (data.processState == ProcessState.Coffee)
@@ -140,39 +152,47 @@ public class CharacterController : MonoBehaviour
 
             if (state == CharacterState.In)
             {
-                if (charID > 1)
+                //如果第一次初始化的时候就In了
+                if(data.idx == 0)
                 {
-                    windowsCharacters[curPlace].transform.SetAsLastSibling();
-                    windowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
-                    charSortedList.Add(charID);
-                    SortWindowsPos();
-                    curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
-
-                    //可能存在当前角色In的时候，左侧已经有对话框出现了，此时只需要ShowName时间而不是MoveUp时间，并且另一侧如果已经有对话框，则需要MoveDown
-                    if (left.curState == CurState.HIDE)
-                        left.MoveUp(showNameTime);
-                    else if (left.curState == CurState.DOWN)
-                        left.MoveUp(showAllTime);
-
-                    if (right.curState == CurState.UP)
-                        right.MoveHideName(hideNameTime);
-
-                    left.SetAllDatas(true, charID, name);
-                    left.SetName(data.name);
+                    StartCoroutine(ShowUpAtStart(delay, data));
                 }
                 else
                 {
-                    //同理
-                    if (right.curState == CurState.HIDE)
-                        right.MoveUp(showNameTime);
-                    else if (right.curState == CurState.DOWN)
-                        right.MoveUp(showAllTime);
+                    if (charID > 1)
+                    {
+                        windowsCharacters[curPlace].transform.SetAsLastSibling();
+                        windowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
+                        charSortedList.Add(charID);
+                        SortWindowsPos();
+                        curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
 
-                    if (left.curState == CurState.UP)
-                        left.MoveHideName(hideNameTime);
+                        //可能存在当前角色In的时候，左侧已经有对话框出现了，此时只需要ShowName时间而不是MoveUp时间，并且另一侧如果已经有对话框，则需要MoveDown
+                        if (left.curState == CurState.HIDE)
+                            left.MoveUp(showNameTime);
+                        else if (left.curState == CurState.DOWN)
+                            left.MoveUp(showAllTime);
 
-                    right.SetAllDatas(true, charID, name);
-                    right.SetName(data.name);
+                        if (right.curState == CurState.UP)
+                            right.MoveHideName(hideNameTime);
+
+                        left.SetAllDatas(true, charID, name);
+                        left.SetName(data.name);
+                    }
+                    else
+                    {
+                        //同理
+                        if (right.curState == CurState.HIDE)
+                            right.MoveUp(showNameTime);
+                        else if (right.curState == CurState.DOWN)
+                            right.MoveUp(showAllTime);
+
+                        if (left.curState == CurState.UP)
+                            left.MoveHideName(hideNameTime);
+
+                        right.SetAllDatas(true, charID, name);
+                        right.SetName(data.name);
+                    }
                 }
             }
             else if (state == CharacterState.Leave)
@@ -243,6 +263,53 @@ public class CharacterController : MonoBehaviour
                 }
             }
         }
+    }
+
+    private IEnumerator ShowUpAtStart(float time,DiologueData data)
+    {
+        yield return new WaitForSeconds(time);
+
+        var state = data.charaState;
+        var charID = data.charaID;
+        var emojiID = data.emojiID;
+
+        var name = characterFiles.characterList[charID].name;
+
+        if (charID > 1)
+        {
+            windowsCharacters[curPlace].transform.SetAsLastSibling();
+            windowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
+            charSortedList.Add(charID);
+            SortWindowsPos();
+            curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
+
+            //可能存在当前角色In的时候，左侧已经有对话框出现了，此时只需要ShowName时间而不是MoveUp时间，并且另一侧如果已经有对话框，则需要MoveDown
+            if (left.curState == CurState.HIDE)
+                left.MoveUp(showNameTime);
+            else if (left.curState == CurState.DOWN)
+                left.MoveUp(showAllTime);
+
+            if (right.curState == CurState.UP)
+                right.MoveHideName(hideNameTime);
+
+            left.SetAllDatas(true, charID, name);
+            left.SetName(data.name);
+        }
+        else
+        {
+            //同理
+            if (right.curState == CurState.HIDE)
+                right.MoveUp(showNameTime);
+            else if (right.curState == CurState.DOWN)
+                right.MoveUp(showAllTime);
+
+            if (left.curState == CurState.UP)
+                left.MoveHideName(hideNameTime);
+
+            right.SetAllDatas(true, charID, name);
+            right.SetName(data.name);
+        }
+
     }
 
     //升起所有characterPanel

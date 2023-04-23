@@ -14,9 +14,10 @@ static public class LogEntryParser
     /// ta[3]:表情ID 可以为空 为空为-1 除了做咖啡和结尾不会出现这种情况？ 控制人物立绘
     /// ta[4]:名字 只有放到Text里的作用 可以为空？
     /// ta[5]:内容 对话内容 含富文本 对于Input类型的会有@ @的情况 可以为空？ *对于选项会将多个内容合并成一个Log然后解析 *对于分支会做一个妙妙的合并
-    /// ta[6]:跳转 除了最后一句话以外，不可能为空 *对于选项而言在生成DiologueData时会设为-1，等待后续选择选项之后再设为正常
+    /// ta[6]:跳转 最后一句话，选择中有Input的选项，分支情况为-1 *对于选项而言在生成DiologueData时会设为-1，等待后续选择选项之后再设为正常
     /// ta[7]:出入场 I:进入 D;离去 P：固定位置
     /// ta[8]:效果
+    /// *咖啡+charID为空代表是最后一句话
     /// </summary>
     /// <param name="textLists"></param>
     /// <param name="curIdx"></param>
@@ -65,7 +66,6 @@ static public class LogEntryParser
         if(state == "*")
         {
             processState=ProcessState.Branch;
-            //log:
         }
         if (state == "$")
         {

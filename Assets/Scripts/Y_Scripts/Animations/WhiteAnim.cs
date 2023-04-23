@@ -11,7 +11,7 @@ public class WhiteAnim : MonoBehaviour
     public Material material;
     public RawImage image;
     public float rollingSpeed = 0.5f;
-    public float time = 1f;
+    public float neededTime = 1f;
     private float mask = 0f;
 
     // Start is called before the first frame update
@@ -53,7 +53,7 @@ public class WhiteAnim : MonoBehaviour
     {
         float end = isFade ? 0 : 0.75f;
 
-        DOTween.To(()=> mask,x => mask = x,end,time);
+        DOTween.To(()=> mask,x => mask = x,end,neededTime);
       
     }
 }

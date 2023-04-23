@@ -72,7 +72,7 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         if(diologueData.processState == ProcessState.Coffee)
         {
             //延迟升起，但是在auto模式下不需要收起，因为没有必要
-            if (diologueState.state == DiologueState.Normal)
+            if (diologueState.state == DioState.Normal)
                 StartCoroutine(MoveUpRightPanel(delay));
         }
     }
@@ -80,14 +80,14 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
     private void onDiologueChanged(DiologueData diologueData)
     {
         //如果是快进模式 就不需要保存
-        if (diologueData.processState == ProcessState.Select&&diologueState.state == DiologueState.Normal)
+        if (diologueData.processState == ProcessState.Select&&diologueState.state == DioState.Normal)
         {
             centralAccessor.ProcessManager.Save((int)(diologueData.date) * 1000 + (int)diologueData.idx, -1,"");
         }
         else if (diologueData.processState == ProcessState.Coffee)
         {
             //做咖啡的时候收起，但是在auto模式下不需要收起，因为没有必要
-            if(diologueState.state == DiologueState.Normal)
+            if(diologueState.state == DioState.Normal)
             {
                 rightLogController.MoveDown(hideTime);
             }
@@ -105,7 +105,7 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
 
         logEntries.Add(new LogEntry(diologueData.date, diologueData.idx, left, isSelect, diologueData.name, diologueData.log));
         //当读取的时候，只需要最后一句话的时候init一下就可以
-        if(diologueState.state == DiologueState.Normal)
+        if(diologueState.state == DioState.Normal)
         {
             RefillToButtom();
             rightLogController.Init(logEntries.Last());
@@ -141,6 +141,10 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
     //清除LogEntries，ScrollRect里的所有Cells
     public void Clear()
     {
+        //rightPanel下移
+        rightLogController.MoveDown(0);
+
+        //聊天记录全部刷新
         logEntries.Clear();
         scrollRect.ClearCells();
         RefillToButtom();

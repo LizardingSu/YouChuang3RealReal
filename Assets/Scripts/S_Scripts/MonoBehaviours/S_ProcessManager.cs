@@ -69,6 +69,10 @@ public class S_ProcessManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 暂时没有用武之地
+    /// </summary>
+    /// <param name="id"></param>
     public void LoadLog(int id = -1)
     {
         Debug.Log(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt");

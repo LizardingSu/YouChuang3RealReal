@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 //不好说
-public enum DiologueState
+public enum DioState
 {
     Normal,
     Auto,
@@ -29,6 +29,7 @@ public class DioLogueState : MonoBehaviour
     public DialogueChangedEvent dialogueChanged;
 
     public uint date;
+    public string path = "Text/T";
     public DiologueData curData;
 
     public Button[] update_button;
@@ -39,10 +40,11 @@ public class DioLogueState : MonoBehaviour
     public CharacterController characterController;
     public S_CoffeeGame coffee;
     public LogController logController;
+    public SwitchSceneAnim switchAnim;
 
-    public DiologueState state = DiologueState.Normal;  
+    public DioState state = DioState.Normal;  
 
-    public void Awake()
+    private void Awake()
     {
         foreach (var button in update_button)
             button.onClick.AddListener(UpdateDiologue);
@@ -52,12 +54,15 @@ public class DioLogueState : MonoBehaviour
         else
             SetButtonsActive(true);
 
-        StartCoroutine(LoadScene());
+        StartCoroutine(LoadSceneWhenFirstAwake(path));
     }
     //test
-    private IEnumerator LoadScene()
+    private IEnumerator LoadSceneWhenFirstAwake(string _path)
     {
+        path = _path;
+
         yield return null;
+
         var pm = centralAccessor.ProcessManager;
         pm.Load();
         if (pm.m_Saving.Choices.Count != 0)
@@ -69,13 +74,11 @@ public class DioLogueState : MonoBehaviour
             date = 1;
         }
 
-        Debug.Log(date);
-
         //test
-        Init(date, "Text/T");
+        Init(date, path);
     }
 
-    public void OnDestroy()
+    private void OnDestroy()
     {
         textList.Clear();
 
@@ -84,23 +87,124 @@ public class DioLogueState : MonoBehaviour
             button.onClick.RemoveListener(UpdateDiologue);
     }
 
+    public void Init(uint day, string path)
+    {
+        if (textList.Count != 0) textList.Clear();
+
+        if (date != day)
+            date = day;
+
+        var textAsset = Resources.Load<TextAsset>(path + day);
+        var ta = textAsset.text.Split('\n');
+
+        for (int i = 0; i < ta.Length; i++)
+        {
+            if (i != 0 && i != ta.Length - 1)
+                textList.Add(ta[i]);
+        }
+
+        ReadedList = new ushort[textList.Count];
+    }
+    //跳转到下一条对话/选项/做咖啡
+    public void UpdateDiologue()
+    {
+        //for test
+        var isStart = ReadedList[0] == 0;
+
+        if (curData!=null)
+        {
+            var isEnd = curData.nextIdx == -1;
+            if (isEnd) return;
+
+            dialogueWillChange.Invoke(curData);
+        }
+
+        DiologueData diologueData = null;
+        if (isStart)
+        {
+            diologueData = LogEntryParser.GetDiologueDataAtIdx(textList, 0, date);
+        }
+        else
+        {
+            diologueData = LogEntryParser.GetDiologueDataAtIdx(textList, (uint)curData.nextIdx, date);
+        }
+
+        curData = diologueData;
+        ReadedList[curData.idx] = 1;
+
+        if(curData.processState == ProcessState.Coffee&&curData.charaID == -1)
+        {
+            if (date == 16)
+                return;
+
+            switchAnim.SwitchToNewScene(date, date + 1);
+            return;
+        }
+
+        dialogueChanged.Invoke(curData);
+
+        //如果curData为Branch，自动进行到下一句话
+        if(curData.processState == ProcessState.Branch)
+        {
+            Debug.Log("InBranch");
+            curData.nextIdx = (int)LogEntryParser.GetNextIdxFromBranch(centralAccessor.ProcessManager.m_Saving.Choices,curData.log);
+
+            UpdateDiologue();
+        }
+    }
+
+    public void OnSelectionSelect(uint Idx, uint nextIdx,string answer = "")
+    {
+        curData = LogEntryParser.GetDiologueDataAtIdx(textList, Idx, date);
+        curData.nextIdx = (int)nextIdx;
+
+        UpdateDiologue();
+
+        if(state == DioState.Normal)
+        {
+            centralAccessor.ProcessManager.Save((int)(date) * 1000 + (int)Idx, (int)nextIdx,answer);
+        }
+    }
+
+    //设置点击事件按钮的启动和关闭
+    public void SetButtonsActive(bool active)
+    {
+        foreach (var button in update_button)
+            button.enabled = active;
+    }
+
+    //清除characterController,logController所有状态
+    private void Clear()
+    {
+        characterController.Clear();
+        logController.Clear();
+
+        curData = null;
+        for (int i = 0; i < ReadedList.Length; i++)
+        {
+            ReadedList[i] = 0;
+        }
+
+    }
+
+    //读取到对应的ID和天数，要求对应ID是必定可访问到的
     public void ReadToCurrentID(int day, int Idx)
     {
         if (textList.Count == 0 || date != day)
         {
-            Init((uint)day, "Text/T");
+            Init((uint)day, path);
         }
 
         Clear();
 
-        if(Idx == -1)
+        if (Idx == -1)
         {
             return;
         }
 
-        state = DiologueState.Auto;
+        state = DioState.Auto;
 
-        if(curData == null)
+        if (curData == null)
         {
             UpdateDiologue();
         }
@@ -136,97 +240,7 @@ public class DioLogueState : MonoBehaviour
         logController.rightLogController.Init(logController.logEntries.Last());
         logController.RefillToButtom();
 
-        state = DiologueState.Normal;
+        state = DioState.Normal;
     }
 
-    public void Init(uint day,string path)
-    {
-        if(textList.Count!=0) textList.Clear();
-
-        if (date != day)
-            date = day;
-
-        var textAsset = Resources.Load<TextAsset>(path+day);
-        var ta = textAsset.text.Split('\n');
-
-        for(int i = 0; i < ta.Length; i++)
-        {
-            if (i != 0 && i != ta.Length - 1)
-                textList.Add(ta[i]);
-        }
-
-        ReadedList = new ushort[textList.Count];
-    }
-
-    //跳转到下一条对话/选项/做咖啡
-    public void UpdateDiologue()
-    {
-        //for test
-        var isStart = ReadedList[0] == 0;
-
-        if (curData!=null)
-        {
-            var isEnd = curData.nextIdx == -1;
-            if (isEnd) return;
-
-            dialogueWillChange.Invoke(curData);
-        }
-
-        DiologueData diologueData = null;
-        if (isStart)
-        {
-            diologueData = LogEntryParser.GetDiologueDataAtIdx(textList, 0, date);
-        }
-        else
-        {
-            diologueData = LogEntryParser.GetDiologueDataAtIdx(textList, (uint)curData.nextIdx, date);
-        }
-
-        dialogueChanged.Invoke(diologueData);
-
-        curData = diologueData;
-        ReadedList[curData.idx] = 1;
-
-        //如果curData为Branch，自动进行到下一句话
-        if(curData.processState == ProcessState.Branch)
-        {
-            Debug.Log("InBranch");
-            curData.nextIdx = (int)LogEntryParser.GetNextIdxFromBranch(centralAccessor.ProcessManager.m_Saving.Choices,curData.log);
-
-            UpdateDiologue();
-        }
-    }
-
-    public void OnSelectionSelect(uint Idx, uint nextIdx,string answer = "")
-    {
-        curData = LogEntryParser.GetDiologueDataAtIdx(textList, Idx, date);
-        curData.nextIdx = (int)nextIdx;
-
-        UpdateDiologue();
-
-        if(state == DiologueState.Normal)
-        {
-            centralAccessor.ProcessManager.Save((int)(date) * 1000 + (int)Idx, (int)nextIdx,answer);
-        }
-    }
-
-    public void SetButtonsActive(bool active)
-    {
-        foreach (var button in update_button)
-            button.enabled = active;
-    }
-
-    //清除characterController,logController所有状态
-    private void Clear()
-    {
-        characterController.Clear();
-        logController.Clear();
-
-        curData = null;
-        for (int i = 0; i < ReadedList.Length; i++)
-        {
-            ReadedList[i] = 0;
-        }
-
-    }
 }
