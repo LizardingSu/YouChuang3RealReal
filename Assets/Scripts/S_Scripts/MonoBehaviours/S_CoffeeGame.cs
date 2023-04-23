@@ -180,6 +180,11 @@ public class S_CoffeeGame : MonoBehaviour
         accessor._DioLogueState.UpdateDiologue();
     }
 
+    public void Clear()
+    {
+        Debug.Log("YLTÊÇÉ¶ßÂ!");
+    }    
+
     private void Update()
     {
         //²âÊÔ
