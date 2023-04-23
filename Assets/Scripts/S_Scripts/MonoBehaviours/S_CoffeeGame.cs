@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,8 @@ public class S_CoffeeGame : MonoBehaviour
 
     public GameObject ObjectScene;
 
+    public GameObject PanelSwitcher;
+
     [Header("动画帧")]
     public Sprite[] LockerFrames;
 
@@ -28,7 +31,9 @@ public class S_CoffeeGame : MonoBehaviour
 
     public Sprite[] GrinderFrames;
 
+    public Sprite WrongPic;
 
+    [Header("子项")]
     public GameObject FinishButton;
 
     public GameObject RestartButton;
@@ -39,7 +44,32 @@ public class S_CoffeeGame : MonoBehaviour
 
     public GameObject Cup;
 
-    public GameObject PaperCup;
+    [Header("有点击动画对象")]
+    public GameObject Grinder;
+
+    public GameObject Locker;
+
+    public GameObject Refrigerator;
+
+
+    //表示当前正在做的coffee的数据
+    private S_Coffee currentCoffee;
+
+    //表示咖啡图片是当前coffee.Sprites中的第几项
+    private int currentSprite;
+
+    //表示当前已完成的步骤数
+    private int currentFinishedStepNumber;
+
+
+    //表示当前步骤是否均已完成
+    private bool GameFinished;
+
+    //表示冰箱是否已经打开
+    private bool RefrigeratorOpened;
+
+    //表示柜子是否已经打开
+    private bool LockerOpened;
 
     private void Start()
     {
@@ -52,18 +82,55 @@ public class S_CoffeeGame : MonoBehaviour
         for (int i = 0; i < ObjectScene.transform.childCount; i++)
         {
             ObjectScene.transform.GetChild(i).GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
+            Button b = ObjectScene.transform.GetChild(i).GetComponent<Button>();
+            if (b != null)
+            {
+                b.interactable = false;
+            }
         }
 
         GamePanelOriginPosY = GetComponent<RectTransform>().position.y;
         GamePlaying = false;
+        RefrigeratorOpened = false;
+        LockerOpened = false;
     }
 
-    public void InitGame(int id)
+    public void InitGame()
     {
+        Order.GetComponent<Text>().text = currentCoffee.Name;
 
+        RefrigeratorOpened = false;
+        LockerOpened = false;
+
+        Refrigerator.GetComponent<Image>().sprite = RefrigeratorFrames[0];
+        Locker.GetComponent<Image>().sprite = LockerFrames[0];
+
+        string stateString = "";
+        for (int i = 0; i < currentCoffee.Steps.Count; i++)
+        {
+            stateString += accessor.DataManager.CoffeeStep.StepDescription[(int)currentCoffee.Steps[i]];
+            if (i != currentCoffee.Steps.Count - 1)
+            {
+                stateString += "+";
+            }
+        }
+        State.GetComponent<TextMeshProUGUI>().text = stateString;
+
+        Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[0].Pic;
+        currentSprite = 0;
+        currentFinishedStepNumber = 0;
+        GameFinished = false;
+
+        for (int i = 0; i < ObjectScene.transform.childCount; i++)
+        {
+            Button b = ObjectScene.transform.GetChild(i).GetComponent<Button>();
+            if (b != null)
+            {
+                b.interactable = true;
+            }
+        }
     }
 
-    [Obsolete("喻洛天，记得改成新重载的带ID的改版")]
     public void StartCoffeeGame(DiologueData data)
     {
         if (data.processState == ProcessState.Coffee && accessor._DioLogueState.state == DiologueState.Normal)
@@ -76,27 +143,14 @@ public class S_CoffeeGame : MonoBehaviour
             DioLogueState ds = accessor._DioLogueState;
             ds.SetButtonsActive(false);
 
+            //禁用PanelSwitcher
+            for (int i = 0; i < PanelSwitcher.transform.childCount; i++)
+            {
+                PanelSwitcher.transform.GetChild(i).GetComponent<Button>().interactable = false;
+            }
 
-        }
-        else
-        {
-            return;
-        }
-    }
-
-    public void StartCoffeeGame(DiologueData data, int GameID)
-    {
-        if (data.processState == ProcessState.Coffee && accessor._DioLogueState.state == DiologueState.Normal)
-        {
-            //控制面板移动
-            RectTransform r = GetComponent<RectTransform>();
-            r.DOMove(new Vector2(r.position.x, GamePanelOriginPosY + DeltaY), 1.6f);
-
-            //YLT用来作不明觉厉功能的代码
-            DioLogueState ds = accessor._DioLogueState;
-            ds.SetButtonsActive(false);
-
-            InitGame(GameID);
+            currentCoffee = accessor.DataManager.CoffeeStep.Coffees[data.charaID - 1];
+            InitGame();
         }
         else
         {
@@ -113,40 +167,18 @@ public class S_CoffeeGame : MonoBehaviour
             r.DOMove(new Vector2(r.position.x, GamePanelOriginPosY), 2.0f);
             DioLogueState ds = accessor._DioLogueState;
             ds.SetButtonsActive(true);
+
+            //启用PanelSwitcher
+            for (int i = 0; i < PanelSwitcher.transform.childCount; i++)
+            {
+                PanelSwitcher.transform.GetChild(i).GetComponent<Button>().interactable = true;
+            }
+
             //StartCoroutine(SetButtonsActive(1.2f, true));
         }
 
         accessor._DioLogueState.UpdateDiologue();
     }
-
-    //[Obsolete]
-    //IEnumerator ShowGamePanel()
-    //{
-    //    for (int i = 1; i <= frameNumber; i++)
-    //    {
-    //        float currentY = Mathf.Lerp(GamePanelOriginPosY, GamePanelShowedPosY, (float)i / (float)frameNumber);
-    //        GamePanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(GamePanel.GetComponent<RectTransform>().anchoredPosition.x, currentY);
-    //        yield return new WaitForFixedUpdate();
-    //    }
-    //}
-
-    //[Obsolete]
-    //IEnumerator HideGamePanel()
-    //{
-    //    for (int i = 1; i <= frameNumber; i++)
-    //    {
-    //        float currentY = Mathf.Lerp(GamePanelShowedPosY, GamePanelOriginPosY, (float)i / (float)frameNumber);
-    //        GamePanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(GamePanel.GetComponent<RectTransform>().anchoredPosition.x, currentY);
-    //        yield return new  WaitForFixedUpdate();
-    //    }
-    //}
-
-    //IEnumerator SetButtonsActive(float delay,bool active)
-    //{
-    //    yield return new WaitForSeconds(delay);
-    //    DioLogueState ds = accessor._DioLogueState;
-    //    ds.SetButtonsActive(active);
-    //}
 
     private void Update()
     {
@@ -157,7 +189,282 @@ public class S_CoffeeGame : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E)) 
         {
-            EndCoffeeGame();    
+            //EndCoffeeGame();    
         }
     }
+
+    #region 场景物件点击事件
+    //判断步骤是否已结束的通用函数，判断后执行相应操作
+    public bool IsGameFinished()
+    {
+        if (currentFinishedStepNumber == currentCoffee.Steps.Count)
+        {
+            GameFinished = true;
+        }
+        else
+        {
+            GameFinished = false;
+        }
+
+        return GameFinished;
+    }
+
+    //点错后的通用处理函数
+    public void WrongStep()
+    {
+        Cup.GetComponent<Image>().sprite = WrongPic;
+        for (int i = 0; i < ObjectScene.transform.childCount; i++)
+        {
+            Button b = ObjectScene.transform.GetChild(i).GetComponent<Button>();
+            if (b != null)
+            {
+                b.interactable = false;
+            }
+        }
+        GameFinished = false;
+    }
+
+    //提交按钮点击事件
+    public void OnClickFinish()
+    {
+        if (GameFinished)
+        {
+            EndCoffeeGame();
+        }
+    }
+
+    //重做按钮点击事件
+    public void OnClickRestart()
+    {
+        InitGame();
+    }
+
+    //搅拌机点击事件
+    public void OnClickGrinder()
+    {
+        //if (currentFinishedStepNumber == currentCoffee.Steps.Count - 1)
+        //{
+        //    return;
+        //}
+
+        IEnumerator PlayGrinderAnimation()
+        {
+            Grinder.GetComponent<Image>().sprite = GrinderFrames[0];
+            yield return new WaitForSeconds(0.5f);
+            Grinder.GetComponent<Image>().sprite = GrinderFrames[1];
+            yield return new WaitForSeconds(0.5f);
+            Grinder.GetComponent<Image>().sprite = GrinderFrames[2];
+            yield return new WaitForSeconds(0.5f);
+            Grinder.GetComponent<Image>().sprite = GrinderFrames[0];
+        }
+        //Debug.Log("click");
+
+        if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Grind)
+        {
+            StartCoroutine(PlayGrinderAnimation());
+            currentFinishedStepNumber++;
+            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("磨豆", "<s>磨豆</s>");
+            if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
+            {
+                //Debug.Log("replace");
+                Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
+                currentSprite++;
+            }
+            IsGameFinished();
+        }
+        else
+        {
+            WrongStep();
+        }
+    }
+
+    //滴滤架点击事件
+    public void OnClickFunnel()
+    {
+        if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Extract)
+        {
+            currentFinishedStepNumber++;
+            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("萃取", "<s>萃取</s>");
+            if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
+            {
+                //Debug.Log("replace");
+                Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
+                currentSprite++;
+            }
+            IsGameFinished();
+        }
+        else
+        {
+            WrongStep();
+        }
+    }
+
+    //冷水按钮点击事件
+    public void OnClickCold()
+    {
+        if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.ColdWater)
+        {
+            currentFinishedStepNumber++;
+            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("冷水", "<s>冷水</s>");
+            if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
+            {
+                //Debug.Log("replace");
+                Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
+                currentSprite++;
+            }
+            IsGameFinished();
+        }
+        else
+        {
+            WrongStep();
+        }
+    }
+
+    //热水点击事件
+    public void OnClickHot()
+    {
+        if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.HotWater)
+        {
+            currentFinishedStepNumber++;
+            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("热水", "<s>热水</s>");
+            if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
+            {
+                //Debug.Log("replace");
+                Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
+                currentSprite++;
+            }
+            IsGameFinished();
+        }
+        else
+        {
+            WrongStep();
+        }
+    }
+
+    //冰柜点击事件
+    public void OnClickRefrigerator()
+    {
+        if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Ice)
+        {
+            if (!RefrigeratorOpened)
+            {
+                Refrigerator.GetComponent<Image>().sprite = RefrigeratorFrames[1];
+                RefrigeratorOpened = true;
+            }
+            else
+            {
+                Refrigerator.GetComponent<Image>().sprite = RefrigeratorFrames[0];
+                RefrigeratorOpened = false;
+                currentFinishedStepNumber++;
+                State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("冰", "<s>冰</s>");
+                if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
+                {
+                    //Debug.Log("replace");
+                    Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
+                    currentSprite++;
+                }
+                IsGameFinished();
+            }
+        }
+        else
+        {
+            WrongStep();
+        }
+    }
+
+    //柜子点击事件
+    public void OnClickLocker()
+    {
+        if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Ice)
+        {
+            if (!LockerOpened)
+            {
+                Locker.GetComponent<Image>().sprite = LockerFrames[1];
+                LockerOpened = true;
+            }
+            else
+            {
+                Locker.GetComponent<Image>().sprite = LockerFrames[0];
+                LockerOpened = false;
+                currentFinishedStepNumber++;
+                State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("CAVA", "<s>CAVA</s>");
+                if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
+                {
+                    //Debug.Log("replace");
+                    Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
+                    currentSprite++;
+                }
+                IsGameFinished();
+            }
+        }
+        else
+        {
+            WrongStep();
+        }
+    }
+
+    //牛奶点击事件
+    public void OnClickMilk()
+    {
+        if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Milks)
+        {
+            currentFinishedStepNumber++;
+            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("牛奶", "<s>牛奶</s>");
+            if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
+            {
+                //Debug.Log("replace");
+                Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
+                currentSprite++;
+            }
+            IsGameFinished();
+        }
+        else
+        {
+            WrongStep();
+        }
+    }
+
+    //手磨点击事件
+    public void OnClickShouMo()
+    {
+        if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Grind)
+        {
+            currentFinishedStepNumber++;
+            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("磨豆", "<s>磨豆</s>");
+            if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
+            {
+                //Debug.Log("replace");
+                Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
+                currentSprite++;
+            }
+            IsGameFinished();
+        }
+        else
+        {
+            WrongStep();
+        }
+    }
+
+    //咖啡机点击事件
+    public void OnClickCoffeeMachine()
+    {
+        if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Extract)
+        {
+            currentFinishedStepNumber++;
+            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("萃取", "<s>萃取</s>");
+            if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
+            {
+                //Debug.Log("replace");
+                Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
+                currentSprite++;
+            }
+            IsGameFinished();
+        }
+        else
+        {
+            WrongStep();
+        }
+    }
+
+    #endregion
 }

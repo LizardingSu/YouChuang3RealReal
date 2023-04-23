@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a4c2867d587ea45b54542e6eb91a84, type: 3}
+  m_Name: CoffeeSteps
+  m_EditorClassIdentifier: 
+  Coffees:
+  - Name: "\u6D53\u7F29"
+    Steps: 0000000001000000
+    Sprites: []
+  - Name: "\u7279\u8C03"
+    Steps: 000000000100000006000000
+    Sprites: []
+  - Name: "\u51B0\u7F8E\u5F0F\uFF08\u5802\u98DF\uFF09"
+    Steps: 00000000010000000200000004000000
+    Sprites:
+    - ChangeStep: 0
+      Pic: {fileID: 21300000, guid: 56fcf21ea256e5241b16f98c74a05282, type: 3}
+    - ChangeStep: 3
+      Pic: {fileID: 21300000, guid: 90815da157f1d9f4b8a44aded6289922, type: 3}
+    - ChangeStep: 4
+      Pic: {fileID: 21300000, guid: 31a19dbf2447d7148a6fcd957f714abb, type: 3}
+  - Name: "\u51B0\u7F8E\u5F0F\uFF08\u5916\u5E26\uFF09"
+    Steps: 00000000010000000200000004000000
+    Sprites:
+    - ChangeStep: 0
+      Pic: {fileID: 21300000, guid: 8d3ae1101fd082e429258061d53438dd, type: 3}
+    - ChangeStep: 3
+      Pic: {fileID: 21300000, guid: e3d8d5f9ee1817844a9ce3948ed6d830, type: 3}
+    - ChangeStep: 4
+      Pic: {fileID: 21300000, guid: f4acf23da1895864aa66d91f0dc4ea09, type: 3}
+  - Name: "\u70ED\u7F8E\u5F0F\uFF08\u5802\u98DF\uFF09"
+    Steps: 000000000100000003000000
+    Sprites:
+    - ChangeStep: 0
+      Pic: {fileID: 21300000, guid: 56fcf21ea256e5241b16f98c74a05282, type: 3}
+    - ChangeStep: 3
+      Pic: {fileID: 21300000, guid: cb6b8086f8748d0479684c6750028c83, type: 3}
+  - Name: "\u70ED\u7F8E\u5F0F\uFF08\u5916\u5E26\uFF09"
+    Steps: 000000000100000003000000
+    Sprites:
+    - ChangeStep: 0
+      Pic: {fileID: 21300000, guid: 8d3ae1101fd082e429258061d53438dd, type: 3}
+    - ChangeStep: 3
+      Pic: {fileID: 21300000, guid: dcff8bdb1a16cde4fbb3876c913065ed, type: 3}
+  - Name: "\u51B0\u62FF\u94C1\uFF08\u5802\u98DF\uFF09"
+    Steps: 00000000010000000500000004000000
+    Sprites:
+    - ChangeStep: 0
+      Pic: {fileID: 21300000, guid: 56fcf21ea256e5241b16f98c74a05282, type: 3}
+    - ChangeStep: 2
+      Pic: {fileID: 21300000, guid: 90815da157f1d9f4b8a44aded6289922, type: 3}
+    - ChangeStep: 3
+      Pic: {fileID: 21300000, guid: f6e09a7d252e0ed4e81c14002bf2c7b2, type: 3}
+    - ChangeStep: 4
+      Pic: {fileID: 21300000, guid: 5a557b3dae1ea3a4bae9bc70a116cddc, type: 3}
+  - Name: "\u51B0\u62FF\u94C1\uFF08\u5916\u5E26\uFF09"
+    Steps: 00000000010000000500000004000000
+    Sprites:
+    - ChangeStep: 0
+      Pic: {fileID: 21300000, guid: 8d3ae1101fd082e429258061d53438dd, type: 3}
+    - ChangeStep: 2
+      Pic: {fileID: 21300000, guid: e3d8d5f9ee1817844a9ce3948ed6d830, type: 3}
+    - ChangeStep: 3
+      Pic: {fileID: 21300000, guid: f62fcd4811dfe984484380048b8529d0, type: 3}
+    - ChangeStep: 4
+      Pic: {fileID: 21300000, guid: 6f20ddf6116399e4484e9a9660aa4f98, type: 3}
+  - Name: "\u70ED\u62FF\u94C1\uFF08\u5802\u98DF\uFF09"
+    Steps: 000000000100000005000000
+    Sprites:
+    - ChangeStep: 0
+      Pic: {fileID: 21300000, guid: 56fcf21ea256e5241b16f98c74a05282, type: 3}
+    - ChangeStep: 2
+      Pic: {fileID: 21300000, guid: 90815da157f1d9f4b8a44aded6289922, type: 3}
+    - ChangeStep: 3
+      Pic: {fileID: 21300000, guid: 1510adc6562c8444597c8eb0452535b9, type: 3}
+  - Name: "\u70ED\u62FF\u94C1\uFF08\u5916\u5E26\uFF09"
+    Steps: 000000000100000005000000
+    Sprites:
+    - ChangeStep: 0
+      Pic: {fileID: 21300000, guid: 8d3ae1101fd082e429258061d53438dd, type: 3}
+    - ChangeStep: 2
+      Pic: {fileID: 21300000, guid: e3d8d5f9ee1817844a9ce3948ed6d830, type: 3}
+    - ChangeStep: 3
+      Pic: {fileID: 21300000, guid: 0cda40d80cd6c964e8b37124c0c53336, type: 3}
+  StepDescription:
+  - "\u78E8\u8C46"
+  - "\u8403\u53D6"
+  - "\u51B7\u6C34"
+  - "\u70ED\u6C34"
+  - "\u51B0"
+  - "\u725B\u5976"
+  - CAVA
