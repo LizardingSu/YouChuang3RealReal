@@ -22,6 +22,7 @@ public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
         int day = calendarPanel.currentActiveDayButton.Value + 1;
         int id = calendarPanel.allDays[day - 1].Nodes[calendarPanel.currentNodes.IndexOf(this.gameObject)].ID;
+        id = id - 1000 * day;
 
         Debug.Log("day" + day);
         Debug.Log("ID" + id);
@@ -30,7 +31,7 @@ public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         sm.CancelStateCalendar();
         sm.StateSwitchToLog();
 
-        calendarPanel.Accessor._DioLogueState.ReadToCurrentID(1,2);
+        calendarPanel.Accessor._DioLogueState.ReadToCurrentID(day, id);
     }
 
     public void OnPointerExit(PointerEventData eventData)
