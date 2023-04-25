@@ -7866,6 +7866,7 @@ MonoBehaviour:
   day_First: {fileID: 54029844}
   day_Second: {fileID: 225875303}
   diologueState: {fileID: 1765219810}
+  processManager: {fileID: 1765219809}
   buttonToContinue: {fileID: 388517353}
   mask: {fileID: 357607216}
 --- !u!1 &1093896677

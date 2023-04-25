@@ -108,11 +108,11 @@ public class CharacterController : MonoBehaviour
 
                 if (diologueState.state != DioState.Normal) return;
 
-                if (data2.idx > 1 && data.idx > 1)
+                if (data2.charaID > 1 && data.charaID > 1)
                 {
                     left.FadeAnim(fadeTime);
                 }
-                else if (data2.idx <= 1 && data.idx <= 1)
+                else if (data2.charaID <= 1 && data.charaID <= 1)
                 {
                     right.FadeAnim(fadeTime);
                 }

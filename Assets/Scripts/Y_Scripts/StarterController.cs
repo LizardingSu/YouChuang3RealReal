@@ -88,8 +88,8 @@ public partial class StarterController : MonoBehaviour
         if (data.idx != 1 && data.idx != 38)
             return false;
 
-        //如果idx为0，则必须没有任何存档
-        if (data.idx == 1 && pm.m_Saving.Choices.Count == 0)
+        //如果idx为0，则必须没有任何多余存档
+        if (data.idx == 1 && pm.m_Saving.Choices.Count <= 1)
         {
             return true;
         }

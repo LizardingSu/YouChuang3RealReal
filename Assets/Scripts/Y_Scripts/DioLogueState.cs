@@ -29,7 +29,7 @@ public class DioLogueState : MonoBehaviour
     public DialogueChangedEvent dialogueChanged;
 
     public uint date;
-    public string path = "Text/T";
+    public string path = "Text/Day";
     public DiologueData curData;
 
     public Button[] update_button;
@@ -54,13 +54,12 @@ public class DioLogueState : MonoBehaviour
         else
             SetButtonsActive(true);
 
-        StartCoroutine(LoadSceneWhenFirstAwake(path));
+        //testP
+        StartCoroutine(LoadSceneWhenFirstAwake());
     }
     //test
-    private IEnumerator LoadSceneWhenFirstAwake(string _path)
+    private IEnumerator LoadSceneWhenFirstAwake()
     {
-        path = _path;
-
         yield return null;
 
         var pm = centralAccessor.ProcessManager;
@@ -72,6 +71,8 @@ public class DioLogueState : MonoBehaviour
         else
         {
             date = 1;
+            //test
+            pm.Save(1000, 1, "");
         }
 
         //test

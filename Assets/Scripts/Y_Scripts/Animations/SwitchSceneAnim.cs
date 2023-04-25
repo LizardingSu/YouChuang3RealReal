@@ -28,6 +28,7 @@ public class SwitchSceneAnim : MonoBehaviour
     public TMP_Text day_Second;
 
     public DioLogueState diologueState;
+    public S_ProcessManager processManager;
     public Button buttonToContinue;
 
     public Selectable mask;
@@ -99,6 +100,7 @@ public class SwitchSceneAnim : MonoBehaviour
 
         yield return new WaitForSeconds(time);
         diologueState.UpdateDiologue();
+        processManager.Save((int)nextDay * 1000,1,"");
         diologueState.SetButtonsActive(true);
     }
 
