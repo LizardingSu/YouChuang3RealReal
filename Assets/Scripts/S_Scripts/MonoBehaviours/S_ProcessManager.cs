@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
+[ExecuteAlways]
 public class S_ProcessManager : MonoBehaviour
 {
     public S_CentralAccessor Accessor;

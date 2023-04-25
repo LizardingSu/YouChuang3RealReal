@@ -162,7 +162,7 @@ public class CharacterController : MonoBehaviour
                     if (charID > 1)
                     {
                         windowsCharacters[curPlace].transform.SetAsLastSibling();
-                        windowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
+                        windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
                         charSortedList.Add(charID);
                         SortWindowsPos();
                         curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
@@ -176,7 +176,7 @@ public class CharacterController : MonoBehaviour
                         if (right.curState == CurState.UP)
                             right.MoveHideName(hideNameTime);
 
-                        left.SetAllDatas(true, charID, name);
+                        left.SetAllDatas(true, charID, name, emojiID);
                         left.SetName(data.name);
                     }
                     else
@@ -190,7 +190,7 @@ public class CharacterController : MonoBehaviour
                         if (left.curState == CurState.UP)
                             left.MoveHideName(hideNameTime);
 
-                        right.SetAllDatas(true, charID, name);
+                        right.SetAllDatas(true, charID, name, emojiID);
                         right.SetName(data.name);
                     }
                 }
@@ -233,7 +233,7 @@ public class CharacterController : MonoBehaviour
                     if (c)
                     {
                         c.transform.SetAsLastSibling();
-                        c.SetAllDatas(true, charID, name, emojiID);
+                        c.SetAllDatas(true, charID, name, 0);
                     }
 
                     //可能会出现第一次出现对话框时还没有In的情况
@@ -245,7 +245,7 @@ public class CharacterController : MonoBehaviour
                     if (right.curState == CurState.UP)
                         right.MoveHideName(hideNameTime);
 
-                    left.SetAllDatas(true, charID, name);
+                    left.SetAllDatas(true, charID, name, emojiID);
                     left.SetName(data.name);
                 }
                 else
@@ -258,7 +258,7 @@ public class CharacterController : MonoBehaviour
                     if (left.curState == CurState.UP)
                         left.MoveHideName(hideNameTime);
 
-                    right.SetAllDatas(true, charID, name);
+                    right.SetAllDatas(true, charID, name, emojiID);
                     right.SetName(data.name);
                 }
             }
@@ -278,7 +278,7 @@ public class CharacterController : MonoBehaviour
         if (charID > 1)
         {
             windowsCharacters[curPlace].transform.SetAsLastSibling();
-            windowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
+            windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
             charSortedList.Add(charID);
             SortWindowsPos();
             curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
@@ -292,7 +292,7 @@ public class CharacterController : MonoBehaviour
             if (right.curState == CurState.UP)
                 right.MoveHideName(hideNameTime);
 
-            left.SetAllDatas(true, charID, name);
+            left.SetAllDatas(true, charID, name, emojiID);
             left.SetName(data.name);
         }
         else
@@ -306,7 +306,7 @@ public class CharacterController : MonoBehaviour
             if (left.curState == CurState.UP)
                 left.MoveHideName(hideNameTime);
 
-            right.SetAllDatas(true, charID, name);
+            right.SetAllDatas(true, charID, name, emojiID);
             right.SetName(data.name);
         }
 
@@ -330,7 +330,7 @@ public class CharacterController : MonoBehaviour
             if (right.CharID != -1)
                 right.MoveHideName(showAllTime - hideNameTime);
 
-            left.SetAllDatas(true, charID, name);
+            left.SetAllDatas(true, charID, name,emojiID);
             left.SetName(data.name);
         }
         else
@@ -341,7 +341,7 @@ public class CharacterController : MonoBehaviour
             if (left.CharID != -1)
                 left.MoveHideName(showAllTime - hideNameTime);
 
-            right.SetAllDatas(true, charID, name);
+            right.SetAllDatas(true, charID, name,emojiID);
             right.SetName(data.name);
         }
 
@@ -351,7 +351,7 @@ public class CharacterController : MonoBehaviour
             if (state == CharacterState.In)
             {
                 windowsCharacters[curPlace].transform.SetAsLastSibling();
-                windowsCharacters[curPlace].SetAllDatas(true, charID, name, emojiID);
+                windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
                 charSortedList.Add(charID);
                 SortWindowsPos();
                 curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
@@ -370,7 +370,7 @@ public class CharacterController : MonoBehaviour
                 if (c)
                 {
                     c.transform.SetAsLastSibling();
-                    c.SetAllDatas(true, charID, name, emojiID);
+                    c.SetAllDatas(true, charID, name, 0);
                 }
             }
         }
