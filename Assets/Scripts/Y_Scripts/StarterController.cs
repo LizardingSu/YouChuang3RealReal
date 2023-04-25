@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StarterController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public List<Image> maskList;
+    public DioLogueState dioState;
+
+    private void Awake()
     {
-        
+        foreach(Transform child in this.transform)
+        {
+            maskList.Add(child.gameObject.GetComponent<Image>());
+            child.gameObject.SetActive(false);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void onDestroy()
     {
-        
+        maskList.Clear();
     }
 }

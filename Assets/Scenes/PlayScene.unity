@@ -10687,7 +10687,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   date: 0
-  path: Text/T
+  path: Text/Day
   update_button:
   - {fileID: 759485588}
   - {fileID: 1388609667}
@@ -11029,6 +11029,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca757d3c0104b84fb201167f4846011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maskList: []
+  dioState: {fileID: 1765219810}
 --- !u!1 &1818435431
 GameObject:
   m_ObjectHideFlags: 0
