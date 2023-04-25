@@ -49,6 +49,11 @@ public class diologueButtonController : MonoBehaviour
         }
     }
 
+    public void SetButtonImage(Image image)
+    {
+        button.image = image;
+    }
+
         public void OnClick()
     {
         m_dioState.OnSelectionSelect(Idx, nextIdx);

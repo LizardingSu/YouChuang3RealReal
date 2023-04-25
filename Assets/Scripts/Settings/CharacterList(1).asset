@@ -27,3 +27,7 @@ MonoBehaviour:
     name: Brain
   - id: 6
     name: "\u74F6\u4E2D\u8C46"
+  - id: 7
+    name: "\u5C0F\u699B"
+  - id: 8
+    name: "\u963F\u6D9F"

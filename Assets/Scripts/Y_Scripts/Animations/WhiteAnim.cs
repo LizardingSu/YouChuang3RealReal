@@ -12,7 +12,7 @@ public class WhiteAnim : MonoBehaviour
     public RawImage image;
     public float rollingSpeed = 0.5f;
     public float neededTime = 1f;
-    private float mask = 0f;
+    public float mask = 0f;
 
     // Start is called before the first frame update
     void Awake()

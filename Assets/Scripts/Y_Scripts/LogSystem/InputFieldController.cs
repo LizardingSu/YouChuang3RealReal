@@ -110,6 +110,11 @@ public class InputFieldController : MonoBehaviour
         }
     }
 
+    public void SetButtonImage(Image image)
+    {
+        button.image = image;
+    }
+
     private IEnumerator InitInputField(float charSize)
     {
         yield return null;

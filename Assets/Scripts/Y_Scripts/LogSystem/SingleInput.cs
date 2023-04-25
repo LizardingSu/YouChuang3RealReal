@@ -24,7 +24,7 @@ public class SingleInput : MonoBehaviour
         textBox.fontSize = pointSize;
         if(pointSize == 30)
         {
-            textBox.characterSpacing = 20;
+            textBox.characterSpacing = 5;
         }
         else
         {

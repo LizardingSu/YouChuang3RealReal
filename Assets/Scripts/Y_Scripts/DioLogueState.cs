@@ -178,13 +178,13 @@ public class DioLogueState : MonoBehaviour
     {
         characterController.Clear();
         logController.Clear();
+        coffee.Clear();
 
         curData = null;
         for (int i = 0; i < ReadedList.Length; i++)
         {
             ReadedList[i] = 0;
         }
-
     }
 
     //读取到对应的ID和天数，要求对应ID是必定可访问到的

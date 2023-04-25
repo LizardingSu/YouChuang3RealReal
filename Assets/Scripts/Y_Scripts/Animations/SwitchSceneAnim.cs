@@ -23,14 +23,18 @@ public class SwitchSceneAnim : MonoBehaviour
     public TMP_Text pressToContinue;
 
     public RectTransform daysTransform;
+    public TMP_Text day;
     public TMP_Text day_First;
     public TMP_Text day_Second;
 
     public DioLogueState diologueState;
     public Button buttonToContinue;
 
+    public Selectable mask;
+
     private void MoveUpBlackMask(float time)
     {
+        blackMask.gameObject.SetActive(true);
         blackMask.rectTransform.anchoredPosition = new Vector2(0, downPos);
 
         blackMask.rectTransform.DOKill();
@@ -51,7 +55,20 @@ public class SwitchSceneAnim : MonoBehaviour
         daysTransform.anchoredPosition = new Vector2(daysTransform.anchoredPosition.x, 0);
         pressToContinue.gameObject.SetActive(false);
 
+        var inv = new Color(1, 1, 1, 0);
+        var v = new Color(1, 1, 1, 1);
+
+        //淡入淡出
+        day.color = inv;
+        day_First.color = inv;
+        day_Second.color = inv;
+        pressToContinue.color = inv;
+        day.DOColor(v, delay2 + 2);
+        day_First.DOColor(v, delay2 + 2);
+        day_Second.DOColor(v, delay2 + 2);
+
         yield return new WaitForSeconds(delay2);
+
         daysTransform.DOAnchorPosY(daysPos, time);
 
         StartCoroutine(setPressActive(time));
@@ -59,24 +76,35 @@ public class SwitchSceneAnim : MonoBehaviour
 
     private IEnumerator setPressActive(float time)
     {
+        pressToContinue.gameObject.SetActive(true);
+        pressToContinue.DOColor(Color.white, time+2);
+
         yield return new WaitForSeconds(time);
 
-        pressToContinue.gameObject.SetActive(true);
         buttonToContinue.interactable = true;
     }
 
     private void onClick()
     {
-        diologueState.SetButtonsActive(true);
-        this.gameObject.SetActive(false);
-
+        diologueState.SetButtonsActive(false);
         diologueState.ReadToCurrentID((int)nextDay, -1);
+
+        StartCoroutine(WaitTime(2));
+    }
+
+    private IEnumerator WaitTime(float time)
+    {
+        blackMask.gameObject.SetActive(false);
+        blackScene.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(time);
+        diologueState.UpdateDiologue();
+        diologueState.SetButtonsActive(true);
     }
 
     public void SwitchToNewScene(uint day1,uint day2)
     {
         //初始化状态
-        this.gameObject.SetActive(true);
         diologueState.SetButtonsActive(false);
         buttonToContinue.interactable = false;
         nextDay = day2;

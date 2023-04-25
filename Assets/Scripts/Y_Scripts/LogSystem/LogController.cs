@@ -112,10 +112,14 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         }
 
         //第一次阅读
-        if (diologueData.idx == 0)
+        if (diologueData.idx == 0&&diologueState.state == DioState.Normal)
         {       
             //延迟升起
             StartCoroutine(MoveUpRightPanel(delay));
+        }
+        else
+        {
+            StartCoroutine(MoveUpRightPanel(0));
         }
     }
     private IEnumerator MoveUpRightPanel(float time)

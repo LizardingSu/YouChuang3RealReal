@@ -24,9 +24,10 @@ public class SelectController : MonoBehaviour
     public diologueButtonController selectDioPrefab;
     public InputFieldController inputFieldPrefab;
 
+    public uint dioCount;
     public bool isSelect = false;
 
-    public void Init(LogEntry logEntry,bool isSelectable)
+    public void Init(LogEntry logEntry,bool isSelectable, List<Image> images = null)
     {
         isSelect = true;
 
@@ -41,6 +42,8 @@ public class SelectController : MonoBehaviour
 
         var selectContents = LogEntryParser.GetSelectContents(logEntry.Log);
 
+        dioCount = (uint)selectContents.Count;
+
         for(int i=0;i<selectContents.Count;i++)
         {
             var item = selectContents[i];
@@ -51,12 +54,21 @@ public class SelectController : MonoBehaviour
             {
                 var db = Instantiate(selectDioPrefab, transform);
                 db.Init(p+": "+item.log,logEntry.Idx,item.nextIdx,isSelectable);
+                if (isSelectable)
+                {
+                    images[i].gameObject.SetActive(true);
+                    db.SetButtonImage(images[i]);
+                }
             }
             else
             {
                 var dbI = Instantiate(inputFieldPrefab, transform);
                 dbI.Init(item.log, p + ": ", logEntry.Idx,isSelectable);
-
+                if (isSelectable)
+                {
+                    images[i].gameObject.SetActive(true);
+                    dbI.SetButtonImage(images[i]);
+                }
             }
         }
     }

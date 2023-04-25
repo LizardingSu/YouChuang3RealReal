@@ -177,12 +177,13 @@ public class S_CoffeeGame : MonoBehaviour
             //StartCoroutine(SetButtonsActive(1.2f, true));
         }
 
+        Debug.Log("Wow");
         accessor._DioLogueState.UpdateDiologue();
     }
 
     public void Clear()
     {
-        Debug.Log("YLTÊÇÉ¶ßÂ!");
+        //Debug.Log("YLTÊÇÉ¶ßÂ!");
     }    
 
     private void Update()
@@ -194,7 +195,7 @@ public class S_CoffeeGame : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E)) 
         {
-            //EndCoffeeGame();    
+            EndCoffeeGame();    
         }
     }
 
