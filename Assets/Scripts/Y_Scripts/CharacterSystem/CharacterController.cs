@@ -84,6 +84,7 @@ public class CharacterController : MonoBehaviour
         right.SetAllDatas(true);
 
         whiteMask.mask = 0;
+        whiteMask.material.SetFloat("_MyMask",whiteMask.mask);
     }
    
     //无法处理回环情况,但是没有这种情况

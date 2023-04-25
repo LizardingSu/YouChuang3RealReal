@@ -31,7 +31,6 @@ public class SingleInput : MonoBehaviour
             textBox.characterSpacing = 4;
         }
         inputField.characterLimit = charNum;
-        inputField.ActivateInputField();
 
         //image.uvRect = new Rect(1, 1, charNum, 1);
 

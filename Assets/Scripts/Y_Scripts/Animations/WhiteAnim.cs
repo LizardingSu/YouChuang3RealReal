@@ -36,13 +36,14 @@ public class WhiteAnim : MonoBehaviour
     public void FadeAndReFill(bool isFade)
     {
         var curMask = material.GetFloat("_MyMask");
+        Debug.Log(curMask);
         if (isFade)
         {
             if (curMask == 0) return;
         }
         else
         {
-            //最大长度：0.7
+            //最大长度：0.75
             if (curMask == 0.75f) return;
         }
 
