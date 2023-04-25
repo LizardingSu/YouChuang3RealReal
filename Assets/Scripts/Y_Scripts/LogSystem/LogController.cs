@@ -66,7 +66,7 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         diologueState.dialogueWillChange.RemoveListener(onDiologueWillChange);
     }
 
-    private void onDiologueWillChange(DiologueData diologueData)
+    private void onDiologueWillChange(DiologueData diologueData,DiologueData diologueData1)
     {
         //前提，做咖啡做完之后必进对话，不然要改 如果前一个是做咖啡，则需要把Panel移动下去
         if(diologueData.processState == ProcessState.Coffee)

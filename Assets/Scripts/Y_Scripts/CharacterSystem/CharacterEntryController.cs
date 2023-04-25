@@ -79,6 +79,18 @@ public class CharacterEntryController : MonoBehaviour
         rectTransform.DOAnchorPosY(-1000, time);
     }
 
+    public void FadeAnim(float time)
+    {
+        image.DOColor(new Color(1,1,1,0.2f), time);
+        StartCoroutine(Fade(time));
+    }
+
+    private IEnumerator Fade(float time)
+    {
+        yield return new WaitForSeconds(time);
+        image.DOColor(Color.white, time);
+    }
+
     public void SetName(string name)
     {
         if(name!= "")

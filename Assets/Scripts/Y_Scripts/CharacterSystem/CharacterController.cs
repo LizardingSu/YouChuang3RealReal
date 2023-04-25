@@ -25,6 +25,7 @@ public class CharacterController : MonoBehaviour
     public float showNameTime = 0.2f;
     public float showAllTime = 1.0f;
     public float hideAllTime = 1.0f;
+    public float fadeTime = 0.15f;
 
     [Tooltip("控制的是重新升起Character框之前的等待时间")]
     public float delay = 0.6f;
@@ -86,7 +87,7 @@ public class CharacterController : MonoBehaviour
     }
    
     //无法处理回环情况,但是没有这种情况
-   private void WillChangeCharacter(DiologueData data)
+   private void WillChangeCharacter(DiologueData data,DiologueData data2)
     {
         //如果后续不是对话就会出错
         if (data.processState == ProcessState.Coffee)
@@ -98,6 +99,23 @@ public class CharacterController : MonoBehaviour
             }
             //根据之前是不是咖啡来判断后续
             isCoffeeBefore = true;
+        }
+        else if(data.processState == ProcessState.Diologue||data.processState == ProcessState.Select)
+        {
+            if(data2.processState == ProcessState.Diologue&&data2.charaState == CharacterState.In)
+            {
+
+                if (diologueState.state != DioState.Normal) return;
+
+                if (data2.idx > 1 && data.idx > 1)
+                {
+                    left.FadeAnim(fadeTime);
+                }
+                else if (data2.idx <= 1 && data.idx <= 1)
+                {
+                    right.FadeAnim(fadeTime);
+                }
+            }
         }
     }
 

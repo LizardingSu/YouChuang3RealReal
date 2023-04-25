@@ -60,4 +60,4 @@ public class DiologueData
 public class DialogueChangedEvent : UnityEvent<DiologueData> { }
 
 [Serializable]
-public class DialogueWillChangeEvent : UnityEvent<DiologueData> { }
+public class DialogueWillChangeEvent : UnityEvent<DiologueData,DiologueData> { }

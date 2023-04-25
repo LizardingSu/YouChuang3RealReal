@@ -115,8 +115,6 @@ public class DioLogueState : MonoBehaviour
         {
             var isEnd = curData.nextIdx == -1;
             if (isEnd) return;
-
-            dialogueWillChange.Invoke(curData);
         }
 
         DiologueData diologueData = null;
@@ -127,6 +125,11 @@ public class DioLogueState : MonoBehaviour
         else
         {
             diologueData = LogEntryParser.GetDiologueDataAtIdx(textList, (uint)curData.nextIdx, date);
+        }
+
+        if(curData!= null)
+        {
+            dialogueWillChange.Invoke(curData,diologueData);
         }
 
         curData = diologueData;
