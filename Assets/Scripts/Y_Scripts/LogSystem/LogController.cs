@@ -91,6 +91,7 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
             {
                 rightLogController.MoveDown(hideTime);
             }
+
             return;
         }
         else if(diologueData.processState == ProcessState.Branch)
