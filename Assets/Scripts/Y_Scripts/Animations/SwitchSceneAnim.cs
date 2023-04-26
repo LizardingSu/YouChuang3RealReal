@@ -96,6 +96,7 @@ public class SwitchSceneAnim : MonoBehaviour
     private IEnumerator WaitTime(float time)
     {
         blackMask.gameObject.SetActive(false);
+        mask.gameObject.SetActive(true);
 
         day.DOColor(new Color(1,1,1,0), 1);
         day_First.DOColor(new Color(1, 1, 1, 0), 1);
@@ -107,6 +108,7 @@ public class SwitchSceneAnim : MonoBehaviour
         blackScene.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(time-1);
+        mask.gameObject.SetActive(false);
         diologueState.UpdateDiologue();
         processManager.Save((int)nextDay * 1000,1,"");
         diologueState.SetButtonsActive(true);
