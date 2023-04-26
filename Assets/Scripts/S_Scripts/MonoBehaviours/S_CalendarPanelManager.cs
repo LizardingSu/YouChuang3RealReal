@@ -97,12 +97,24 @@ public class S_CalendarPanelManager : MonoBehaviour
                     day.Nodes.Add(new S_NodeInDay(day, cho.ID, "µã»÷Ìø×ª", 0, setGrey));
                 }
 
-                for (int j = 0; j < day.Nodes.Count; j++)
+                
+            }
+
+            for (int j = 0; j < day.Nodes.Count - 1; j++)
+            {
+                if (day.Nodes[j].ID > day.Nodes[j + 1].ID)
                 {
-                    day.Nodes[j].Location = (int)((float)j / (float)(day.Nodes.Count) * 100f);
+                    S_NodeInDay t = day.Nodes[j + 1];
+                    day.Nodes[j + 1] = day.Nodes[j];
+                    day.Nodes[j] = t;
                 }
             }
-            
+
+            for (int j = 0; j < day.Nodes.Count; j++)
+            {
+                day.Nodes[j].Location = (int)((float)j / (float)(day.Nodes.Count) * 100f);
+            }
+
             allDays.Add(day);
         }
     }
