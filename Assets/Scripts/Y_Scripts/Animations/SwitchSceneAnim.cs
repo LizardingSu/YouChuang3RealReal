@@ -96,9 +96,17 @@ public class SwitchSceneAnim : MonoBehaviour
     private IEnumerator WaitTime(float time)
     {
         blackMask.gameObject.SetActive(false);
+
+        day.DOColor(new Color(1,1,1,0), 1);
+        day_First.DOColor(new Color(1, 1, 1, 0), 1);
+        day_Second.DOColor(new Color(1, 1, 1, 0), 1);
+        pressToContinue.DOColor(new Color(1, 1, 1, 0), 1);
+        blackScene.GetComponent<Image>().DOColor(new Color(1, 1, 1, 0), 1);
+
+        yield return new WaitForSeconds(1);
         blackScene.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(time-1);
         diologueState.UpdateDiologue();
         processManager.Save((int)nextDay * 1000,1,"");
         diologueState.SetButtonsActive(true);
