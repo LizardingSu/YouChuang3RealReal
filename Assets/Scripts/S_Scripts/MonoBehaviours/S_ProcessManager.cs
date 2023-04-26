@@ -52,6 +52,7 @@ public class S_ProcessManager : MonoBehaviour
         {
             m_Saving.Choices.Add(new S_ChoiceMade(id, option,answer));
         }
+
         WriteSaving();
 
         Accessor.StateManager.CalendarPanel.GetComponent<S_CalendarPanelManager>().InitAllDays();

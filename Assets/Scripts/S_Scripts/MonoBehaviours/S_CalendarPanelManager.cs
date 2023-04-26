@@ -87,12 +87,19 @@ public class S_CalendarPanelManager : MonoBehaviour
             {
                 if ((cho.ID / 1000) == i + 1)
                 {
-                    day.Nodes.Add(new S_NodeInDay(day, cho.ID, "点击跳转1", 0));
+                    bool setGrey = false;
+                    setGrey = !(cho.Answer == string.Empty);
+                    if (cho.ID % 1000 == 0)
+                    {
+                        setGrey = true;
+                    }
+
+                    day.Nodes.Add(new S_NodeInDay(day, cho.ID, "点击跳转", 0, setGrey));
                 }
 
-                for (int j = 1; j <= day.Nodes.Count; j++)
+                for (int j = 0; j < day.Nodes.Count; j++)
                 {
-                    day.Nodes[j - 1].Location = (int)((float)j / (float)(day.Nodes.Count + 1) * 100f);
+                    day.Nodes[j].Location = (int)((float)j / (float)(day.Nodes.Count) * 100f);
                 }
             }
             
@@ -132,11 +139,15 @@ public class S_CalendarPanelManager : MonoBehaviour
             button.SetActive(true);
             mask.SetActive(false);
 
+            button.GetComponent<UnityEngine.UI.Image>().material = null;
+
             button.transform.GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
 
             RectTransform sliderRect = slider.GetComponent<RectTransform>();
             sliderRect.sizeDelta = new Vector2(sliderRect.rect.width, sliderDefaultHeight);
         }
+
+        DayButtons[Accessor._DioLogueState.date - 1].GetComponent<RectTransform>().GetChild(1).GetComponent<UnityEngine.UI.Image>().material = Accessor.StateManager.NotePanel.GetComponent<S_NotePanelManager>().OutlineMaterial;
     }
 
     /// <summary>
@@ -204,7 +215,16 @@ public class S_CalendarPanelManager : MonoBehaviour
             float posY = lineHeight / 2 - lineHeight * node.CalculateLocationInFloat();
 
             showedNode.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, posY);
-            
+
+            if (node.IsCorrect)
+            {
+                showedNode.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = new Color(0.5f, 0.5f, 0.5f); 
+            }
+            else
+            {
+                showedNode.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>().color = new Color(1f, 1f, 1f);
+            }
+
             GameObject dialogBox = showedNode.transform.GetChild(1).gameObject;
             GameObject text = dialogBox.transform.GetChild(0).gameObject;
 

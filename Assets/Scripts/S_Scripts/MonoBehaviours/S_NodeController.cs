@@ -9,6 +9,12 @@ public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public Sprite DefaultNode;
     public Sprite ActiveNode;
 
+    private void OnEnable()
+    {
+        transform.GetChild(0).GetComponent<Image>().sprite = DefaultNode;
+        transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(DefaultNode.rect.width, DefaultNode.rect.height);
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.GetChild(1).gameObject.SetActive(true);
