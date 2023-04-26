@@ -180,11 +180,24 @@ public class CharacterController : MonoBehaviour
                 {
                     if (charID > 1)
                     {
-                        windowsCharacters[curPlace].transform.SetAsLastSibling();
-                        windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
-                        charSortedList.Add(charID);
-                        SortWindowsPos();
-                        curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
+                        bool isIn = false;
+                        foreach(var windowsCharacter in windowsCharacters)
+                        {
+                            if (charID == windowsCharacter.CharID)
+                            {
+                                isIn = true;
+                                break;
+                            }
+                        }
+
+                        if (!isIn)
+                        {
+                            windowsCharacters[curPlace].transform.SetAsLastSibling();
+                            windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
+                            charSortedList.Add(charID);
+                            SortWindowsPos();
+                            curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
+                        }
 
                         //可能存在当前角色In的时候，左侧已经有对话框出现了，此时只需要ShowName时间而不是MoveUp时间，并且另一侧如果已经有对话框，则需要MoveDown
                         if (left.curState == CurState.HIDE)
@@ -296,6 +309,7 @@ public class CharacterController : MonoBehaviour
 
         if (charID > 1)
         {
+            //对于开头，不可能出现一个角色已经In过的情况
             windowsCharacters[curPlace].transform.SetAsLastSibling();
             windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
             charSortedList.Add(charID);
@@ -369,11 +383,24 @@ public class CharacterController : MonoBehaviour
         {
             if (state == CharacterState.In)
             {
-                windowsCharacters[curPlace].transform.SetAsLastSibling();
-                windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
-                charSortedList.Add(charID);
-                SortWindowsPos();
-                curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
+                bool isIn = false;
+                foreach (var windowsCharacter in windowsCharacters)
+                {
+                    if (charID == windowsCharacter.CharID)
+                    {
+                        isIn = true;
+                        break;
+                    }
+                }
+
+                if (!isIn)
+                {
+                    windowsCharacters[curPlace].transform.SetAsLastSibling();
+                    windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
+                    charSortedList.Add(charID);
+                    SortWindowsPos();
+                    curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
+                }
 
             }
             else if (state == CharacterState.Leave)
