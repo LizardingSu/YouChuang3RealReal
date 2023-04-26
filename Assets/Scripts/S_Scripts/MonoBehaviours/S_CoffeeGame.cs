@@ -272,11 +272,11 @@ public class S_CoffeeGame : MonoBehaviour
             IEnumerator PlayGrinderAnimation()
             {
                 Grinder.GetComponent<Image>().sprite = GrinderFrames[0];
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.25f);
                 Grinder.GetComponent<Image>().sprite = GrinderFrames[1];
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.25f);
                 Grinder.GetComponent<Image>().sprite = GrinderFrames[2];
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.25f);
                 Grinder.GetComponent<Image>().sprite = GrinderFrames[0];
             }
             //Debug.Log("click");
