@@ -197,7 +197,7 @@ public class S_CoffeeGame : MonoBehaviour
         //≤‚ ‘
         if (Input.GetKeyDown(KeyCode.G))
         {
-            
+            //StartCoffeeGame();
         }
         else if (Input.GetKeyDown(KeyCode.E)) 
         {
