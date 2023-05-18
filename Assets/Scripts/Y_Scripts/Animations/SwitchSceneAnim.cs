@@ -15,6 +15,7 @@ public class SwitchSceneAnim : MonoBehaviour
     public float delayToTurnTime = 0.2f;
     public float turningTime = 1.2f;
 
+    public int toID = -1;
     public uint nextDay;
 
     public Image blackMask;
@@ -88,7 +89,7 @@ public class SwitchSceneAnim : MonoBehaviour
     private void onClick()
     {
         diologueState.SetButtonsActive(false);
-        diologueState.ReadToCurrentID((int)nextDay, -1);
+        diologueState.ReadToCurrentID((int)nextDay, toID);
 
         StartCoroutine(WaitTime(2));
     }
@@ -114,9 +115,11 @@ public class SwitchSceneAnim : MonoBehaviour
         diologueState.SetButtonsActive(true);
     }
 
-    public void SwitchToNewScene(uint day1,uint day2)
+    public void SwitchToNewScene(uint day1,uint day2,int nextID = -1)
     {
         //³õÊ¼»¯×´Ì¬
+        toID = nextID;
+
         diologueState.SetButtonsActive(false);
         buttonToContinue.interactable = false;
         nextDay = day2;

@@ -138,6 +138,8 @@ public class DioLogueState : MonoBehaviour
 
         if(curData.processState == ProcessState.Coffee&&curData.charaID == -1)
         {
+            centralAccessor.ProcessManager.Save((int)(1000 * date + curData.idx), -1, "");
+
             if (date == 16)
                 return;
 
