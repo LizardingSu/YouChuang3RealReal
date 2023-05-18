@@ -37,7 +37,8 @@ public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         sm.CancelStateCalendar();
         sm.StateSwitchToLog();
 
-        calendarPanel.Accessor._DioLogueState.ReadToCurrentID(day, id);
+        //calendarPanel.accessor._DioLogueState.ReadToCurrentID(day, id);
+        calendarPanel.accessor._SwitchSceneAnim.SwitchToNewScene(calendarPanel.accessor._DioLogueState.curData.date, (uint)day, id);
     }
 
     public void OnPointerExit(PointerEventData eventData)

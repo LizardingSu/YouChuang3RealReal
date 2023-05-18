@@ -12,7 +12,7 @@ public class S_CalendarPanelManager : MonoBehaviour
     public GameObject[] DayButtons;
 
     //accessor
-    public S_CentralAccessor Accessor;
+    public S_CentralAccessor accessor;
 
     //slider伸长的长度
     public float SliderShowingHeight;
@@ -69,7 +69,7 @@ public class S_CalendarPanelManager : MonoBehaviour
     public void InitAllDays()
     {
         dayNumber = 0;
-        foreach (var i in Accessor.ProcessManager.m_Saving.Choices)
+        foreach (var i in accessor.ProcessManager.m_Saving.Choices)
         {
             int id = i.ID;
             if (dayNumber < (id / 1000))
@@ -83,7 +83,7 @@ public class S_CalendarPanelManager : MonoBehaviour
         {
             
             S_DayInCalendar day = new S_DayInCalendar(new List<S_NodeInDay>(), 100);
-            foreach (var cho in Accessor.ProcessManager.m_Saving.Choices)
+            foreach (var cho in accessor.ProcessManager.m_Saving.Choices)
             {
                 if ((cho.ID / 1000) == i + 1)
                 {
@@ -159,7 +159,7 @@ public class S_CalendarPanelManager : MonoBehaviour
             sliderRect.sizeDelta = new Vector2(sliderRect.rect.width, sliderDefaultHeight);
         }
 
-        DayButtons[Accessor._DioLogueState.date - 1].GetComponent<RectTransform>().GetChild(1).GetComponent<UnityEngine.UI.Image>().material = Accessor.StateManager.NotePanel.GetComponent<S_NotePanelManager>().OutlineMaterial;
+        DayButtons[accessor._DioLogueState.date - 1].GetComponent<RectTransform>().GetChild(1).GetComponent<UnityEngine.UI.Image>().material = accessor.StateManager.NotePanel.GetComponent<S_NotePanelManager>().OutlineMaterial;
     }
 
     /// <summary>
