@@ -12,8 +12,6 @@ public class S_CoffeeGame : MonoBehaviour
 
     public GameObject GamePanel;
 
-    public bool GamePlaying;
-
     public int frameNumber = 30;
 
     public float GamePanelOriginPosY;
@@ -52,6 +50,11 @@ public class S_CoffeeGame : MonoBehaviour
     public GameObject Locker;
 
     public GameObject Refrigerator;
+
+
+    //表示当前是否正在进行游戏
+    [HideInInspector]
+    public bool GamePlaying;
 
 
     //表示当前正在做的coffee的数据
@@ -150,13 +153,14 @@ public class S_CoffeeGame : MonoBehaviour
             ds.SetButtonsActive(false);
 
             //禁用PanelSwitcher
-            for (int i = 0; i < PanelSwitcher.transform.childCount; i++)
-            {
-                PanelSwitcher.transform.GetChild(i).GetComponent<Button>().interactable = false;
-            }
+            //for (int i = 0; i < PanelSwitcher.transform.childCount; i++)
+            //{
+            //    PanelSwitcher.transform.GetChild(i).GetComponent<Button>().interactable = false;
+            //}
 
             currentCoffee = accessor.DataManager.CoffeeStep.Coffees[data.charaID - 1];
             InitGame();
+            GamePlaying = true;
         }
         else
         {
@@ -175,20 +179,30 @@ public class S_CoffeeGame : MonoBehaviour
             ds.SetButtonsActive(true);
 
             //启用PanelSwitcher
-            for (int i = 0; i < PanelSwitcher.transform.childCount; i++)
-            {
-                PanelSwitcher.transform.GetChild(i).GetComponent<Button>().interactable = true;
-            }
+            //for (int i = 0; i < PanelSwitcher.transform.childCount; i++)
+            //{
+            //    PanelSwitcher.transform.GetChild(i).GetComponent<Button>().interactable = true;
+            //}
 
             //StartCoroutine(SetButtonsActive(1.2f, true));
+            GamePlaying = false;
         }
 
         Debug.Log("Wow");
         accessor._DioLogueState.UpdateDiologue();
     }
 
+
+    /// <summary>
+    /// 用于在游戏进行时终止游戏
+    /// </summary>
     public void Clear()
     {
+        if (GamePlaying)
+        {
+            GamePlaying = false;
+            transform.position = new Vector3(transform.position.x, GamePanelOriginPosY, transform.position.z);
+        }
         //Debug.Log("YLT是啥呗!");
     }    
 
@@ -285,7 +299,7 @@ public class S_CoffeeGame : MonoBehaviour
             {
                 StartCoroutine(PlayGrinderAnimation());
                 currentFinishedStepNumber++;
-                State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("磨豆", "<s>磨豆</s>");
+                State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("磨豆", "<s><color=grey>磨豆</color></s>");
                 if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
                 {
                     //Debug.Log("replace");
@@ -309,7 +323,7 @@ public class S_CoffeeGame : MonoBehaviour
             if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Extract)
             {
                 currentFinishedStepNumber++;
-                State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("萃取", "<s>萃取</s>");
+                State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("萃取", "<s><color=grey>萃取</color></s>");
                 if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
                 {
                     //Debug.Log("replace");
@@ -331,7 +345,7 @@ public class S_CoffeeGame : MonoBehaviour
         if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.ColdWater)
         {
             currentFinishedStepNumber++;
-            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("冷水", "<s>冷水</s>");
+            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("冷水", "<s><color=grey>冷水</color></s>");
             if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
             {
                 //Debug.Log("replace");
@@ -352,7 +366,7 @@ public class S_CoffeeGame : MonoBehaviour
         if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.HotWater)
         {
             currentFinishedStepNumber++;
-            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("热水", "<s>热水</s>");
+            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("热水", "<s><color=grey>热水</color></s>");
             if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
             {
                 //Debug.Log("replace");
@@ -382,7 +396,7 @@ public class S_CoffeeGame : MonoBehaviour
                 Refrigerator.GetComponent<Image>().sprite = RefrigeratorFrames[0];
                 RefrigeratorOpened = false;
                 currentFinishedStepNumber++;
-                State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("冰", "<s>冰</s>");
+                State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("冰", "<s><color=grey>冰</color></s>");
                 if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
                 {
                     //Debug.Log("replace");
@@ -415,7 +429,7 @@ public class S_CoffeeGame : MonoBehaviour
                     Locker.GetComponent<Image>().sprite = LockerFrames[0];
                     LockerOpened = false;
                     currentFinishedStepNumber++;
-                    State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("CAVA", "<s>CAVA</s>");
+                    State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("CAVA", "<s><color=grey>CAVA</color></s>");
                     if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
                     {
                         //Debug.Log("replace");
@@ -438,7 +452,7 @@ public class S_CoffeeGame : MonoBehaviour
         if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Milks)
         {
             currentFinishedStepNumber++;
-            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("牛奶", "<s>牛奶</s>");
+            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("牛奶", "<s><color=grey>牛奶</color></s>");
             if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
             {
                 //Debug.Log("replace");
@@ -461,7 +475,7 @@ public class S_CoffeeGame : MonoBehaviour
             if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Grind)
             {
                 currentFinishedStepNumber++;
-                State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("磨豆", "<s>磨豆</s>");
+                State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("磨豆", "<s><color=grey>磨豆</color></s>");
                 if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
                 {
                     //Debug.Log("replace");
@@ -485,7 +499,7 @@ public class S_CoffeeGame : MonoBehaviour
             if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Extract)
             {
                 currentFinishedStepNumber++;
-                State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("萃取", "<s>萃取</s>");
+                State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("萃取", "<s><color=grey>萃取</color></s>");
                 if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
                 {
                     //Debug.Log("replace");
