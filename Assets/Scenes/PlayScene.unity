@@ -7858,6 +7858,7 @@ MonoBehaviour:
   moveUpBlackMaskTime: 1.2
   delayToTurnTime: 2
   turningTime: 2
+  toID: -1
   nextDay: 0
   blackMask: {fileID: 1055385129}
   blackScene: {fileID: 388517350}
@@ -11970,6 +11971,7 @@ MonoBehaviour:
   ProcessManager: {fileID: 1765219809}
   DataManager: {fileID: 1765219811}
   _DioLogueState: {fileID: 1765219810}
+  _SwitchSceneAnim: {fileID: 1068702850}
 --- !u!114 &1765219808
 MonoBehaviour:
   m_ObjectHideFlags: 0

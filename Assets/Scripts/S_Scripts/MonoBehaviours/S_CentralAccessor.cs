@@ -11,4 +11,5 @@ public class S_CentralAccessor : MonoBehaviour
     public S_DataManager DataManager;
 
     public DioLogueState _DioLogueState;
+    public SwitchSceneAnim _SwitchSceneAnim;
 }
