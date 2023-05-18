@@ -880,6 +880,7 @@ GameObject:
   - component: {fileID: 57715095}
   - component: {fileID: 57715094}
   - component: {fileID: 57715096}
+  - component: {fileID: 57715097}
   m_Layer: 5
   m_Name: Locker
   m_TagString: Untagged
@@ -1001,6 +1002,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &57715097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57715092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc3ddb49796752409d7c1febd5ce691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighlightMat: {fileID: 2100000, guid: 1954d20d2d2a086479d33de504833eb8, type: 2}
 --- !u!1 &69297052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1013,6 +1027,7 @@ GameObject:
   - component: {fileID: 69297055}
   - component: {fileID: 69297054}
   - component: {fileID: 69297056}
+  - component: {fileID: 69297057}
   m_Layer: 5
   m_Name: ShouMo
   m_TagString: Untagged
@@ -1134,6 +1149,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &69297057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 69297052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc3ddb49796752409d7c1febd5ce691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighlightMat: {fileID: 2100000, guid: 1954d20d2d2a086479d33de504833eb8, type: 2}
 --- !u!1001 &74182285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2753,6 +2781,7 @@ GameObject:
   - component: {fileID: 235857352}
   - component: {fileID: 235857351}
   - component: {fileID: 235857353}
+  - component: {fileID: 235857354}
   m_Layer: 5
   m_Name: Refrigerator
   m_TagString: Untagged
@@ -2874,6 +2903,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &235857354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235857349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc3ddb49796752409d7c1febd5ce691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighlightMat: {fileID: 2100000, guid: 1954d20d2d2a086479d33de504833eb8, type: 2}
 --- !u!1 &246408670
 GameObject:
   m_ObjectHideFlags: 0
@@ -3073,6 +3115,7 @@ GameObject:
   - component: {fileID: 270540945}
   - component: {fileID: 270540944}
   - component: {fileID: 270540946}
+  - component: {fileID: 270540947}
   m_Layer: 5
   m_Name: CoffeeMachine
   m_TagString: Untagged
@@ -3194,6 +3237,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &270540947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270540942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc3ddb49796752409d7c1febd5ce691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighlightMat: {fileID: 2100000, guid: 1954d20d2d2a086479d33de504833eb8, type: 2}
 --- !u!1 &292837442
 GameObject:
   m_ObjectHideFlags: 0
@@ -7882,6 +7938,7 @@ GameObject:
   - component: {fileID: 1093896680}
   - component: {fileID: 1093896679}
   - component: {fileID: 1093896681}
+  - component: {fileID: 1093896682}
   m_Layer: 5
   m_Name: GrinderButton
   m_TagString: Untagged
@@ -8003,6 +8060,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1093896682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093896677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc3ddb49796752409d7c1febd5ce691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighlightMat: {fileID: 2100000, guid: 1954d20d2d2a086479d33de504833eb8, type: 2}
 --- !u!1001 &1114336717
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11225,6 +11295,7 @@ GameObject:
   - component: {fileID: 1539506669}
   - component: {fileID: 1539506668}
   - component: {fileID: 1539506670}
+  - component: {fileID: 1539506671}
   m_Layer: 5
   m_Name: ColdButton
   m_TagString: Untagged
@@ -11346,6 +11417,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1539506671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539506666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc3ddb49796752409d7c1febd5ce691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighlightMat: {fileID: 2100000, guid: 1954d20d2d2a086479d33de504833eb8, type: 2}
 --- !u!1 &1566008400
 GameObject:
   m_ObjectHideFlags: 0
@@ -11777,6 +11861,7 @@ GameObject:
   - component: {fileID: 1757864699}
   - component: {fileID: 1757864698}
   - component: {fileID: 1757864700}
+  - component: {fileID: 1757864701}
   m_Layer: 5
   m_Name: HotButton
   m_TagString: Untagged
@@ -11898,6 +11983,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1757864701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757864696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc3ddb49796752409d7c1febd5ce691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighlightMat: {fileID: 2100000, guid: 1954d20d2d2a086479d33de504833eb8, type: 2}
 --- !u!1 &1765219804
 GameObject:
   m_ObjectHideFlags: 0
@@ -13984,6 +14082,7 @@ GameObject:
   - component: {fileID: 2067966945}
   - component: {fileID: 2067966944}
   - component: {fileID: 2067966946}
+  - component: {fileID: 2067966947}
   m_Layer: 5
   m_Name: Milk
   m_TagString: Untagged
@@ -14105,6 +14204,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2067966947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2067966942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc3ddb49796752409d7c1febd5ce691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighlightMat: {fileID: 2100000, guid: 1954d20d2d2a086479d33de504833eb8, type: 2}
 --- !u!1 &2088246914
 GameObject:
   m_ObjectHideFlags: 0
@@ -14273,6 +14385,7 @@ GameObject:
   - component: {fileID: 2113437998}
   - component: {fileID: 2113437997}
   - component: {fileID: 2113437999}
+  - component: {fileID: 2113438000}
   m_Layer: 5
   m_Name: Funnel
   m_TagString: Untagged
@@ -14394,6 +14507,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2113438000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113437995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc3ddb49796752409d7c1febd5ce691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighlightMat: {fileID: 2100000, guid: 1954d20d2d2a086479d33de504833eb8, type: 2}
 --- !u!1 &2124459904
 GameObject:
   m_ObjectHideFlags: 0
