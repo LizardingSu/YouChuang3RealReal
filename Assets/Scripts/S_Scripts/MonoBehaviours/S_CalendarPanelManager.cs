@@ -89,7 +89,7 @@ public class S_CalendarPanelManager : MonoBehaviour
                 {
                     bool setGrey = false;
                     setGrey = !(cho.Answer == string.Empty);
-                    if (cho.ID % 1000 == 0)
+                    if (cho.ID % 1000 == 0 || cho.Choice != -1)
                     {
                         setGrey = true;
                     }
@@ -100,20 +100,31 @@ public class S_CalendarPanelManager : MonoBehaviour
                 
             }
 
-            for (int j = 0; j < day.Nodes.Count - 1; j++)
+            for (int k = day.Nodes.Count - 1; k > 0; k--)
             {
-                if (day.Nodes[j].ID > day.Nodes[j + 1].ID)
+                for (int j = 0; j < k; j++)
                 {
-                    S_NodeInDay t = day.Nodes[j + 1];
-                    day.Nodes[j + 1] = day.Nodes[j];
-                    day.Nodes[j] = t;
+                    if (day.Nodes[j].ID > day.Nodes[j + 1].ID)
+                    {
+                        S_NodeInDay t = day.Nodes[j + 1];
+                        day.Nodes[j + 1] = day.Nodes[j];
+                        day.Nodes[j] = t;
+                    }
                 }
             }
-
-            for (int j = 0; j < day.Nodes.Count; j++)
+            
+            if (day.Nodes.Count == 1)
             {
-                day.Nodes[j].Location = (int)((float)j / (float)(day.Nodes.Count) * 100f);
+                day.Nodes[0].Location = 0;
             }
+            else
+            {
+                for (int j = 0; j < day.Nodes.Count; j++)
+                {
+                    day.Nodes[j].Location = (int)((float)j / (float)(day.Nodes.Count - 1) * 100f);
+                }
+            }
+            
 
             allDays.Add(day);
         }

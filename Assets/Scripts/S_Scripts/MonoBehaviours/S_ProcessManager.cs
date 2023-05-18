@@ -4,11 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.UI;
 
 [ExecuteAlways]
 public class S_ProcessManager : MonoBehaviour
 {
-    public S_CentralAccessor Accessor;
+    public S_CentralAccessor accessor;
 
     public void ExitGame()
     {
@@ -22,7 +23,17 @@ public class S_ProcessManager : MonoBehaviour
     //存档文件
     public S_GameSaving m_Saving;
 
-    public void Save(int id,int option,string answer)
+    //配置文件
+    public S_Profile m_Profile;
+
+
+    /// <summary>
+    /// 储存游戏存档
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="option"></param>
+    /// <param name="answer"></param>
+    public void Save(int id, int option, string answer)
     {
         Debug.Log(id + "  " + answer);
 
@@ -42,32 +53,100 @@ public class S_ProcessManager : MonoBehaviour
 
         if (exist)
         {
-            if (m_Saving.Choices[existIndex].Answer!=""&&answer == "")
+            if (m_Saving.Choices[existIndex].Answer != "" && answer == "")
                 answer = m_Saving.Choices[existIndex].Answer;
 
             m_Saving.Choices.RemoveAt(existIndex);
-            m_Saving.Choices.Add(new S_ChoiceMade(id, option,answer));
+            m_Saving.Choices.Add(new S_ChoiceMade(id, option, answer));
         }
         else
         {
-            m_Saving.Choices.Add(new S_ChoiceMade(id, option,answer));
+            m_Saving.Choices.Add(new S_ChoiceMade(id, option, answer));
         }
 
-        WriteSaving();
+        WriteFile(m_Saving, "SavingFile.txt");
 
-        Accessor.StateManager.CalendarPanel.GetComponent<S_CalendarPanelManager>().InitAllDays();
+        accessor.StateManager.CalendarPanel.GetComponent<S_CalendarPanelManager>().InitAllDays();
         //Accessor.StateManager.CalendarPanel.GetComponent<S_CalendarPanelManager>().InitDayButtons();
     }
 
+    /// <summary>
+    /// 读取游戏存档
+    /// </summary>
     public void Load()
     {
-        if (ReadSaving())
+        if (ReadFile(m_Saving, "SavingFile.txt"))
         {
 
         }
         else
         {
             Debug.Log("存档读取失败，文件不存在");
+        }
+    }
+
+
+    public void SaveProfile()
+    {
+        Debug.Log("profileSave");
+
+        //Debug.Log(m_Profile.BGMVolume);
+        //Debug.Log(m_Profile.SEVolume);
+
+        //Slider BGMSlider = accessor.StateManager.SettingPanel.transform.GetChild(1).GetChild(0).GetComponent<Slider>();
+        //Slider SESlider = accessor.StateManager.SettingPanel.transform.GetChild(1).GetChild(1).GetComponent<Slider>();
+
+        m_Profile.BGMVolume = accessor.AudioManager.BGMPlayer.volume;
+        m_Profile.SEVolume = accessor.AudioManager.SEPlayer.volume;
+
+        //Debug.Log(m_Profile.BGMVolume);
+        //Debug.Log(m_Profile.SEVolume);
+
+        WriteFile(m_Profile, "Profile.txt");
+    }
+
+    public void LoadProfile()
+    {
+        Slider BGMSlider = accessor.StateManager.SettingPanel.transform.GetChild(1).GetChild(0).GetComponent<Slider>();
+        Slider SESlider = accessor.StateManager.SettingPanel.transform.GetChild(1).GetChild(1).GetComponent<Slider>();
+
+        if (ReadFile(m_Profile, "Profile.txt"))
+        {
+            //Debug.Log("读取成功");
+            //Debug.Log(accessor.ProcessManager.m_Profile.SEVolume);
+
+            accessor.AudioManager.BGMPlayer.volume = m_Profile.BGMVolume;
+            accessor.AudioManager.SEPlayer.volume = m_Profile.SEVolume;
+
+            //Debug.Log(m_Profile.BGMVolume);
+            //Debug.Log(m_Profile.SEVolume);
+
+            BGMSlider.value = m_Profile.BGMVolume;
+
+            //Debug.Log(m_Profile.BGMVolume);
+            //Debug.Log(m_Profile.SEVolume);
+
+            SESlider.value = m_Profile.SEVolume;
+
+            //Debug.Log(m_Profile.BGMVolume);
+            //Debug.Log(m_Profile.SEVolume);
+
+            
+            //Debug.Log(accessor.ProcessManager.m_Profile.SEVolume);
+        }
+        else
+        {
+            Debug.Log("配置文件不存在，已重新生成");
+            accessor.AudioManager.SetBGMVolume(1f);
+            accessor.AudioManager.SetSEVolume(1f);
+
+            BGMSlider.value = 1f;
+            SESlider.value = 1f;
+
+            m_Profile.BGMVolume = 1f;
+            m_Profile.SEVolume = 1f;
+
+            WriteFile(m_Profile, "Profile.txt");
         }
     }
 
@@ -76,34 +155,34 @@ public class S_ProcessManager : MonoBehaviour
     /// </summary>
     /// <param name="id"></param>
     public void LoadLog(int id = -1)
-    {
-        Debug.Log(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt");
-
-        if (ReadSaving())
         {
-            int idx;
-            int day;
+            Debug.Log(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt");
 
+            if (ReadFile(m_Saving, "SavingFile.txt"))
             {
-                if (id == -1)
-                    id = m_Saving.Choices.Last().ID;
+                int idx;
+                int day;
 
-                idx = id % 1000;
-                day = (id - idx) / 1000;
+                {
+                    if (id == -1)
+                        id = m_Saving.Choices.Last().ID;
+
+                    idx = id % 1000;
+                    day = (id - idx) / 1000;
+                }
+
+                accessor._DioLogueState.ReadToCurrentID(day, idx);
             }
-
-            Accessor._DioLogueState.ReadToCurrentID(day, idx);
+            else
+            {
+                Debug.Log("存档读取失败，文件不存在");
+                accessor._DioLogueState.ReadToCurrentID(1, -1);
+                return;
+            }
         }
-        else
-        {
-            Debug.Log("存档读取失败，文件不存在");
-            Accessor._DioLogueState.ReadToCurrentID(1, -1);
-            return;
-        }
-    }
 
     //将m_Saving写入硬盘
-    private void WriteSaving()
+    private void WriteFile(ScriptableObject data, string fileName)
     {
         if (!Directory.Exists(Application.persistentDataPath + "/ApodaSaving"))
         {
@@ -112,9 +191,9 @@ public class S_ProcessManager : MonoBehaviour
 
         BinaryFormatter formatter = new BinaryFormatter();
 
-        FileStream file = File.Create(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt");
+        FileStream file = File.Create(Application.persistentDataPath + "/ApodaSaving/" + fileName);
 
-        var json = JsonUtility.ToJson(m_Saving);
+        var json = JsonUtility.ToJson(data);
 
         formatter.Serialize(file, json);
 
@@ -126,17 +205,17 @@ public class S_ProcessManager : MonoBehaviour
     }
 
     //读取硬盘中的存档并修改m_Saving
-    private bool ReadSaving()
+    private bool ReadFile(ScriptableObject data, string fileName)
     {
         BinaryFormatter bf = new BinaryFormatter();
 
-        if (File.Exists(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt"))
+        if (File.Exists(Application.persistentDataPath + "/ApodaSaving/" + fileName))
         {
             Debug.Log("Load");
 
-            FileStream file = File.Open(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt", FileMode.Open);
+            FileStream file = File.Open(Application.persistentDataPath + "/ApodaSaving/" + fileName, FileMode.Open);
 
-            JsonUtility.FromJsonOverwrite((string)bf.Deserialize(file), m_Saving);
+            JsonUtility.FromJsonOverwrite((string)bf.Deserialize(file), data);
 
             file.Flush();
             file.Close();
@@ -146,11 +225,15 @@ public class S_ProcessManager : MonoBehaviour
         }
         else
         {
-            m_Saving.Choices.Clear();
+            if (data is S_GameSaving)
+            {
+                (data as S_GameSaving).Choices.Clear();
+            }
             return false;
         }
     }
 
+    //删除存档文件
     public void DeleteSaving()
     {
         if (File.Exists(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt"))

@@ -3764,7 +3764,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accessor: {fileID: 1765219807}
   GamePanel: {fileID: 374283987}
-  GamePlaying: 0
   frameNumber: 30
   GamePanelOriginPosY: 0
   DeltaY: 650
@@ -3790,6 +3789,7 @@ MonoBehaviour:
   Grinder: {fileID: 507343385}
   Locker: {fileID: 57715092}
   Refrigerator: {fileID: 235857349}
+  GamePlaying: 0
 --- !u!114 &374283990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11982,6 +11982,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a341de6d73069e6409f99484b3836f32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  accessor: {fileID: 1765219807}
   BGMPlayer: {fileID: 519420034}
   SEPlayer: {fileID: 519420033}
 --- !u!114 &1765219809
@@ -11996,8 +11997,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e473bd3f41a4fa4d83998c5a43b65fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Accessor: {fileID: 1765219807}
+  accessor: {fileID: 1765219807}
   m_Saving: {fileID: 11400000, guid: 0bc453997656fbe42a474237a6559674, type: 2}
+  m_Profile: {fileID: 11400000, guid: d6eae424ed349ed45ba5b1f7dabfa214, type: 2}
 --- !u!114 &1765219810
 MonoBehaviour:
   m_ObjectHideFlags: 0

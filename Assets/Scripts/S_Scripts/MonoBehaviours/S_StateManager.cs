@@ -87,6 +87,7 @@ public class S_StateManager : MonoBehaviour
     {
         SettingPanel.SetActive(true);
         State = PlaySceneState.Setting;
+        //GetComponent<S_CentralAccessor>().ProcessManager.LoadProfile();
     }
 
     public void StateSwitchToLog()
