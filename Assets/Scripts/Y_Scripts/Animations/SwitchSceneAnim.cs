@@ -51,7 +51,10 @@ public class SwitchSceneAnim : MonoBehaviour
         //将blackScene设置为Active
         blackScene.gameObject.SetActive(true);
         //将各项都初始化
-        day_First.text = Convert.ToString(day1);
+        if(day1 == 0)
+            day_First.text = "?";
+        else
+            day_First.text = Convert.ToString(day1);
         day_Second.text = Convert.ToString(day2);
         daysTransform.anchoredPosition = new Vector2(daysTransform.anchoredPosition.x, 0);
         pressToContinue.gameObject.SetActive(false);
