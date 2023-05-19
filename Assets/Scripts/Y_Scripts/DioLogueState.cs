@@ -53,8 +53,6 @@ public class DioLogueState : MonoBehaviour
             SetButtonsActive(false);
         else
             SetButtonsActive(true);
-
-        StartCoroutine(LoadNewScene());
     }
     //test
     private IEnumerator LoadNewScene()
@@ -74,6 +72,8 @@ public class DioLogueState : MonoBehaviour
 
     public void LoadNewSceneImme()
     {
+        Debug.Log("NewScene");
+
         var pm = centralAccessor.ProcessManager;
         pm.DeleteSaving();
         pm.Load();
@@ -83,6 +83,17 @@ public class DioLogueState : MonoBehaviour
 
         Init(date, path);
         switchAnim.SwitchToNewScene(0, 1);
+    }
+
+    public void ContinueGame()
+    {
+        Debug.Log("Continue");
+        var pm = centralAccessor.ProcessManager;
+        pm.Load();
+
+        var c = pm.m_Saving.Choices[pm.m_Saving.Choices.Count - 1];
+
+        ReadToCurrentID((int)(c.ID / 1000), c.ID % 1000);
     }
 
     private void OnDestroy()
@@ -154,7 +165,7 @@ public class DioLogueState : MonoBehaviour
             if (date == 16)
                 return;
 
-            centralAccessor.ProcessManager.Save((int)date*1000+lastDio, -1, "");
+            centralAccessor.ProcessManager.Save((int)date*1000+lastDio, -2, "");
 
             switchAnim.SwitchToNewScene(date, date + 1);
             return;

@@ -59,7 +59,10 @@ public class CharacterEntryController : MonoBehaviour
         
         
         curState = CurState.HIDE;
-        rectTransform.DOKill();
+
+        //not really need
+        rectTransform.DOKill(true);
+
         rectTransform.DOAnchorPosY(-80, time);
     }
     public void MoveUp(float time)
@@ -67,7 +70,10 @@ public class CharacterEntryController : MonoBehaviour
         if (curState == CurState.UP) return;
 
         curState = CurState.UP;
-        rectTransform.DOKill();
+
+        //not really need
+        rectTransform.DOKill(true);
+
         rectTransform.DOAnchorPosY(0, time);
     }
     public void MoveDown(float time)
@@ -75,20 +81,28 @@ public class CharacterEntryController : MonoBehaviour
         if (curState == CurState.DOWN) return;
 
         curState = CurState.DOWN;
-        rectTransform.DOKill();
+
+        //not really need
+        rectTransform.DOKill(true);
+
         rectTransform.DOAnchorPosY(-1000, time);
     }
 
     public void FadeAnim(float time)
     {
-        image.DOColor(new Color(1,1,1,0.2f), time);
-        StartCoroutine(Fade(time));
+        var rc = image.GetComponent<RectTransform>();
+        rc.anchoredPosition = new Vector2(264, 0);
+
+        //not really need
+        rc.DOKill(true);
+
+        rc.DOAnchorPosX(0, time);
     }
 
-    private IEnumerator Fade(float time)
+    public void KillAllAnim()
     {
-        yield return new WaitForSeconds(time);
-        image.DOColor(Color.white, time);
+        image.GetComponent<RectTransform>().DOKill(true);
+        rectTransform.DOKill(true);
     }
 
     public void SetName(string name)

@@ -24,14 +24,25 @@ public class RightLogController : MonoBehaviour
     public void MoveUp(float time)
     {
         if (m_transform.anchoredPosition.y == 0) return;
-        m_transform.DOKill();
+
+        //not really need
+        m_transform.DOKill(true);
+
         m_transform.DOAnchorPosY(0,time);
     }
     public void MoveDown(float time)
     {
         if (m_transform.anchoredPosition.y == -400) return;
-        m_transform.DOKill();
+
+        //not really need
+        m_transform.DOKill(true);
+
         m_transform.DOAnchorPosY(-400, time);
+    }
+
+    public void KillAllAnim()
+    {
+        m_transform.DOKill(true);
     }
 
     public void Init(LogEntry logEntry)
