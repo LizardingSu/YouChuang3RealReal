@@ -53,30 +53,20 @@ public class DioLogueState : MonoBehaviour
             SetButtonsActive(false);
         else
             SetButtonsActive(true);
-
-        //testP
-        StartCoroutine(LoadSceneWhenFirstAwake());
     }
     //test
-    private IEnumerator LoadSceneWhenFirstAwake()
+    private IEnumerator LoadNewScene()
     {
         yield return null;
 
         var pm = centralAccessor.ProcessManager;
         pm.Load();
-        if (pm.m_Saving.Choices.Count != 0)
-        {
-            date = (uint)pm.m_Saving.Choices.Last().ID / (uint)1000;
-        }
-        else
-        {
-            date = 1;
-            //test
-            pm.Save(1000, 1, "");
-        }
 
-        //test
+        date = 1;
+        pm.Save(1000, 1, "");
+
         Init(date, path);
+        switchAnim.SwitchToNewScene(0, 1);
     }
 
     private void OnDestroy()
@@ -112,6 +102,9 @@ public class DioLogueState : MonoBehaviour
         //for test
         var isStart = ReadedList[0] == 0;
 
+        //保存上一句话的ID
+        var lastDio = 0;
+
         if (curData!=null)
         {
             var isEnd = curData.nextIdx == -1;
@@ -131,6 +124,10 @@ public class DioLogueState : MonoBehaviour
         if(curData!= null)
         {
             dialogueWillChange.Invoke(curData,diologueData);
+
+            //保存最后一句话
+            if(curData.processState == ProcessState.Diologue)
+                lastDio = (int)curData.idx;
         }
 
         curData = diologueData;
@@ -140,6 +137,8 @@ public class DioLogueState : MonoBehaviour
         {
             if (date == 16)
                 return;
+
+            centralAccessor.ProcessManager.Save((int)date*1000+lastDio, -1, "");
 
             switchAnim.SwitchToNewScene(date, date + 1);
             return;
