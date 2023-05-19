@@ -53,6 +53,8 @@ public class DioLogueState : MonoBehaviour
             SetButtonsActive(false);
         else
             SetButtonsActive(true);
+
+        StartCoroutine(LoadNewScene());
     }
     //test
     private IEnumerator LoadNewScene()
@@ -60,6 +62,20 @@ public class DioLogueState : MonoBehaviour
         yield return null;
 
         var pm = centralAccessor.ProcessManager;
+        pm.DeleteSaving();
+        pm.Load();
+
+        date = 1;
+        pm.Save(1000, 1, "");
+
+        Init(date, path);
+        switchAnim.SwitchToNewScene(0, 1);
+    }
+
+    public void LoadNewSceneImme()
+    {
+        var pm = centralAccessor.ProcessManager;
+        pm.DeleteSaving();
         pm.Load();
 
         date = 1;
