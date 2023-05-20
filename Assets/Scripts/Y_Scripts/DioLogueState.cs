@@ -179,7 +179,7 @@ public class DioLogueState : MonoBehaviour
         //如果curData为Branch，自动进行到下一句话
         if (curData.processState == ProcessState.Branch)
         {
-            curData.nextIdx = (int)LogEntryParser.GetNextIdxFromBranch(centralAccessor.ProcessManager.m_Saving.Choices, curData.log);
+            curData.nextIdx = (int)LogEntryParser.GetNextIdxFromBranch(centralAccessor.ProcessManager.m_Saving1.Choices, curData.log);
 
             //嵌套，很恶心
             UpdateDiologue();
