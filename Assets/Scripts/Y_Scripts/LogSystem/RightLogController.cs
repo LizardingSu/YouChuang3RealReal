@@ -15,7 +15,7 @@ public class RightLogController : MonoBehaviour
 
     public void Awake()
     {
-        foreach(var image in buttonImage)
+        foreach (var image in buttonImage)
         {
             image.gameObject.SetActive(false);
         }
@@ -27,7 +27,7 @@ public class RightLogController : MonoBehaviour
 
         //not really need
         m_transform.DOKill(true);
-        m_transform.DOAnchorPosY(0,time);
+        m_transform.DOAnchorPosY(0, time);
     }
     public void MoveDown(float time)
     {
@@ -68,48 +68,31 @@ public class RightLogController : MonoBehaviour
         }
     }
 
-    private IEnumerator PrintText(float speed)
+    private IEnumerator TypeWriter(TMP_Text textComponent, float speed)
     {
-        TMP_TextInfo textInfo = m_dio.textInfo;
+        textComponent.ForceMeshUpdate();
+        Debug.Log("Click");
+        TMP_TextInfo textInfo = textComponent.textInfo;
+        int total = textInfo.characterCount;
+        bool complete = false;
+        int current = 0;
 
-        //首先清空所有文字网格
-        for (int i = 0; i < textInfo.materialCount; ++i)
+        while (!complete)
         {
-            textInfo.meshInfo[i].Clear();
-        }
-        m_dio.UpdateVertexData(TMP_VertexDataUpdateFlags.Vertices);
-
-        float timer = 0;
-        float duration = 1 / speed;
-
-        for (int i = 0; i < textInfo.characterCount; ++i)
-        {
-            while (timer < duration)
+            if (current > total)
             {
-                yield return null;
-                timer += Time.deltaTime;
+                current = total;
+                yield return new WaitForSeconds(1 / speed);
+                complete = true;
             }
 
-            timer -= duration;
+            textComponent.maxVisibleCharacters = current;
+            current += 1;
 
-            TMPro.TMP_CharacterInfo characterInfo = textInfo.characterInfo[i];
-
-            int materialIndex = characterInfo.materialReferenceIndex;
-            int verticeIndex = characterInfo.vertexIndex;
-            if (characterInfo.elementType == TMPro.TMP_TextElementType.Sprite)
-            {
-                verticeIndex = characterInfo.spriteIndex;
-            }
-            if (characterInfo.isVisible)
-            {
-                textInfo.meshInfo[materialIndex].vertices[0 + verticeIndex] = characterInfo.vertex_BL.position;
-                textInfo.meshInfo[materialIndex].vertices[1 + verticeIndex] = characterInfo.vertex_TL.position;
-                textInfo.meshInfo[materialIndex].vertices[2 + verticeIndex] = characterInfo.vertex_TR.position;
-                textInfo.meshInfo[materialIndex].vertices[3 + verticeIndex] = characterInfo.vertex_BR.position;
-                m_dio.UpdateVertexData(TMP_VertexDataUpdateFlags.Vertices);
-            }
-
+            yield return new WaitForSeconds(1 / speed);
         }
 
+        yield return null;
     }
+
 }
