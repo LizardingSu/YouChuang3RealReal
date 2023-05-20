@@ -90,7 +90,7 @@ public class DioLogueState : MonoBehaviour
         var pm = centralAccessor.ProcessManager;
         pm.Load();
 
-        var c = pm.m_Saving.Choices[pm.m_Saving.Choices.Count - 1];
+        var c = pm.m_Saving1.Choices[pm.m_Saving1.Choices.Count - 1];
 
         ReadToCurrentID((int)(c.ID / 1000), c.ID % 1000);
     }
@@ -341,7 +341,7 @@ public class DioLogueState : MonoBehaviour
             }
             else if (curData.processState == ProcessState.Select)
             {
-                var choices = centralAccessor.ProcessManager.m_Saving.Choices;
+                var choices = centralAccessor.ProcessManager.m_Saving1.Choices;
                 foreach (var choice in choices)
                 {
                     var id = choice.ID;
