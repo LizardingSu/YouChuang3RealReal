@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -101,6 +102,7 @@ public class CharacterController : MonoBehaviour
             //根据之前是不是咖啡来判断后续
             isCoffeeBefore = true;
         }
+        //如果上次和这次都有人在同侧，且这次有人入场，则播放入场动画
         else if(data.processState == ProcessState.Diologue||data.processState == ProcessState.Select)
         {
             if(data2.processState == ProcessState.Diologue&&data2.charaState == CharacterState.In)
@@ -108,6 +110,7 @@ public class CharacterController : MonoBehaviour
 
                 if (diologueState.state != DioState.Normal) return;
 
+                //让人物进场的动画
                 if (data2.charaID > 1 && data.charaID > 1)
                 {
                     left.FadeAnim(fadeTime);
@@ -125,6 +128,7 @@ public class CharacterController : MonoBehaviour
         //如果是初始化阶段
         if(data.idx == 0)
         {
+            //展开白色幕布
             whiteMask.FadeAndReFill(false);
         }
 
@@ -144,10 +148,12 @@ public class CharacterController : MonoBehaviour
                 else
                     right.MoveDown(hideAllTime);
 
+                //收起白色幕布
                 StartCoroutine(FoldWhite(whiteFoldDelay));
                 return;
             }
 
+            //如果之前是做咖啡界面，则重新升起所有界面
             if (isCoffeeBefore)
             {
                 isCoffeeBefore = false;
@@ -157,6 +163,7 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
+            //如果是Auto的话，则直接结束咖啡
             if (isCoffeeBefore) isCoffeeBefore = false;
         }
 
@@ -169,6 +176,7 @@ public class CharacterController : MonoBehaviour
 
             var name = characterFiles.characterList[charID].name;
 
+            //如果有人进入场景
             if (state == CharacterState.In)
             {
                 //如果第一次初始化的时候就In了
@@ -180,6 +188,7 @@ public class CharacterController : MonoBehaviour
                 {
                     if (charID > 1)
                     {
+                        //窗口的情况
                         bool isIn = false;
                         foreach(var windowsCharacter in windowsCharacters)
                         {
@@ -189,7 +198,6 @@ public class CharacterController : MonoBehaviour
                                 break;
                             }
                         }
-
                         if (!isIn)
                         {
                             windowsCharacters[curPlace].transform.SetAsLastSibling();
@@ -294,6 +302,8 @@ public class CharacterController : MonoBehaviour
                     right.SetName(data.name);
                 }
             }
+
+            ChangeColor();
         }
     }
 
@@ -355,6 +365,7 @@ public class CharacterController : MonoBehaviour
 
         yield return new WaitForSeconds(time);
 
+        //左右角色的显示界面
         if(charID > 1)
         {
             if (left.CharID != -1)
@@ -378,7 +389,10 @@ public class CharacterController : MonoBehaviour
             right.SetName(data.name);
         }
 
+        //改变颜色
+        ChangeColor();
 
+        //窗边的人物显示
         if (charID > 1)
         {
             if (state == CharacterState.In)
@@ -421,6 +435,22 @@ public class CharacterController : MonoBehaviour
             }
         }
     }
+
+    private void ChangeColor()
+    {
+        left.image.color = new Color(1, 1, 1, 1);
+        right.image.color = new Color(1, 1, 1, 1);
+
+        if (left.curState == CurState.HIDE && right.curState == CurState.UP)
+        {
+            left.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
+        }
+        else if (left.curState == CurState.UP && right.curState == CurState.HIDE)
+        {
+            right.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
+        }
+    }
+
     private IEnumerator FoldWhite(float time)
     {
         yield return new WaitForSeconds(time);

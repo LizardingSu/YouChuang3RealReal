@@ -14,7 +14,7 @@ public enum PlaySceneState
 
 public class S_StateManager : MonoBehaviour
 {
-    public PlaySceneState State { get; private set; } = PlaySceneState.Setting;
+    public PlaySceneState State { get; private set; } = PlaySceneState.Log;
 
     //四个panel对应的gameobject
     public GameObject SettingPanel;

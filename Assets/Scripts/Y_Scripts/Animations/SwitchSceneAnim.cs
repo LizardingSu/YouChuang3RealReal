@@ -38,7 +38,7 @@ public class SwitchSceneAnim : MonoBehaviour
         blackMask.gameObject.SetActive(true);
         blackMask.rectTransform.anchoredPosition = new Vector2(0, downPos);
 
-        blackMask.rectTransform.DOKill();
+        blackMask.rectTransform.DOKill(true);
         blackMask.rectTransform.DOAnchorPos3DY(2160.0f, time);
     }
 

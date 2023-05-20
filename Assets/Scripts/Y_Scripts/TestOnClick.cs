@@ -12,6 +12,8 @@ public class TestOnClick : MonoBehaviour
     public Button testButton;
     public TMP_Text tmp;
 
+    public float speed = 5;
+
     private void Awake()
     {
         testButton.onClick.AddListener(OnClick);
@@ -24,12 +26,35 @@ public class TestOnClick : MonoBehaviour
 
     private void OnClick()
     {
-        Debug.Log(tmp.text);
-        Debug.Log(tmp.text.Count());
-        Debug.Log(tmp.textInfo.characterCount);
-        Debug.Log(tmp.textInfo.meshInfo.Length);
+        tmp.maxVisibleCharacters = 0;
+        StartCoroutine(TypeWriter(tmp,speed));
+    }
 
-        StartCoroutine(PlayPrinterEffect(tmp,2));
+    IEnumerator TypeWriter(TMP_Text textComponent, float speed)
+    {
+        textComponent.ForceMeshUpdate();
+        Debug.Log("Click");
+        TMP_TextInfo textInfo = textComponent.textInfo;
+        int total = textInfo.characterCount;
+        bool complete = false;
+        int current = 0;
+
+        while (!complete)
+        {
+            if(current > total)
+            {
+                current = total;
+                yield return new WaitForSeconds(1/speed);
+                complete = true;
+            }
+
+            textComponent.maxVisibleCharacters = current;
+            current += 1;
+
+            yield return new WaitForSeconds(1 / speed);
+        }
+
+        yield return null;
     }
 
     IEnumerator PlayPrinterEffect(TMP_Text textComponent, float speed)
@@ -46,6 +71,9 @@ public class TestOnClick : MonoBehaviour
         }
 
         TMPro.TMP_TextInfo textInfo = textComponent.textInfo;
+
+        Debug.Log(textInfo.characterCount);
+        Debug.Log(textInfo.meshInfo.Length);
 
         // 开始播放打印机效果，首先清空所有文字网格
         for (int i = 0; i < textInfo.materialCount; ++i)

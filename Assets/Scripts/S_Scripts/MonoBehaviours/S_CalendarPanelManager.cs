@@ -89,7 +89,7 @@ public class S_CalendarPanelManager : MonoBehaviour
                 {
                     bool setGrey = false;
                     setGrey = !(cho.Answer == string.Empty);
-                    if (cho.ID % 1000 == 0 || cho.Choice == -1)
+                    if (cho.ID % 1000 == 0 || cho.Choice == -2)
                     {
                         setGrey = true;
                     }
