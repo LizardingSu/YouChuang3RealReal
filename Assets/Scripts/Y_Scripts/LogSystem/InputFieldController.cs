@@ -92,7 +92,7 @@ public class InputFieldController : MonoBehaviour
         else button.interactable = true;
 
         //如果存档里发现已经填过词了，则会自动填上去
-        foreach(var choice in m_processManager.m_Saving.Choices)
+        foreach(var choice in m_processManager.m_Saving1.Choices)
         {
             var idx = choice.ID % 1000;
             var day = (choice.ID - idx) / 1000;

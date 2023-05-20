@@ -20,11 +20,18 @@ public class S_ProcessManager : MonoBehaviour
 #endif
     }
 
-    //存档文件
-    public S_GameSaving m_Saving;
+    //大一轮存档文件
+    public S_GameSaving m_Saving1;
 
     //配置文件
     public S_Profile m_Profile;
+
+    //大一轮存档名字
+    [HideInInspector]
+    public string m_SavingName1 = "SavingFile.txt";
+
+    [HideInInspector]
+    public string m_ProfileName = "Profile.txt";
 
 
     /// <summary>
@@ -41,7 +48,7 @@ public class S_ProcessManager : MonoBehaviour
         int existIndex = 0;
 
         //先根据游戏内数据修改m_Saving
-        foreach (var str in m_Saving.Choices)
+        foreach (var str in m_Saving1.Choices)
         {
             if (str.ID == id)
             {
@@ -53,18 +60,18 @@ public class S_ProcessManager : MonoBehaviour
 
         if (exist)
         {
-            if (m_Saving.Choices[existIndex].Answer != "" && answer == "")
-                answer = m_Saving.Choices[existIndex].Answer;
+            if (m_Saving1.Choices[existIndex].Answer != "" && answer == "")
+                answer = m_Saving1.Choices[existIndex].Answer;
 
-            m_Saving.Choices.RemoveAt(existIndex);
-            m_Saving.Choices.Add(new S_ChoiceMade(id, option, answer));
+            m_Saving1.Choices.RemoveAt(existIndex);
+            m_Saving1.Choices.Add(new S_ChoiceMade(id, option, answer));
         }
         else
         {
-            m_Saving.Choices.Add(new S_ChoiceMade(id, option, answer));
+            m_Saving1.Choices.Add(new S_ChoiceMade(id, option, answer));
         }
 
-        WriteFile(m_Saving, "SavingFile.txt");
+        WriteFile(m_Saving1, m_SavingName1);
 
         accessor.StateManager.CalendarPanel.GetComponent<S_CalendarPanelManager>().InitAllDays();
         //Accessor.StateManager.CalendarPanel.GetComponent<S_CalendarPanelManager>().InitDayButtons();
@@ -75,7 +82,7 @@ public class S_ProcessManager : MonoBehaviour
     /// </summary>
     public void Load()
     {
-        if (ReadFile(m_Saving, "SavingFile.txt"))
+        if (ReadFile(m_Saving1, m_SavingName1))
         {
 
         }
@@ -102,7 +109,7 @@ public class S_ProcessManager : MonoBehaviour
         //Debug.Log(m_Profile.BGMVolume);
         //Debug.Log(m_Profile.SEVolume);
 
-        WriteFile(m_Profile, "Profile.txt");
+        WriteFile(m_Profile, m_ProfileName);
     }
 
     public void LoadProfile()
@@ -110,7 +117,7 @@ public class S_ProcessManager : MonoBehaviour
         Slider BGMSlider = accessor.StateManager.SettingPanel.transform.GetChild(1).GetChild(0).GetComponent<Slider>();
         Slider SESlider = accessor.StateManager.SettingPanel.transform.GetChild(1).GetChild(1).GetComponent<Slider>();
 
-        if (ReadFile(m_Profile, "Profile.txt"))
+        if (ReadFile(m_Profile, m_ProfileName))
         {
             //Debug.Log("读取成功");
             //Debug.Log(accessor.ProcessManager.m_Profile.SEVolume);
@@ -146,7 +153,7 @@ public class S_ProcessManager : MonoBehaviour
             m_Profile.BGMVolume = 1f;
             m_Profile.SEVolume = 1f;
 
-            WriteFile(m_Profile, "Profile.txt");
+            WriteFile(m_Profile, m_ProfileName);
         }
     }
 
@@ -158,14 +165,14 @@ public class S_ProcessManager : MonoBehaviour
         {
             Debug.Log(Application.persistentDataPath + "/ApodaSaving/SavingFile.txt");
 
-            if (ReadFile(m_Saving, "SavingFile.txt"))
+            if (ReadFile(m_Saving1, m_SavingName1))
             {
                 int idx;
                 int day;
 
                 {
                     if (id == -1)
-                        id = m_Saving.Choices.Last().ID;
+                        id = m_Saving1.Choices.Last().ID;
 
                     idx = id % 1000;
                     day = (id - idx) / 1000;

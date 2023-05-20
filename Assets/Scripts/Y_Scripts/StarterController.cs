@@ -89,12 +89,12 @@ public partial class StarterController : MonoBehaviour
             return false;
 
         //如果idx为0，则必须没有任何多余存档
-        if (data.idx == 1 && pm.m_Saving.Choices.Count <= 1)
+        if (data.idx == 1 && pm.m_Saving1.Choices.Count <= 1)
         {
             return true;
         }
         //如果idx为38，且没有第二天的存档，则没读过
-        else if(data.idx == 38 && pm.m_Saving.Choices.Find(c => (int)(c.ID / 1000) >= 2) == null)
+        else if(data.idx == 38 && pm.m_Saving1.Choices.Find(c => (int)(c.ID / 1000) >= 2) == null)
         {
             return true;
         }

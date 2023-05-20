@@ -87,7 +87,7 @@ public class DioLogueState : MonoBehaviour
         var pm = centralAccessor.ProcessManager;
         pm.Load();
 
-        var c = pm.m_Saving.Choices[pm.m_Saving.Choices.Count - 1];
+        var c = pm.m_Saving1.Choices[pm.m_Saving1.Choices.Count - 1];
 
         ReadToCurrentID((int)(c.ID / 1000), c.ID % 1000);
     }
@@ -171,7 +171,7 @@ public class DioLogueState : MonoBehaviour
         //如果curData为Branch，自动进行到下一句话
         if(curData.processState == ProcessState.Branch)
         {
-            curData.nextIdx = (int)LogEntryParser.GetNextIdxFromBranch(centralAccessor.ProcessManager.m_Saving.Choices,curData.log);
+            curData.nextIdx = (int)LogEntryParser.GetNextIdxFromBranch(centralAccessor.ProcessManager.m_Saving1.Choices,curData.log);
 
             ProcessInput();
         }
@@ -309,7 +309,7 @@ public class DioLogueState : MonoBehaviour
             }
             else if (curData.processState == ProcessState.Select)
             {
-                var choices = centralAccessor.ProcessManager.m_Saving.Choices;
+                var choices = centralAccessor.ProcessManager.m_Saving1.Choices;
                 foreach (var choice in choices)
                 {
                     var id = choice.ID;

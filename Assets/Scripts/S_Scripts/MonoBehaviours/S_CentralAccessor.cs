@@ -16,4 +16,12 @@ public class S_CentralAccessor : MonoBehaviour
 
     [Header("GameObject")]
     public GameObject TransAnim;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P)) 
+        {
+            MenuManager.NewGame();
+        }
+    }
 }

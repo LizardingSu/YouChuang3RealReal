@@ -69,7 +69,7 @@ public class S_CalendarPanelManager : MonoBehaviour
     public void InitAllDays()
     {
         dayNumber = 0;
-        foreach (var i in Accessor.ProcessManager.m_Saving.Choices)
+        foreach (var i in Accessor.ProcessManager.m_Saving1.Choices)
         {
             int id = i.ID;
             if (dayNumber < (id / 1000))
@@ -83,7 +83,7 @@ public class S_CalendarPanelManager : MonoBehaviour
         {
             
             S_DayInCalendar day = new S_DayInCalendar(new List<S_NodeInDay>(), 100);
-            foreach (var cho in Accessor.ProcessManager.m_Saving.Choices)
+            foreach (var cho in Accessor.ProcessManager.m_Saving1.Choices)
             {
                 if ((cho.ID / 1000) == i + 1)
                 {
