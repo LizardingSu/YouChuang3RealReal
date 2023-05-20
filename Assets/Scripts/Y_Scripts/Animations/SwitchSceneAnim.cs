@@ -113,6 +113,8 @@ public class SwitchSceneAnim : MonoBehaviour
 
         yield return new WaitForSeconds(time-1);
         mask.gameObject.SetActive(false);
+
+        //过了一段时间之后，播放该场景的第一句话
         diologueState.ProcessInput();
         processManager.Save((int)nextDay * 1000,1,"");
         diologueState.SetButtonsActive(true);

@@ -28,6 +28,9 @@ public class DioLogueState : MonoBehaviour
     public DialogueWillChangeEvent dialogueWillChange;
     public DialogueChangedEvent dialogueChanged;
 
+    //not using
+    public event Func<bool> isComplete;
+
     public uint date;
     public string path = "Text/Day";
     public DiologueData curData;
@@ -87,7 +90,7 @@ public class DioLogueState : MonoBehaviour
         var pm = centralAccessor.ProcessManager;
         pm.Load();
 
-        var c = pm.m_Saving1.Choices[pm.m_Saving1.Choices.Count - 1];
+        var c = pm.m_Saving.Choices[pm.m_Saving.Choices.Count - 1];
 
         ReadToCurrentID((int)(c.ID / 1000), c.ID % 1000);
     }
@@ -118,7 +121,7 @@ public class DioLogueState : MonoBehaviour
         ReadedList = new ushort[textList.Count];
     }
     //跳转到下一条对话/选项/做咖啡
-    public void UpdateDiologue()
+    private void UpdateDiologue()
     {
         //for test(保留下来得了，反正也懒得改了)
         var isStart = ReadedList[0] == 0;
@@ -152,6 +155,7 @@ public class DioLogueState : MonoBehaviour
         }
 
         curData = diologueData;
+        //当前的字段设置为已读
         ReadedList[curData.idx] = 1;
 
         //如果是结尾，则自动保存 转场
@@ -166,41 +170,65 @@ public class DioLogueState : MonoBehaviour
             return;
         }
 
-        dialogueChanged.Invoke(curData);
+        if (state == DioState.Normal)
+            StartCoroutine(DialogueChangeEvent());
+        else
+            dialogueChanged.Invoke(curData);
+
 
         //如果curData为Branch，自动进行到下一句话
-        if(curData.processState == ProcessState.Branch)
+        if (curData.processState == ProcessState.Branch)
         {
-            curData.nextIdx = (int)LogEntryParser.GetNextIdxFromBranch(centralAccessor.ProcessManager.m_Saving1.Choices,curData.log);
+            curData.nextIdx = (int)LogEntryParser.GetNextIdxFromBranch(centralAccessor.ProcessManager.m_Saving.Choices, curData.log);
 
-            ProcessInput();
+            //嵌套，很恶心
+            UpdateDiologue();
         }
     }
 
-    public bool reading = false; 
+    //对于正常对话过程，DialogueChangeEvent要等待所有dialogueWillChange都完成
+    private IEnumerator DialogueChangeEvent()
+    {
+        //首先禁止所有点击
+        SetButtonsActive(false);
+        SetPanelSwitcherActive(false);
+
+        yield return new WaitUntil(isComplete);
+
+        dialogueChanged.Invoke(curData);
+
+        //如果当前为咖啡，则不能开启点击
+        if (curData.processState != ProcessState.Coffee)
+            SetButtonsActive(true);
+
+        //开启协程
+        isReading = true;
+        c = StartCoroutine(completeReading());
+    }
+
+    public bool isReading = false; 
     public void ProcessInput()
     {
+        //如果是自动播放，则和ProcessInput一致
         if(state == DioState.Auto)
         {
+            isReading = false;
             UpdateDiologue();
             return;
         }
 
-        if (!reading)
+        //如果当前不是正在读文本，则开启神奇妙妙协程
+        if (!isReading)
         {
             UpdateDiologue();
-
-            reading = true;
-            SetPanelSwitcherActive(false);
-
-            c = StartCoroutine(completeReading());
         }
+        //如果当前正在读文本，则点击时关闭生气喵喵协程并且结束所有动画
         else
         {
             logController.rightLogController.KillAllAnim();
             characterController.KillAllAnim();
 
-            reading = false;
+            isReading = false;
             SetPanelSwitcherActive(true);
 
             StopCoroutine(c);
@@ -208,23 +236,26 @@ public class DioLogueState : MonoBehaviour
 
     }
 
-    private bool isComplete()
+    private bool isCompleteReading()
     {
-        if (logController.rightLogController.m_dio.maxVisibleCharacters == logController.rightLogController.m_dio.textInfo.characterCount)
+        if (logController.rightLogController.m_dio.maxVisibleCharacters ==
+            logController.rightLogController.m_dio.textInfo.characterCount)
         {
             return true;
         }
+
+        //if(logController.rightLogController.)
 
         return false;
     }
 
     private IEnumerator completeReading()
     {
-        yield return new WaitUntil(isComplete);
+        yield return new WaitUntil(isCompleteReading);
 
-        if(reading== true)
+        if(isReading== true)
         {
-            reading = false;
+            isReading = false;
             SetPanelSwitcherActive(true);
         }
     }
@@ -242,6 +273,7 @@ public class DioLogueState : MonoBehaviour
         curData = LogEntryParser.GetDiologueDataAtIdx(textList, Idx, date);
         curData.nextIdx = (int)nextIdx;
 
+        //此时等于直接点击到下一句
         ProcessInput();
 
         if(state == DioState.Normal)
@@ -264,7 +296,7 @@ public class DioLogueState : MonoBehaviour
         logController.Clear();
         coffee.Clear();
 
-        reading = false;
+        isReading = false;
         curData = null;
         for (int i = 0; i < ReadedList.Length; i++)
         {
@@ -309,7 +341,7 @@ public class DioLogueState : MonoBehaviour
             }
             else if (curData.processState == ProcessState.Select)
             {
-                var choices = centralAccessor.ProcessManager.m_Saving1.Choices;
+                var choices = centralAccessor.ProcessManager.m_Saving.Choices;
                 foreach (var choice in choices)
                 {
                     var id = choice.ID;

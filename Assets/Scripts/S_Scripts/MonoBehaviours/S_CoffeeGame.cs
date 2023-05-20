@@ -188,7 +188,6 @@ public class S_CoffeeGame : MonoBehaviour
             GamePlaying = false;
         }
 
-        Debug.Log("Wow");
         accessor._DioLogueState.ProcessInput();
     }
 

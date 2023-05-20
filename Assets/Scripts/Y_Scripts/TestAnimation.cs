@@ -15,7 +15,7 @@ public class TestAnimation : MonoBehaviour
         m_button.onClick.AddListener(onClick);
         m_rectTransform = m_button.GetComponent<RectTransform>();
 
-        m_rectTransform.DOAnchorPosX(1000, 3);
+        m_rectTransform.DOAnchorPosX(1000, 8);
     }
 
     private void OnDestroy()
@@ -25,6 +25,7 @@ public class TestAnimation : MonoBehaviour
     public void onClick()
     {
         m_rectTransform.DOKill(true);
+        m_rectTransform.DOAnchorPosX(-1000, 8);
     }
 
     // Update is called once per frame

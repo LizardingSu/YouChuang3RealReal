@@ -159,20 +159,27 @@ static public class LogEntryParser
 
     public static IReadOnlyList<GameResource> GetResourceTypeAndResource(string resource)
     {
-        List<GameResource> list = new List<GameResource>();
-        
+        List<GameResource> list = new List<GameResource>(); 
+
+        if(resource[0]!='\"')
+            return list;
+
         var l = resource.Split('-');
 
         foreach(var m in l)
         {
             var type = ResourceType.CG;
             var place = ResourcePlace.Before;
-            //去掉开头的“
-            m.Remove(0, 1);
-            var n = m.LastIndexOf("\"");
 
+            //去掉开头的“
+            Debug.Log(m);
+            m.Remove(0, 1);
+            Debug.Log(m);
+            var n = m.LastIndexOf('"');
             var k = m.Substring(n + 1);
+            Debug.Log(k);
             var p = m.Remove(n);
+            Debug.Log(p);
 
             switch (k[0])
             {
