@@ -182,6 +182,12 @@ public class CharacterController : MonoBehaviour
 
             var name = characterFiles.characterList[charID].name;
 
+            if (name == "" && emojiID == -1&&data.processState == ProcessState.Diologue)
+            {
+                Narration();
+                return;
+            }
+
             //如果有人进入场景
             if (state == CharacterState.In)
             {
@@ -309,6 +315,7 @@ public class CharacterController : MonoBehaviour
                 }
             }
 
+            //更改颜色
             ChangeColor();
         }
     }
@@ -358,7 +365,6 @@ public class CharacterController : MonoBehaviour
             right.SetAllDatas(true, charID, name, emojiID);
             right.SetName(data.name);
         }
-
     }
 
     //升起所有characterPanel
@@ -371,87 +377,107 @@ public class CharacterController : MonoBehaviour
 
         yield return new WaitForSeconds(time);
 
-        //左右角色的显示界面
-        if(charID > 1)
+        if(name == ""&&emojiID == -1)
         {
-            if (left.CharID != -1)
-                left.MoveUp(showAllTime);
-
-            if (right.CharID != -1)
-                right.MoveHideName(showAllTime - hideNameTime);
-
-            left.SetAllDatas(true, charID, name,emojiID);
-            left.SetName(data.name);
+            Narration();
         }
         else
         {
-            if (right.CharID != -1)
-                right.MoveUp(showAllTime);
-
-            if (left.CharID != -1)
-                left.MoveHideName(showAllTime - hideNameTime);
-
-            right.SetAllDatas(true, charID, name,emojiID);
-            right.SetName(data.name);
-        }
-
-        //改变颜色
-        ChangeColor();
-
-        //窗边的人物显示
-        if (charID > 1)
-        {
-            if (state == CharacterState.In)
+            //窗边的人物显示
+            if (charID > 1)
             {
-                bool isIn = false;
-                foreach (var windowsCharacter in windowsCharacters)
+                if (state == CharacterState.In)
                 {
-                    if (charID == windowsCharacter.CharID)
+                    bool isIn = false;
+                    foreach (var windowsCharacter in windowsCharacters)
                     {
-                        isIn = true;
-                        break;
+                        if (charID == windowsCharacter.CharID)
+                        {
+                            isIn = true;
+                            break;
+                        }
+                    }
+
+                    if (!isIn)
+                    {
+                        windowsCharacters[curPlace].transform.SetAsLastSibling();
+                        windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
+                        charSortedList.Add(charID);
+                        SortWindowsPos();
+                        curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
+                    }
+
+                }
+                else if (state == CharacterState.Leave)
+                {
+                    var obj = windowsCharacters.Find(x => x.CharID == charID);
+                    obj.SetAllDatas(false);
+                    charSortedList.Remove(charID);
+                    SortWindowsPos();
+                }
+                else
+                {
+                    var c = windowsCharacters.Find(x => x.CharID == charID);
+                    if (c)
+                    {
+                        c.transform.SetAsLastSibling();
+                        c.SetAllDatas(true, charID, name, 0);
                     }
                 }
-
-                if (!isIn)
-                {
-                    windowsCharacters[curPlace].transform.SetAsLastSibling();
-                    windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
-                    charSortedList.Add(charID);
-                    SortWindowsPos();
-                    curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
-                }
-
             }
-            else if (state == CharacterState.Leave)
+
+            //左右角色的显示界面
+            if (charID > 1)
             {
-                var obj = windowsCharacters.Find(x => x.CharID == charID);
-                obj.SetAllDatas(false);
-                charSortedList.Remove(charID);
-                SortWindowsPos();
+                if (left.CharID != -1)
+                    left.MoveUp(showAllTime);
+
+                if (right.CharID != -1)
+                    right.MoveHideName(showAllTime - hideNameTime);
+
+                left.SetAllDatas(true, charID, name, emojiID);
+                left.SetName(data.name);
             }
             else
             {
-                var c = windowsCharacters.Find(x => x.CharID == charID);
-                if (c)
-                {
-                    c.transform.SetAsLastSibling();
-                    c.SetAllDatas(true, charID, name, 0);
-                }
+                if (right.CharID != -1)
+                    right.MoveUp(showAllTime);
+
+                if (left.CharID != -1)
+                    left.MoveHideName(showAllTime - hideNameTime);
+
+                right.SetAllDatas(true, charID, name, emojiID);
+                right.SetName(data.name);
             }
+            //改变颜色
+            ChangeColor();
         }
     }
 
+    private void Narration()
+    {
+        if (left.curState == CurState.UP)
+            left.MoveHideName(hideNameTime);
+        
+        if(right.curState == CurState.UP)
+            right.MoveHideName(hideNameTime);
+
+        left.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
+        right.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
+    }
     private void ChangeColor()
     {
-        left.image.color = new Color(1, 1, 1, 1);
-        right.image.color = new Color(1, 1, 1, 1);
+        //如果本身没立绘，则不需要变色
+        if (left.image.color != new Color(1, 1, 1, 0))
+            left.image.color = new Color(1, 1, 1, 1);
+        if (right.image.color != new Color(1, 1, 1, 0))
+            right.image.color = new Color(1, 1, 1, 1);
 
-        if (left.curState == CurState.HIDE && right.curState == CurState.UP)
+        if (left.curState == CurState.HIDE && right.curState == CurState.UP&& left.image.color != new Color(1, 1, 1, 0))
         {
             left.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
         }
-        else if (left.curState == CurState.UP && right.curState == CurState.HIDE)
+        else if (left.curState == CurState.UP && right.curState == CurState.HIDE && right.image.color != new Color(1, 1, 1, 0))
         {
             right.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
         }

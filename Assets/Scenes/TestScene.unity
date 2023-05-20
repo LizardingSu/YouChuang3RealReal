@@ -160,7 +160,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 492, y: -232}
+  m_AnchoredPosition: {x: -651, y: -268}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &288125881
@@ -578,6 +578,7 @@ GameObject:
   - component: {fileID: 1356988721}
   - component: {fileID: 1356988720}
   - component: {fileID: 1356988722}
+  - component: {fileID: 1356988723}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -717,6 +718,19 @@ MonoBehaviour:
   testButton: {fileID: 288125881}
   tmp: {fileID: 1356988720}
   speed: 5
+--- !u!114 &1356988723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356988718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a29d7fc20b3264491a46986d19d9cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_button: {fileID: 288125881}
 --- !u!1 &1519660116
 GameObject:
   m_ObjectHideFlags: 0

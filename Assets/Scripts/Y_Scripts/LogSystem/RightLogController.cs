@@ -15,6 +15,8 @@ public class RightLogController : MonoBehaviour
 
     public List<Image> buttonImage;
 
+    public float speed = 15.0f;
+
     Coroutine coroutine;
 
     public void Awake()
@@ -75,9 +77,11 @@ public class RightLogController : MonoBehaviour
             }
 
             m_dio.text = logEntry.Log;
+            //保证每次都能正常显示所有Character。
+            m_dio.maxVisibleCharacters = int.MaxValue;
 
             if (diostate.state == DioState.Normal)
-                coroutine = StartCoroutine(TypeWriter(m_dio, 15));
+                coroutine = StartCoroutine(TypeWriter(m_dio, speed));
         }
     }
 

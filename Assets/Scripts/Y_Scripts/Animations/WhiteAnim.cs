@@ -36,7 +36,7 @@ public class WhiteAnim : MonoBehaviour
     public void FadeAndReFill(bool isFade)
     {
         var curMask = material.GetFloat("_MyMask");
-        Debug.Log(curMask);
+
         if (isFade)
         {
             if (curMask == 0) return;
