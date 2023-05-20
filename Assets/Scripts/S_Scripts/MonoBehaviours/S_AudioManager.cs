@@ -22,23 +22,6 @@ public class S_AudioManager : MonoBehaviour
         accessor.ProcessManager.SaveProfile();
     }
 
-    public void PlayBGM(AudioClip bgm)
-    {
-        BGMPlayer.clip = bgm;
-        BGMPlayer.Play();
-    }
-
-    public void PauseBGM()
-    {
-        BGMPlayer.Pause();
-    }
-
-    public void PlaySE(AudioClip se)
-    {
-        SEPlayer.clip = se;
-        SEPlayer.Play();
-    }
-
     public float GetBGMVolume() => BGMPlayer.volume;
     public float GetSEVolume() => SEPlayer.volume;
 }

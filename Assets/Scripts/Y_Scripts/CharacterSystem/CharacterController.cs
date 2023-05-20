@@ -88,12 +88,6 @@ public class CharacterController : MonoBehaviour
         whiteMask.material.SetFloat("_MyMask",whiteMask.mask);
     }
    
-    public void KillAllAnim()
-    {
-        left.KillAllAnim();
-        right.KillAllAnim();    
-    }
-
     //无法处理回环情况,但是没有这种情况
    private void WillChangeCharacter(DiologueData data,DiologueData data2)
     {

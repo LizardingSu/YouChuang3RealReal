@@ -189,7 +189,7 @@ public class S_CoffeeGame : MonoBehaviour
         }
 
         Debug.Log("Wow");
-        accessor._DioLogueState.ProcessInput();
+        accessor._DioLogueState.UpdateDiologue();
     }
 
 

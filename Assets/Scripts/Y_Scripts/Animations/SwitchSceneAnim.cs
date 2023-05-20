@@ -90,7 +90,6 @@ public class SwitchSceneAnim : MonoBehaviour
 
     private void onClick()
     {
-        pressToContinue.DOKill(true);
         diologueState.SetButtonsActive(false);
         diologueState.ReadToCurrentID((int)nextDay, -1);
 
@@ -113,7 +112,7 @@ public class SwitchSceneAnim : MonoBehaviour
 
         yield return new WaitForSeconds(time-1);
         mask.gameObject.SetActive(false);
-        diologueState.ProcessInput();
+        diologueState.UpdateDiologue();
         processManager.Save((int)nextDay * 1000,1,"");
         diologueState.SetButtonsActive(true);
     }

@@ -40,10 +40,9 @@ public class DiologueData
     public string name;
     public string log;
 
-    public string resource;
     //todo:animation
 
-    public DiologueData(uint date, ProcessState processState, uint idx, int nextIdx, int charaID, int emojiID, CharacterState charaState, string name, string log,string resource)
+    public DiologueData(uint date, ProcessState processState, uint idx, int nextIdx, int charaID, int emojiID, CharacterState charaState, string name, string log)
     {
         this.date = date;
         this.processState = processState;
@@ -54,7 +53,6 @@ public class DiologueData
         this.charaState = charaState;
         this.name = name;
         this.log = log;
-        this.resource = resource;
     }
 }
 

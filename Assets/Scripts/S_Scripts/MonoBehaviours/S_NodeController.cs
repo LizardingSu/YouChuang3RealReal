@@ -30,43 +30,14 @@ public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         int id = calendarPanel.allDays[day - 1].Nodes[calendarPanel.currentNodes.IndexOf(this.gameObject)].ID;
         id = id - 1000 * day;
 
-        //Debug.Log("day" + day);
-        //Debug.Log("ID" + id);
+        Debug.Log("day" + day);
+        Debug.Log("ID" + id);
 
-        calendarPanel.Accessor.TransAnim.SetActive(true);
-        //calendarPanel.Accessor.TransAnim.GetComponent<Animator>().SetBool("PlayNow", true);
-
-        if (day < calendarPanel.Accessor._DioLogueState.date)
-        {
-            calendarPanel.Accessor.TransAnim.GetComponent<Animator>().Play("TransAnimRE", 0);
-        }
-        else if (day == calendarPanel.Accessor._DioLogueState.date)
-        {
-            if (calendarPanel.Accessor._DioLogueState.ReadedList[id] == 1)
-            {
-                calendarPanel.Accessor.TransAnim.GetComponent<Animator>().Play("TransAnimRE", 0);
-            }
-            else
-            {
-                calendarPanel.Accessor.TransAnim.GetComponent<Animator>().Play("TransAnim", 0);
-            }
-        }
-        else
-        {
-            calendarPanel.Accessor.TransAnim.GetComponent<Animator>().Play("TransAnim", 0);
-        }
-
-        StartCoroutine(JumpNode(day, id, calendarPanel.Accessor));
-    }
-
-    IEnumerator JumpNode(int day, int id, S_CentralAccessor accessor)
-    {
-        yield return new WaitForSeconds(0.8f);
         var sm = GameObject.Find("MainManager").GetComponent<S_StateManager>();
         sm.CancelStateCalendar();
         sm.StateSwitchToLog();
 
-        accessor._DioLogueState.ReadToCurrentID(day, id);
+        calendarPanel.Accessor._DioLogueState.ReadToCurrentID(day, id);
     }
 
     public void OnPointerExit(PointerEventData eventData)
