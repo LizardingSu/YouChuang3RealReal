@@ -11,7 +11,11 @@ public class RightLogController : MonoBehaviour
     public TMP_Text m_dio;
     public SelectController m_select;
 
+    public DioLogueState diostate;
+
     public List<Image> buttonImage;
+
+    Coroutine coroutine;
 
     public void Awake()
     {
@@ -39,9 +43,15 @@ public class RightLogController : MonoBehaviour
         m_transform.DOAnchorPosY(-400, time);
     }
 
+
     public void KillAllAnim()
     {
+        Debug.Log("Killllllllll");
+
         m_transform.DOKill(true);
+
+        StopCoroutine(coroutine);
+        m_dio.maxVisibleCharacters = m_dio.textInfo.characterCount;
     }
 
     public void Init(LogEntry logEntry)
@@ -65,13 +75,16 @@ public class RightLogController : MonoBehaviour
             }
 
             m_dio.text = logEntry.Log;
+
+            if (diostate.state == DioState.Normal)
+                coroutine = StartCoroutine(TypeWriter(m_dio, 15));
         }
     }
 
     private IEnumerator TypeWriter(TMP_Text textComponent, float speed)
     {
         textComponent.ForceMeshUpdate();
-        Debug.Log("Click");
+
         TMP_TextInfo textInfo = textComponent.textInfo;
         int total = textInfo.characterCount;
         bool complete = false;

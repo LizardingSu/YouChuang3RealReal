@@ -7,10 +7,16 @@ using UnityEngine.UI;
 public class S_Highlighter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Material HighlightMat;
+    public S_CentralAccessor accessor;
+
+    private void Start()
+    {
+        accessor = GameObject.Find("MainManager").GetComponent<S_CentralAccessor>();
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (GetComponent<Button>().interactable == true)
+        if (accessor.GameManager.GamePlaying)
             GetComponent<Image>().material = HighlightMat;
     }
 

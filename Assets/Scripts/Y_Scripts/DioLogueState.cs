@@ -35,6 +35,7 @@ public class DioLogueState : MonoBehaviour
     public Button[] update_button;
 
     public S_CentralAccessor centralAccessor;
+    public GameObject panelSwitcher;
 
     //控制的东西
     public CharacterController characterController;
@@ -42,35 +43,30 @@ public class DioLogueState : MonoBehaviour
     public LogController logController;
     public SwitchSceneAnim switchAnim;
 
+    private Coroutine c;
+
     public DioState state = DioState.Normal;  
 
     private void Awake()
     {
         foreach (var button in update_button)
-            button.onClick.AddListener(UpdateDiologue);
+            button.onClick.AddListener(ProcessInput);
 
         if (centralAccessor.StateManager.State != PlaySceneState.Log)
             SetButtonsActive(false);
         else
             SetButtonsActive(true);
     }
-    //test
-    private IEnumerator LoadNewScene()
+    private void OnDestroy()
     {
-        yield return null;
+        textList.Clear();
 
-        var pm = centralAccessor.ProcessManager;
-        pm.DeleteSaving();
-        pm.Load();
-
-        date = 1;
-        pm.Save(1000, 1, "");
-
-        Init(date, path);
-        switchAnim.SwitchToNewScene(0, 1);
+        ReadedList = null;
+        foreach (var button in update_button)
+            button.onClick.RemoveListener(ProcessInput);
     }
 
-    public void LoadNewSceneImme()
+    public void LoadNewSceneImmediate()
     {
         Debug.Log("NewScene");
 
@@ -84,10 +80,10 @@ public class DioLogueState : MonoBehaviour
         Init(date, path);
         switchAnim.SwitchToNewScene(0, 1);
     }
-
     public void ContinueGame()
     {
         Debug.Log("Continue");
+        centralAccessor.MenuManager.ShowMenu(false);
         var pm = centralAccessor.ProcessManager;
         pm.Load();
 
@@ -96,13 +92,11 @@ public class DioLogueState : MonoBehaviour
         ReadToCurrentID((int)(c.ID / 1000), c.ID % 1000);
     }
 
-    private void OnDestroy()
+    public void DelayedContinueGame()
     {
-        textList.Clear();
-
-        ReadedList = null;
-        foreach (var button in update_button)
-            button.onClick.RemoveListener(UpdateDiologue);
+        centralAccessor.TransAnim.SetActive(true);
+        centralAccessor.TransAnim.GetComponent<Animator>().Play("TransAnim");
+        Invoke("ContinueGame", 0.8f);
     }
 
     public void Init(uint day, string path)
@@ -179,7 +173,67 @@ public class DioLogueState : MonoBehaviour
         {
             curData.nextIdx = (int)LogEntryParser.GetNextIdxFromBranch(centralAccessor.ProcessManager.m_Saving.Choices,curData.log);
 
+            ProcessInput();
+        }
+    }
+
+    public bool reading = false; 
+    public void ProcessInput()
+    {
+        if(state == DioState.Auto)
+        {
             UpdateDiologue();
+            return;
+        }
+
+        if (!reading)
+        {
+            UpdateDiologue();
+
+            reading = true;
+            SetPanelSwitcherActive(false);
+
+            c = StartCoroutine(completeReading());
+        }
+        else
+        {
+            logController.rightLogController.KillAllAnim();
+            characterController.KillAllAnim();
+
+            reading = false;
+            SetPanelSwitcherActive(true);
+
+            StopCoroutine(c);
+        }
+
+    }
+
+    private bool isComplete()
+    {
+        if (logController.rightLogController.m_dio.maxVisibleCharacters == logController.rightLogController.m_dio.textInfo.characterCount)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private IEnumerator completeReading()
+    {
+        yield return new WaitUntil(isComplete);
+
+        if(reading== true)
+        {
+            reading = false;
+            SetPanelSwitcherActive(true);
+        }
+    }
+
+    private void SetPanelSwitcherActive(bool active)
+    {
+        foreach(var i in panelSwitcher.GetComponentsInChildren<Button>())
+        {
+            i.interactable= active;
         }
     }
 
@@ -188,7 +242,7 @@ public class DioLogueState : MonoBehaviour
         curData = LogEntryParser.GetDiologueDataAtIdx(textList, Idx, date);
         curData.nextIdx = (int)nextIdx;
 
-        UpdateDiologue();
+        ProcessInput();
 
         if(state == DioState.Normal)
         {
@@ -210,6 +264,7 @@ public class DioLogueState : MonoBehaviour
         logController.Clear();
         coffee.Clear();
 
+        reading = false;
         curData = null;
         for (int i = 0; i < ReadedList.Length; i++)
         {
@@ -240,7 +295,7 @@ public class DioLogueState : MonoBehaviour
         //第一句话
         if (curData == null)
         {
-            UpdateDiologue();
+            ProcessInput();
         }
 
         while (curData.idx != Idx)
@@ -268,7 +323,7 @@ public class DioLogueState : MonoBehaviour
                 }
             }
 
-            UpdateDiologue();
+            ProcessInput();
         }
 
         //最后一句话时进行RightLogController的初始化
@@ -277,5 +332,4 @@ public class DioLogueState : MonoBehaviour
 
         state = DioState.Normal;
     }
-
 }

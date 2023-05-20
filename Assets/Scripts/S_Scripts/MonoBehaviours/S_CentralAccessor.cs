@@ -10,6 +10,10 @@ public class S_CentralAccessor : MonoBehaviour
     public S_ProcessManager ProcessManager;
     public S_DataManager DataManager;
     public S_MenuManager MenuManager;
+    public S_CoffeeGame GameManager;
 
     public DioLogueState _DioLogueState;
+
+    [Header("GameObject")]
+    public GameObject TransAnim;
 }

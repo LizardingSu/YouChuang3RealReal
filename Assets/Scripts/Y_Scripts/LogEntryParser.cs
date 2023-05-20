@@ -4,6 +4,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ResourceType
+{
+    BGM,
+    SE,
+    CG
+}
+
+public enum ResourcePlace
+{
+    Before,
+    In,
+    After
+}
+
+public struct GameResource
+{
+    public ResourcePlace resourcePlace;
+    public ResourceType resourceType; 
+    public string path; 
+
+    public GameResource(ResourcePlace place,ResourceType type,string p)
+    {
+        resourcePlace= place;
+        resourceType= type;
+        path= p;
+    }
+}
+
 static public class LogEntryParser
 {
     /// <summary>
@@ -43,6 +71,7 @@ static public class LogEntryParser
 
         var name = ta[4];
         var log = ta[5];
+        var resource = ta[8];
         //select
         if (state == "&")
         {
@@ -86,7 +115,7 @@ static public class LogEntryParser
                 break;
         }
 
-        return new DiologueData(date, processState,idx, nextIdx, charId, emojiId, characterState, name, log);
+        return new DiologueData(date, processState,idx, nextIdx, charId, emojiId, characterState, name, log, resource);
     }
 
     public static IReadOnlyList<SelectContent> GetSelectContents(string Log)
@@ -126,5 +155,54 @@ static public class LogEntryParser
         }
 
         return 0;
+    }
+
+    public static IReadOnlyList<GameResource> GetResourceTypeAndResource(string resource)
+    {
+        List<GameResource> list = new List<GameResource>();
+        
+        var l = resource.Split('-');
+
+        foreach(var m in l)
+        {
+            var type = ResourceType.CG;
+            var place = ResourcePlace.Before;
+            //去掉开头的“
+            m.Remove(0, 1);
+            var n = m.LastIndexOf("\"");
+
+            var k = m.Substring(n + 1);
+            var p = m.Remove(n);
+
+            switch (k[0])
+            {
+                case 'c':
+                    type = ResourceType.CG;
+                    break;
+                case 'b':
+                    type = ResourceType.BGM;
+                    break;
+                case 'm':
+                    type= ResourceType.SE;
+                    break;
+            }
+
+            switch (k[1])
+            {
+                case 'b':
+                    place = ResourcePlace.Before;
+                    break;
+                case 'i':
+                    place = ResourcePlace.In;
+                    break;
+                case 'a':
+                    place = ResourcePlace.After; 
+                    break;
+            }
+
+            list.Add(new GameResource(place, type, p));
+        }
+
+        return list;
     }
 }
