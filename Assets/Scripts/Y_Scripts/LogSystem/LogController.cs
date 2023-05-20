@@ -138,6 +138,8 @@ public class LogController : MonoBehaviour,LoopScrollPrefabSource, LoopScrollDat
         yield return null;
         yield return null;
         yield return null;
+        yield return null;
+        yield return null;
         scrollRect.totalCount = logEntries.Count;
         scrollRect.RefillCellsFromEnd();
         scrollRect.verticalNormalizedPosition = 1;

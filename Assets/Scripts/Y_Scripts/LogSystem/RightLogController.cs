@@ -27,7 +27,6 @@ public class RightLogController : MonoBehaviour
 
         //not really need
         m_transform.DOKill(true);
-
         m_transform.DOAnchorPosY(0,time);
     }
     public void MoveDown(float time)
@@ -67,5 +66,50 @@ public class RightLogController : MonoBehaviour
 
             m_dio.text = logEntry.Log;
         }
+    }
+
+    private IEnumerator PrintText(float speed)
+    {
+        TMP_TextInfo textInfo = m_dio.textInfo;
+
+        //首先清空所有文字网格
+        for (int i = 0; i < textInfo.materialCount; ++i)
+        {
+            textInfo.meshInfo[i].Clear();
+        }
+        m_dio.UpdateVertexData(TMP_VertexDataUpdateFlags.Vertices);
+
+        float timer = 0;
+        float duration = 1 / speed;
+
+        for (int i = 0; i < textInfo.characterCount; ++i)
+        {
+            while (timer < duration)
+            {
+                yield return null;
+                timer += Time.deltaTime;
+            }
+
+            timer -= duration;
+
+            TMPro.TMP_CharacterInfo characterInfo = textInfo.characterInfo[i];
+
+            int materialIndex = characterInfo.materialReferenceIndex;
+            int verticeIndex = characterInfo.vertexIndex;
+            if (characterInfo.elementType == TMPro.TMP_TextElementType.Sprite)
+            {
+                verticeIndex = characterInfo.spriteIndex;
+            }
+            if (characterInfo.isVisible)
+            {
+                textInfo.meshInfo[materialIndex].vertices[0 + verticeIndex] = characterInfo.vertex_BL.position;
+                textInfo.meshInfo[materialIndex].vertices[1 + verticeIndex] = characterInfo.vertex_TL.position;
+                textInfo.meshInfo[materialIndex].vertices[2 + verticeIndex] = characterInfo.vertex_TR.position;
+                textInfo.meshInfo[materialIndex].vertices[3 + verticeIndex] = characterInfo.vertex_BR.position;
+                m_dio.UpdateVertexData(TMP_VertexDataUpdateFlags.Vertices);
+            }
+
+        }
+
     }
 }

@@ -126,7 +126,7 @@ public class DioLogueState : MonoBehaviour
     //跳转到下一条对话/选项/做咖啡
     public void UpdateDiologue()
     {
-        //for test
+        //for test(保留下来得了，反正也懒得改了)
         var isStart = ReadedList[0] == 0;
 
         //保存上一句话的ID
@@ -160,6 +160,7 @@ public class DioLogueState : MonoBehaviour
         curData = diologueData;
         ReadedList[curData.idx] = 1;
 
+        //如果是结尾，则自动保存 转场
         if(curData.processState == ProcessState.Coffee&&curData.charaID == -1)
         {
             if (date == 16)
@@ -176,7 +177,6 @@ public class DioLogueState : MonoBehaviour
         //如果curData为Branch，自动进行到下一句话
         if(curData.processState == ProcessState.Branch)
         {
-            Debug.Log("InBranch");
             curData.nextIdx = (int)LogEntryParser.GetNextIdxFromBranch(centralAccessor.ProcessManager.m_Saving.Choices,curData.log);
 
             UpdateDiologue();
@@ -220,13 +220,16 @@ public class DioLogueState : MonoBehaviour
     //读取到对应的ID和天数，要求对应ID是必定可访问到的
     public void ReadToCurrentID(int day, int Idx)
     {
+        //首先判断需不需要重新Init
         if (textList.Count == 0 || date != day)
         {
             Init((uint)day, path);
         }
 
+        //清除所有场景要素
         Clear();
 
+        //如果跳转ID为-1，则直接结束
         if (Idx == -1)
         {
             return;
@@ -234,6 +237,7 @@ public class DioLogueState : MonoBehaviour
 
         state = DioState.Auto;
 
+        //第一句话
         if (curData == null)
         {
             UpdateDiologue();
@@ -267,6 +271,7 @@ public class DioLogueState : MonoBehaviour
             UpdateDiologue();
         }
 
+        //最后一句话时进行RightLogController的初始化
         logController.rightLogController.Init(logController.logEntries.Last());
         logController.RefillToButtom();
 
