@@ -112,6 +112,7 @@ public class S_StateManager : MonoBehaviour
         NotePanel.SetActive(true);
         NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("BlackMask").gameObject.SetActive(true);
         NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("DialogBoxes").gameObject.SetActive(true);
+        NoteScene.transform.Find("Buttons").gameObject.SetActive(true);
         NotePanel.transform.Find("DefaultText").gameObject.SetActive(true);
         //NoteScene.SetActive(true);
         State = PlaySceneState.Note;
