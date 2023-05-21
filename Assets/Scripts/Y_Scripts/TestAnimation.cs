@@ -24,7 +24,7 @@ public class TestAnimation : MonoBehaviour
     }
     public void onClick()
     {
-        m_rectTransform.DOKill(true);
+        m_rectTransform.DOComplete();
         m_rectTransform.DOAnchorPosX(-1000, 8);
     }
 

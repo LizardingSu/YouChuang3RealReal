@@ -15,6 +15,7 @@ public class CharacterController : MonoBehaviour
     public CharacterEntryController right;
     public WhiteAnim whiteMask;
 
+    public Coroutine coroutine;
     /// <summary>
     /// 多种情况所需时间
     /// 从显示名字到不显示名字：hideNameTime
@@ -29,12 +30,12 @@ public class CharacterController : MonoBehaviour
     public float fadeTime = 0.15f;
 
     [Tooltip("控制的是重新升起Character框之前的等待时间")]
-    public float delay = 0.6f;
+    public float delay = 1.0f;
 
     [Tooltip("控制的是进行白罩的一个消的失之前的等待时间")]
     public float whiteFoldDelay = 1.0f;
 
-    private bool isCoffeeBefore = false;
+    public bool isCoffeeBefore = false;
 
     public List<CharacterEntryController> windowsCharacters = new List<CharacterEntryController>(3);
     public List<int> charSortedList = new List<int>(3);
@@ -144,6 +145,11 @@ public class CharacterController : MonoBehaviour
             //如果是做咖啡阶段，收起
             if (data.processState == ProcessState.Coffee)
             {
+                Debug.Log("MoveDownAll");
+
+                Debug.Log("Left" + left.curState);
+                Debug.Log("Right"+right.curState);
+
                 if (left.curState == CurState.HIDE)
                     left.MoveDown(hideAllTime - hideNameTime);
                 else

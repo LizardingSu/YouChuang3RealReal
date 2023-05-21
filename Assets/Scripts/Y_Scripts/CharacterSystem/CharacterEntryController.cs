@@ -55,35 +55,32 @@ public class CharacterEntryController : MonoBehaviour
     /// </summary>
     public void MoveHideName(float time)
     {
-        if (curState == CurState.HIDE) return;
-        
-        
-        curState = CurState.HIDE;
-
         //not really need
         rectTransform.DOKill(true);
+
+        if (curState == CurState.HIDE) return; 
+        curState = CurState.HIDE;
 
         rectTransform.DOAnchorPosY(-80, time);
     }
     public void MoveUp(float time)
     {
+        rectTransform.DOKill(true);
+
         if (curState == CurState.UP) return;
 
         curState = CurState.UP;
 
         //not really need
-        rectTransform.DOKill(true);
 
         rectTransform.DOAnchorPosY(0, time);
     }
     public void MoveDown(float time)
     {
-        if (curState == CurState.DOWN) return;
-
-        curState = CurState.DOWN;
-
-        //not really need
         rectTransform.DOKill(true);
+
+        if (curState == CurState.DOWN) return;
+        curState = CurState.DOWN;
 
         rectTransform.DOAnchorPosY(-1000, time);
     }
