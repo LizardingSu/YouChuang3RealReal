@@ -29,18 +29,20 @@ public class RightLogController : MonoBehaviour
 
     public void MoveUp(float time)
     {
-        if (m_transform.anchoredPosition.y == 0) return;
-
         //not really need
         m_transform.DOKill(true);
+
+        if (m_transform.anchoredPosition.y == 0) return;
+
         m_transform.DOAnchorPosY(0, time);
     }
     public void MoveDown(float time)
     {
-        if (m_transform.anchoredPosition.y == -400) return;
 
         //not really need
         m_transform.DOKill(true);
+
+        if (m_transform.anchoredPosition.y == -400) return;
 
         m_transform.DOAnchorPosY(-400, time);
     }
@@ -48,8 +50,6 @@ public class RightLogController : MonoBehaviour
 
     public void KillAllAnim()
     {
-        Debug.Log("Killllllllll");
-
         m_transform.DOKill(true);
 
         StopCoroutine(coroutine);

@@ -87,7 +87,7 @@ public class ResourceController : MonoBehaviour
 
     private IEnumerator WaitForSoundsComplete(float time)
     {
-        yield return new WaitForSeconds(time+0.1f);
+        yield return new WaitForSeconds(time+0.5f);
         isComplete = true;
     }
 

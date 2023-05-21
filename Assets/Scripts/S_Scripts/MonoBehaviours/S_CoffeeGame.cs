@@ -173,10 +173,31 @@ public class S_CoffeeGame : MonoBehaviour
         if (accessor._DioLogueState.state == DioState.Normal)
         {
             //StartCoroutine(HideGamePanel());
+            Sequence s = DOTween.Sequence();
+
             RectTransform r = GetComponent<RectTransform>();
-            r.DOMove(new Vector2(r.position.x, GamePanelOriginPosY), 2.0f);
-            DioLogueState ds = accessor._DioLogueState;
-            ds.SetButtonsActive(true);
+            s.Append(r.DOMove(new Vector2(r.position.x, GamePanelOriginPosY), 0.8f));
+
+            //DioLogueState ds = accessor._DioLogueState;
+            //ds.SetButtonsActive(false);
+
+            s.AppendCallback(() =>
+            {
+                Debug.Log("CallbackStart");
+                accessor._DioLogueState.ProcessInput();
+                DioLogueState ds = accessor._DioLogueState;
+
+                if(ds.state== DioState.Normal)
+                {
+                    StartCoroutine(WaitToButtonActive(true));
+                }
+                else
+                {
+                    ds.SetButtonsActive(true);
+                }
+                //ds.SetButtonsActive(true);
+                Debug.Log("CallbackEnd");
+            });
 
             //启用PanelSwitcher
             //for (int i = 0; i < PanelSwitcher.transform.childCount; i++)
@@ -188,9 +209,16 @@ public class S_CoffeeGame : MonoBehaviour
             GamePlaying = false;
         }
 
-        accessor._DioLogueState.ProcessInput();
+        
     }
 
+    private IEnumerator WaitToButtonActive(bool active)
+    {
+        yield return new WaitForSeconds(1.2f);
+
+        DioLogueState ds = accessor._DioLogueState;
+        ds.SetButtonsActive(active);
+    }
 
     /// <summary>
     /// 用于在游戏进行时终止游戏
@@ -214,7 +242,7 @@ public class S_CoffeeGame : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E)) 
         {
-            EndCoffeeGame();    
+            //EndCoffeeGame();    
         }
     }
 

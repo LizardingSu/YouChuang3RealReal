@@ -161,7 +161,7 @@ public class DioLogueState : MonoBehaviour
         //如果是结尾，则自动保存 转场
         if(curData.processState == ProcessState.Coffee&&curData.charaID == -1)
         {
-            if (date == 16)
+            if (date%4 == 0)
                 return;
 
             centralAccessor.ProcessManager.Save((int)date*1000+lastDio, -2, "");
@@ -171,7 +171,7 @@ public class DioLogueState : MonoBehaviour
         }
 
         if (state == DioState.Normal)
-            StartCoroutine(DialogueChangeEvent());
+            StartCoroutine(DialogueChangeEvent(curData));
         else
             dialogueChanged.Invoke(curData);
 
@@ -186,20 +186,38 @@ public class DioLogueState : MonoBehaviour
         }
     }
 
+    int M = 0;
+
     //对于正常对话过程，DialogueChangeEvent要等待所有dialogueWillChange都完成
-    private IEnumerator DialogueChangeEvent()
+    private IEnumerator DialogueChangeEvent(DiologueData data)
     {
+        M++;
+
+        Debug.Log("DiologueChangeBefore" + M);
+        Debug.Log("DataState" + data.processState);
+
         //首先禁止所有点击
         SetButtonsActive(false);
         SetPanelSwitcherActive(false);
 
+        var waitForEndCoffee = characterController.isCoffeeBefore;
+
         yield return new WaitUntil(isComplete);
 
-        dialogueChanged.Invoke(curData);
+        dialogueChanged.Invoke(data);
+
+        Debug.Log(waitForEndCoffee);
 
         //如果当前为咖啡，则不能开启点击
-        if (curData.processState != ProcessState.Coffee)
+        if(waitForEndCoffee)
+            SetButtonsActive(false);
+        else if (curData.processState == ProcessState.Coffee)
+            SetButtonsActive(false);
+        else 
             SetButtonsActive(true);
+
+        Debug.Log("DiologueChangeAfter" + M);
+
 
         //开启协程
         isReading = true;
@@ -285,6 +303,7 @@ public class DioLogueState : MonoBehaviour
     //设置点击事件按钮的启动和关闭
     public void SetButtonsActive(bool active)
     {
+        Debug.Log(active);
         foreach (var button in update_button)
             button.enabled = active;
     }
