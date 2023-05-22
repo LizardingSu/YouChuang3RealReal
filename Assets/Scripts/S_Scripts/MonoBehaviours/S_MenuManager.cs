@@ -62,24 +62,25 @@ public class S_MenuManager : MonoBehaviour
     {
         MenuSettingPanel.SetActive(true);
 
-        //accessor.ProcessManager.LoadProfile();
-        //float bgmValue = accessor.ProcessManager.m_Profile.BGMVolume;
-        //float seValue = accessor.ProcessManager.m_Profile.SEVolume;
+        accessor.ProcessManager.LoadProfile();
+        float bgmValue = accessor.ProcessManager.m_Profile.BGMVolume;
+        float seValue = accessor.ProcessManager.m_Profile.SEVolume;
 
-        //float bgmOriginWidth = bgmMaskRT.GetChild(0).GetComponent<S_SliderFillFunction>().maskOriginWidth;
-        //float seOriginWidth = seMaskRT.GetChild(0).GetComponent<S_SliderFillFunction>().maskOriginWidth;
+        float bgmOriginWidth = bgmMaskRT.parent.GetChild(0).GetComponent<S_NewSliderFunction>().MaskOriginWidth;
+        float seOriginWidth = seMaskRT.parent.GetChild(0).GetComponent<S_NewSliderFunction>().MaskOriginWidth;
 
         //Debug.Log(bgmOriginWidth);
         //Debug.Log(seOriginWidth);
 
-        //bgmMaskRT.sizeDelta = new Vector2(bgmValue * bgmOriginWidth, bgmMaskRT.sizeDelta.y);
-        //seMaskRT.sizeDelta = new Vector2(seValue * seOriginWidth, seMaskRT.sizeDelta.y);
+        bgmMaskRT.sizeDelta = new Vector2(bgmValue * bgmOriginWidth, bgmMaskRT.sizeDelta.y);
+        seMaskRT.sizeDelta = new Vector2(seValue * seOriginWidth, seMaskRT.sizeDelta.y);
 
         MenuSettingPanel.transform.DOMove(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, MenuSettingPanel.transform.position.z), 0.5f);
         Image[] images = MenuSettingPanel.transform.GetComponentsInChildren<Image>();
         for (int i = 0; i < images.Length; i++)
         {
-            images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 1f), 0.5f);
+            if (images[i].gameObject.name != "ClickArea") 
+                images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 1f), 0.5f);
         }
     }
 
@@ -91,7 +92,8 @@ public class S_MenuManager : MonoBehaviour
         Image[] images = MenuSettingPanel.transform.GetComponentsInChildren<Image>();
         for (int i = 0; i < images.Length; i++)
         {
-            s.Insert(0, images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 0f), 0.5f));
+            if (images[i].gameObject.name != "ClickArea")
+                s.Insert(0, images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 0f), 0.5f));
         }
         s.AppendCallback(() => { MenuSettingPanel.SetActive(false); });
     }
