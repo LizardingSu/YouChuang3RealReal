@@ -45,6 +45,7 @@ public class DioLogueState : MonoBehaviour
     public S_CoffeeGame coffee;
     public LogController logController;
     public SwitchSceneAnim switchAnim;
+    public LockOutAnim lockOutAnim;
 
     private Coroutine c;
 
@@ -145,32 +146,67 @@ public class DioLogueState : MonoBehaviour
             diologueData = LogEntryParser.GetDiologueDataAtIdx(textList, (uint)curData.nextIdx, date);
         }
 
+
+
         if(curData!= null)
         {
+            Debug.Log(curData.idx + "  " + curData.nextIdx + "  " + diologueData.idx);
+
             dialogueWillChange.Invoke(curData,diologueData);
 
+            Debug.Log(curData.idx + "  " + curData.nextIdx + "  " + diologueData.idx);
+
             //保存最后一句话
-            if(curData.processState == ProcessState.Diologue)
+            if (curData.processState == ProcessState.Diologue)
                 lastDio = (int)curData.idx;
         }
 
         curData = diologueData;
+
         //当前的字段设置为已读
         ReadedList[curData.idx] = 1;
 
         //如果是结尾，则自动保存 转场
         if(curData.processState == ProcessState.Coffee&&curData.charaID == -1)
         {
-            if (date%4 == 0)
-                return;
+            centralAccessor.ProcessManager.Save((int)date * 1000 + lastDio, -2, "");
 
-            centralAccessor.ProcessManager.Save((int)date*1000+lastDio, -2, "");
+            if (date%4 == 0)
+            {
+                var p = centralAccessor.ProcessManager;
+                bool lockOut = true;
+                foreach(var m in p.m_Saving1.Choices)
+                {
+                   if(date == 4)
+                    {
+
+                    }
+                   else if(date == 8)
+                    {
+
+                    }
+                   else if(date == 12)
+                    {
+
+                    }
+                   else if(date == 16)
+                    {
+
+                    }
+                }
+
+                if (lockOut)
+                {
+                    lockOutAnim.LockOutScene((int)date);
+                    return;
+                }
+            }
 
             switchAnim.SwitchToNewScene(date, date + 1);
             return;
         }
 
-        if (state == DioState.Normal)
+        if (state == DioState.Normal&&curData.processState!=ProcessState.Branch)
             StartCoroutine(DialogueChangeEvent(curData));
         else
             dialogueChanged.Invoke(curData);
@@ -186,16 +222,9 @@ public class DioLogueState : MonoBehaviour
         }
     }
 
-    int M = 0;
-
     //对于正常对话过程，DialogueChangeEvent要等待所有dialogueWillChange都完成
     private IEnumerator DialogueChangeEvent(DiologueData data)
     {
-        M++;
-
-        Debug.Log("DiologueChangeBefore" + M);
-        Debug.Log("DataState" + data.processState);
-
         //首先禁止所有点击
         SetButtonsActive(false);
         SetPanelSwitcherActive(false);
@@ -206,17 +235,13 @@ public class DioLogueState : MonoBehaviour
 
         dialogueChanged.Invoke(data);
 
-        Debug.Log(waitForEndCoffee);
-
-        //如果当前为咖啡，则不能开启点击
+        //如果当前为咖啡，则不能开启点击;如果上一句是咖啡，则需要等待EndCoffeeGame才能触发
         if(waitForEndCoffee)
             SetButtonsActive(false);
         else if (curData.processState == ProcessState.Coffee)
             SetButtonsActive(false);
         else 
             SetButtonsActive(true);
-
-        Debug.Log("DiologueChangeAfter" + M);
 
 
         //开启协程

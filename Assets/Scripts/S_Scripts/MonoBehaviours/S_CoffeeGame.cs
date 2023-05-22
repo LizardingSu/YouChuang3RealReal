@@ -214,9 +214,12 @@ public class S_CoffeeGame : MonoBehaviour
 
     private IEnumerator WaitToButtonActive(bool active)
     {
-        yield return new WaitForSeconds(1.2f);
-
         DioLogueState ds = accessor._DioLogueState;
+        var c = ds.characterController;
+
+        //等待Delay完毕才能正常点击
+        yield return new WaitForSeconds(c.delay+0.2f);
+
         ds.SetButtonsActive(active);
     }
 

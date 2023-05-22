@@ -161,7 +161,7 @@ static public class LogEntryParser
     {
         List<GameResource> list = new List<GameResource>(); 
 
-        if(resource[0]!='\"')
+        if(resource.Length < 2)
             return list;
 
         var l = resource.Split('-');
@@ -171,15 +171,13 @@ static public class LogEntryParser
             var type = ResourceType.CG;
             var place = ResourcePlace.Before;
 
-            //去掉开头的“
             Debug.Log(m);
-            m.Remove(0, 1);
-            Debug.Log(m);
-            var n = m.LastIndexOf('"');
-            var k = m.Substring(n + 1);
-            Debug.Log(k);
-            var p = m.Remove(n);
-            Debug.Log(p);
+            var p = m.Split('|');
+
+            var path = p[0];
+            var k = p[1];
+
+
 
             switch (k[0])
             {
@@ -207,7 +205,7 @@ static public class LogEntryParser
                     break;
             }
 
-            list.Add(new GameResource(place, type, p));
+            list.Add(new GameResource(place, type, path));
         }
 
         return list;

@@ -79,6 +79,7 @@ public class ResourceController : MonoBehaviour
 
     private void PlaySE(string path)
     {
+        path = path.Split('.')[0];
         var a = Resources.Load("Sounds/" + path) as AudioClip;
         m_audioManager.PlaySE(a);
 
@@ -102,12 +103,12 @@ public class ResourceController : MonoBehaviour
         {
             if(re.resourceType == ResourceType.BGM)
             {
-                m_BGM = Resources.Load("BGM/" +re.path) as AudioClip;
+                m_BGM = Resources.Load("BGM/" + re.path.Split('.')[0]) as AudioClip;
                 m_audioManager.PlayBGM(m_BGM);
             }
             else if(re.resourceType == ResourceType.CG)
             {
-                var tex = Resources.Load("CG/" + re.path) as Texture2D;
+                var tex = Resources.Load("CG/" + re.path.Split('.')[0]) as Texture2D;
                 m_Image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
                 m_Image.color = new Color(1, 1, 1, 1);
             }

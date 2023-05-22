@@ -46,6 +46,7 @@ public class SwitchSceneAnim : MonoBehaviour
     {
         //为了防止什么莫名其妙的情况
         blackScene.gameObject.SetActive(false);
+        blackScene.GetComponent<Image>().color = new Color(0, 0, 0, 1);
         //先等待黑色幕布移动上来
         yield return new WaitForSeconds(delay1);
         //将blackScene设置为Active

@@ -186,13 +186,13 @@ public class CharacterController : MonoBehaviour
             var charID = data.charaID;
             var emojiID = data.emojiID;
 
-            var name = characterFiles.characterList[charID].name;
-
-            if (name == "" && emojiID == -1&&data.processState == ProcessState.Diologue)
+            if(charID == -1 && emojiID == -1 && data.processState == ProcessState.Diologue)
             {
                 Narration();
                 return;
             }
+
+            var name = characterFiles.characterList[charID].name;
 
             //如果有人进入场景
             if (state == CharacterState.In)
@@ -379,16 +379,17 @@ public class CharacterController : MonoBehaviour
         var state = data.charaState;
         var charID = data.charaID;
         var emojiID = data.emojiID;
-        var name = characterFiles.characterList[charID].name;
 
         yield return new WaitForSeconds(time);
 
-        if(name == ""&&emojiID == -1)
+        if(charID == -1&&emojiID == -1)
         {
             Narration();
         }
         else
         {
+            var name = characterFiles.characterList[charID].name;
+
             //窗边的人物显示
             if (charID > 1)
             {
