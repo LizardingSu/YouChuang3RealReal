@@ -145,11 +145,6 @@ public class CharacterController : MonoBehaviour
             //如果是做咖啡阶段，收起
             if (data.processState == ProcessState.Coffee)
             {
-                Debug.Log("MoveDownAll");
-
-                Debug.Log("Left" + left.curState);
-                Debug.Log("Right"+right.curState);
-
                 if (left.curState == CurState.HIDE)
                     left.MoveDown(hideAllTime - hideNameTime);
                 else
@@ -162,6 +157,8 @@ public class CharacterController : MonoBehaviour
 
                 //收起白色幕布
                 StartCoroutine(FoldWhite(whiteFoldDelay));
+
+                Debug.Log(data.idx+"  "+"Left" + left.curState+"  "+"Right" + right.curState);
                 return;
             }
 
@@ -186,8 +183,9 @@ public class CharacterController : MonoBehaviour
             var charID = data.charaID;
             var emojiID = data.emojiID;
 
-            if(charID == -1 && emojiID == -1 && data.processState == ProcessState.Diologue)
+            if(charID == -1&&emojiID == -1&& data.processState == ProcessState.Diologue)
             {
+                Debug.Log(data.idx + "  " + "Left" + left.curState + "  " + "Right" + right.curState);
                 Narration();
                 return;
             }
@@ -200,7 +198,11 @@ public class CharacterController : MonoBehaviour
                 //如果第一次初始化的时候就In了
                 if(data.idx == 0)
                 {
-                    StartCoroutine(ShowUpAtStart(delay, data));
+                    //协程，你是个傻呗！
+                    if (diologueState.state == DioState.Auto)
+                        ShowUpAtStartImee(data);
+                    else
+                        StartCoroutine(ShowUpAtStart(delay, data));
                 }
                 else
                 {
@@ -323,6 +325,52 @@ public class CharacterController : MonoBehaviour
 
             //更改颜色
             ChangeColor();
+        }
+    }
+
+
+    private void ShowUpAtStartImee(DiologueData data)
+    {
+        var state = data.charaState;
+        var charID = data.charaID;
+        var emojiID = data.emojiID;
+
+        var name = characterFiles.characterList[charID].name;
+
+        if (charID > 1)
+        {
+            //对于开头，不可能出现一个角色已经In过的情况
+            windowsCharacters[curPlace].transform.SetAsLastSibling();
+            windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
+            charSortedList.Add(charID);
+            SortWindowsPos();
+            curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
+
+            //可能存在当前角色In的时候，左侧已经有对话框出现了，此时只需要ShowName时间而不是MoveUp时间，并且另一侧如果已经有对话框，则需要MoveDown
+            if (left.curState == CurState.HIDE)
+                left.MoveUp(showNameTime);
+            else if (left.curState == CurState.DOWN)
+                left.MoveUp(showAllTime);
+
+            if (right.curState == CurState.UP)
+                right.MoveHideName(hideNameTime);
+
+            left.SetAllDatas(true, charID, name, emojiID);
+            left.SetName(data.name);
+        }
+        else
+        {
+            //同理
+            if (right.curState == CurState.HIDE)
+                right.MoveUp(showNameTime);
+            else if (right.curState == CurState.DOWN)
+                right.MoveUp(showAllTime);
+
+            if (left.curState == CurState.UP)
+                left.MoveHideName(hideNameTime);
+
+            right.SetAllDatas(true, charID, name, emojiID);
+            right.SetName(data.name);
         }
     }
 
@@ -465,7 +513,7 @@ public class CharacterController : MonoBehaviour
     {
         if (left.curState == CurState.UP)
             left.MoveHideName(hideNameTime);
-        
+
         if(right.curState == CurState.UP)
             right.MoveHideName(hideNameTime);
 
@@ -474,6 +522,8 @@ public class CharacterController : MonoBehaviour
     }
     private void ChangeColor()
     {
+        Debug.Log(diologueState.curData.idx);
+
         //如果本身没立绘，则不需要变色
         if (left.image.color != new Color(1, 1, 1, 0))
             left.image.color = new Color(1, 1, 1, 1);

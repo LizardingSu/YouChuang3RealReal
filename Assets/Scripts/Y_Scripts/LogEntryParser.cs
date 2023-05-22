@@ -32,6 +32,19 @@ public struct GameResource
     }
 }
 
+[System.Serializable]
+public class RightChoice
+{
+    public int SelectID;
+    public string rightChoice;
+
+    public RightChoice(int s,string r)
+    {
+        SelectID = s;
+        rightChoice = r;
+    }
+}
+
 static public class LogEntryParser
 {
     /// <summary>
@@ -171,7 +184,6 @@ static public class LogEntryParser
             var type = ResourceType.CG;
             var place = ResourcePlace.Before;
 
-            Debug.Log(m);
             var p = m.Split('|');
 
             var path = p[0];

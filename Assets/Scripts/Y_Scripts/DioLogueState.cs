@@ -15,7 +15,7 @@ public enum DioState
 public class DioLogueState : MonoBehaviour
 {
 
-
+    public SelectData selectdata;
     public List<string> textList = new List<string>();
 
     /// <summary>
@@ -150,11 +150,7 @@ public class DioLogueState : MonoBehaviour
 
         if(curData!= null)
         {
-            Debug.Log(curData.idx + "  " + curData.nextIdx + "  " + diologueData.idx);
-
             dialogueWillChange.Invoke(curData,diologueData);
-
-            Debug.Log(curData.idx + "  " + curData.nextIdx + "  " + diologueData.idx);
 
             //保存最后一句话
             if (curData.processState == ProcessState.Diologue)
@@ -177,22 +173,36 @@ public class DioLogueState : MonoBehaviour
                 bool lockOut = true;
                 foreach(var m in p.m_Saving1.Choices)
                 {
-                   if(date == 4)
-                    {
+                    if (m.Choice == 1 || m.Choice == -2 || m.ID % 1000 > date)
+                        continue;
 
-                    }
-                   else if(date == 8)
-                    {
+                    var r = selectdata.data.Find(x => x.SelectID == m.ID);
 
-                    }
-                   else if(date == 12)
+                    if(r == null)
                     {
-
+                        lockOut = false;
+                        break;
                     }
-                   else if(date == 16)
+
+                    var c = r.rightChoice.Split('|');
+
+                    bool isT = false;
+                    foreach(var n in c)
                     {
-
+                        if (int.Parse(n) == m.Choice)
+                        {
+                            isT = true;
+                            break;
+                        }
                     }
+
+                    if (!isT)
+                    {
+                        lockOut = false;
+                        break;
+                    }
+
+                    lockOut = isT;
                 }
 
                 if (lockOut)
@@ -235,10 +245,12 @@ public class DioLogueState : MonoBehaviour
 
         dialogueChanged.Invoke(data);
 
-        //如果当前为咖啡，则不能开启点击;如果上一句是咖啡，则需要等待EndCoffeeGame才能触发
+        //如果当前为咖啡，则不能开启点击;如果上一句是咖啡，则需要等待EndCoffeeGame才能触发;如果是第一句话，则需要等待SwitchNewScene触发
         if(waitForEndCoffee)
             SetButtonsActive(false);
         else if (curData.processState == ProcessState.Coffee)
+            SetButtonsActive(false);
+        else if (curData.idx == 0)
             SetButtonsActive(false);
         else 
             SetButtonsActive(true);
@@ -376,8 +388,6 @@ public class DioLogueState : MonoBehaviour
 
         while (curData.idx != Idx)
         {
-            Debug.Log(curData.idx + "  " + Idx);
-
             //如果是这两者，则说明不会自动到下一句话，所以必须触发他的下一句条件
             if (curData.processState == ProcessState.Coffee)
             {

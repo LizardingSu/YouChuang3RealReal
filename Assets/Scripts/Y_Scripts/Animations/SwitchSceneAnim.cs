@@ -95,7 +95,7 @@ public class SwitchSceneAnim : MonoBehaviour
         diologueState.SetButtonsActive(false);
         diologueState.ReadToCurrentID((int)nextDay, -1);
 
-        StartCoroutine(WaitTime(2));
+        StartCoroutine(WaitTime(4));
     }
 
     private IEnumerator WaitTime(float time)
@@ -112,12 +112,14 @@ public class SwitchSceneAnim : MonoBehaviour
         yield return new WaitForSeconds(1);
         blackScene.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(time-1);
-        mask.gameObject.SetActive(false);
+        yield return new WaitForSeconds(1);
 
         //过了一段时间之后，播放该场景的第一句话
         diologueState.ProcessInput();
         processManager.Save((int)nextDay * 1000,1,"");
+
+        yield return new WaitForSeconds(time - 2);
+        mask.gameObject.SetActive(false);
         diologueState.SetButtonsActive(true);
     }
 
