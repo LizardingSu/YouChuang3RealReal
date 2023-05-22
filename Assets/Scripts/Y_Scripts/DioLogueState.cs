@@ -70,6 +70,25 @@ public class DioLogueState : MonoBehaviour
             button.onClick.RemoveListener(ProcessInput);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("Scene_4");
+
+            var pm = centralAccessor.ProcessManager;
+            pm.DeleteSaving();
+            pm.Load();
+
+            date = 4;
+            pm.Save(4000, 1, "");
+
+            Init(date, path);
+            switchAnim.SwitchToNewScene(3, 4);
+        }
+    }
+
+
     public void LoadNewSceneImmediate()
     {
         Debug.Log("NewScene");
