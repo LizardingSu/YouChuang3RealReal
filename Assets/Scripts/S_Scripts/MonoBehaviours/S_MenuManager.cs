@@ -45,6 +45,10 @@ public class S_MenuManager : MonoBehaviour
 
     private bool ExitGameNoteShowing;
 
+    private DG.Tweening.Sequence NotePanelSequence;
+    private DG.Tweening.Sequence SettingPanelSequence;
+
+
     public void ShowMenu(bool show)
     {
         if (show)
@@ -70,6 +74,8 @@ public class S_MenuManager : MonoBehaviour
         s.Append(BlackSwitcher.transform.DOMoveY(BlackSwitcherOriginY + BlackSwitcherUpDelta, 1.2f));
         s.AppendCallback(() =>
         {
+            HideSettingPanel();
+            OnClickNo();
             accessor.StateManager.CancelCurrentState();
             accessor.StateManager.StateSwitchToLog();
             gameObject.SetActive(true);
@@ -102,7 +108,26 @@ public class S_MenuManager : MonoBehaviour
 
     public void ShowSettingPanel()
     {
+        if (SettingPanelSequence != null)
+        {
+            SettingPanelSequence.Complete();
+        }
+        else
+        {
+            SettingPanelSequence = DOTween.Sequence();
+        }
+
+        Image[] images = MenuSettingPanel.transform.GetComponentsInChildren<Image>();
+        //MenuSettingPanel.transform.DOKill(true);
+        //for (int i = 0; i < images.Length; i++)
+        //{
+        //    if (images[i].gameObject.name != "ClickArea")
+        //        images[i].DOKill(true);
+        //}
+        
         MenuSettingPanel.SetActive(true);
+
+        OnClickNo();
 
         accessor.ProcessManager.LoadProfile();
         float bgmValue = accessor.ProcessManager.m_Profile.BGMVolume;
@@ -117,32 +142,57 @@ public class S_MenuManager : MonoBehaviour
         bgmMaskRT.sizeDelta = new Vector2(bgmValue * bgmOriginWidth, bgmMaskRT.sizeDelta.y);
         seMaskRT.sizeDelta = new Vector2(seValue * seOriginWidth, seMaskRT.sizeDelta.y);
 
-        MenuSettingPanel.transform.DOMove(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, MenuSettingPanel.transform.position.z), 0.5f);
-        Image[] images = MenuSettingPanel.transform.GetComponentsInChildren<Image>();
+
+        SettingPanelSequence.Append(MenuSettingPanel.transform.DOMove(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, MenuSettingPanel.transform.position.z), 0.5f));
+        
         for (int i = 0; i < images.Length; i++)
         {
-            if (images[i].gameObject.name != "ClickArea") 
-                images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 1f), 0.5f);
+            if (images[i].gameObject.name != "ClickArea")
+                SettingPanelSequence.Insert(0, images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 1f), 0.5f));
         }
     }
 
     public void HideSettingPanel()
     {
+        if (SettingPanelSequence != null)
+        {
+            SettingPanelSequence.Complete();
+        }
+        else
+        {
+            SettingPanelSequence = DOTween.Sequence();
+        }
+
         Debug.Log("Hide");
-        var s = DOTween.Sequence();
-        s.Append(MenuSettingPanel.transform.DOMove(new Vector3(MenuSettingAndNotePaenlStartX, Screen.height * 0.5f, MenuSettingPanel.transform.position.z), 0.5f));
+        SettingPanelSequence.Append(MenuSettingPanel.transform.DOMove(new Vector3(MenuSettingAndNotePaenlStartX, Screen.height * 0.5f, MenuSettingPanel.transform.position.z), 0.5f));
         Image[] images = MenuSettingPanel.transform.GetComponentsInChildren<Image>();
         for (int i = 0; i < images.Length; i++)
         {
             if (images[i].gameObject.name != "ClickArea")
-                s.Insert(0, images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 0f), 0.5f));
+                SettingPanelSequence.Insert(0, images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 0f), 0.5f));
         }
-        s.AppendCallback(() => { MenuSettingPanel.SetActive(false); });
+        SettingPanelSequence.AppendCallback(() => { MenuSettingPanel.SetActive(false); });
     }
 
     public void ShowNotePanel(bool newGame)
     {
+        if (NotePanelSequence!= null)
+        {
+            NotePanelSequence.Complete();
+        }
+        else
+        {
+            NotePanelSequence = DOTween.Sequence();
+        }
+
+        Image[] images = MenuNotePanel.transform.GetComponentsInChildren<Image>();
+        //for (int i = 0; i < images.Length; i++)
+        //{
+        //    images[i].DOKill(true);
+        //}
+
         MenuNotePanel.SetActive(true);
+        HideSettingPanel();
 
         if (newGame)
         {
@@ -155,11 +205,10 @@ public class S_MenuManager : MonoBehaviour
             ExitGameNoteShowing = true;
         }
 
-        MenuNotePanel.transform.DOMove(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, MenuNotePanel.transform.position.z), 0.5f);
-        Image[] images = MenuNotePanel.transform.GetComponentsInChildren<Image>();
+        NotePanelSequence.Append(MenuNotePanel.transform.DOMove(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, MenuNotePanel.transform.position.z), 0.5f));
         for (int i = 0; i < images.Length; i++)
         {
-                images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 1f), 0.5f);
+            NotePanelSequence.Insert(0, images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 1f), 0.5f));
         }
     }
 
@@ -181,14 +230,23 @@ public class S_MenuManager : MonoBehaviour
         NewGameNoteShowing = false;
         ExitGameNoteShowing = false;
 
-        var s = DOTween.Sequence();
-        s.Append(MenuNotePanel.transform.DOMove(new Vector3(MenuSettingAndNotePaenlStartX, Screen.height * 0.5f, MenuNotePanel.transform.position.z), 0.5f));
+        if (NotePanelSequence != null)
+        {
+            NotePanelSequence.Complete();
+        }
+        else
+        {
+            NotePanelSequence = DOTween.Sequence();
+        }
+
+        NotePanelSequence.Append(MenuNotePanel.transform.DOMove(new Vector3(MenuSettingAndNotePaenlStartX, Screen.height * 0.5f, MenuNotePanel.transform.position.z), 0.5f));
         Image[] images = MenuNotePanel.transform.GetComponentsInChildren<Image>();
         for (int i = 0; i < images.Length; i++)
         {
-                s.Insert(0, images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 0f), 0.5f));
+            NotePanelSequence.Insert(0, images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 0f), 0.5f));
         }
-        s.AppendCallback(() => { MenuNotePanel.SetActive(false); });
+        NotePanelSequence.AppendCallback(() => { MenuNotePanel.SetActive(false); });
+        
     }
 
     private void Start()
