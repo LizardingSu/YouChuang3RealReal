@@ -265,8 +265,8 @@ public class S_CoffeeGame : MonoBehaviour
         RectTransform r = GetComponent<RectTransform>();
         Sequence s = DOTween.Sequence();
         s.Append(r.DOMove(new Vector2(r.position.x, r.position.y + 5f), 0.1f));
-        s.Append(r.DOMove(new Vector2(r.position.x, r.position.y - 10f), 0.1f));
-        s.Append(r.DOMove(new Vector2(r.position.x, r.position.y + 5f), 0.1f));
+        s.Append(r.DOMove(new Vector2(r.position.x, r.position.y - 5f), 0.1f));
+        s.Append(r.DOMove(new Vector2(r.position.x, r.position.y), 0.1f));
 
         return GameFinished;
     }
@@ -287,8 +287,8 @@ public class S_CoffeeGame : MonoBehaviour
         RectTransform r = GetComponent<RectTransform>();
         Sequence s = DOTween.Sequence();
         s.Append(r.DOMove(new Vector2(r.position.x + 5f, r.position.y), 0.1f));
-        s.Append(r.DOMove(new Vector2(r.position.x - 10f, r.position.y), 0.1f));
-        s.Append(r.DOMove(new Vector2(r.position.x + 5f, r.position.y), 0.1f));
+        s.Append(r.DOMove(new Vector2(r.position.x - 5f, r.position.y), 0.1f));
+        s.Append(r.DOMove(new Vector2(r.position.x, r.position.y), 0.1f));
 
         GameFinished = false;
     }
