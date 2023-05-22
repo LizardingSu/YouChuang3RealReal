@@ -4,12 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class S_MenuManager : MonoBehaviour
 {
     public S_CentralAccessor accessor;
 
     public GameObject MenuSettingPanel;
+    public GameObject MenuNotePanel;
+
+    public Sprite NewGameNote;
+
+    public Sprite ExitGameNote;
+
+    public GameObject BlackSwitcher;
+
+    public float BlackSwitcherUpDelta;
 
     [Range(0.1f, 10f)]
     public float BreatheSpeed;
@@ -23,11 +33,17 @@ public class S_MenuManager : MonoBehaviour
 
     private bool BreatheStart;
 
-    private float MenuSettingPaenlStartX;
+    private float MenuSettingAndNotePaenlStartX;
+
+    private float BlackSwitcherOriginY;
 
     private RectTransform bgmMaskRT;
 
     private RectTransform seMaskRT;
+
+    private bool NewGameNoteShowing;
+
+    private bool ExitGameNoteShowing;
 
     public void ShowMenu(bool show)
     {
@@ -39,6 +55,32 @@ public class S_MenuManager : MonoBehaviour
         {
             this.gameObject.SetActive(false);
         }
+    }
+
+    public void SwitchToMenu()
+    {
+        BlackSwitcher.SetActive(true);
+        var s = DOTween.Sequence();
+
+        BlackSwitcher.transform.position = new Vector3(BlackSwitcher.transform.position.x, BlackSwitcherOriginY, BlackSwitcher.transform.position.z);
+        BlackSwitcher.GetComponent<Image>().color = Color.white;
+        BlackSwitcher.GetComponent<Image>().raycastTarget = true;
+
+
+        s.Append(BlackSwitcher.transform.DOMoveY(BlackSwitcherOriginY + BlackSwitcherUpDelta, 1.2f));
+        s.AppendCallback(() =>
+        {
+            accessor.StateManager.CancelCurrentState();
+            accessor.StateManager.StateSwitchToLog();
+            gameObject.SetActive(true);
+        });
+        s.AppendInterval(0.3f);
+        s.Append(BlackSwitcher.GetComponent<Image>().DOColor(new Color(Color.white.r, Color.white.g, Color.white.b, 0f), 1f));
+        s.AppendCallback( () => 
+        {
+            BlackSwitcher.GetComponent<Image>().raycastTarget = false;
+            BlackSwitcher.SetActive(false);
+        });
     }
 
     public void Temp_HideMenu()
@@ -87,8 +129,8 @@ public class S_MenuManager : MonoBehaviour
     public void HideSettingPanel()
     {
         Debug.Log("Hide");
-        Sequence s = DOTween.Sequence();
-        s.Append(MenuSettingPanel.transform.DOMove(new Vector3(MenuSettingPaenlStartX, Screen.height * 0.5f, MenuSettingPanel.transform.position.z), 0.5f));
+        var s = DOTween.Sequence();
+        s.Append(MenuSettingPanel.transform.DOMove(new Vector3(MenuSettingAndNotePaenlStartX, Screen.height * 0.5f, MenuSettingPanel.transform.position.z), 0.5f));
         Image[] images = MenuSettingPanel.transform.GetComponentsInChildren<Image>();
         for (int i = 0; i < images.Length; i++)
         {
@@ -98,13 +140,70 @@ public class S_MenuManager : MonoBehaviour
         s.AppendCallback(() => { MenuSettingPanel.SetActive(false); });
     }
 
+    public void ShowNotePanel(bool newGame)
+    {
+        MenuNotePanel.SetActive(true);
+
+        if (newGame)
+        {
+            MenuNotePanel.transform.GetChild(0).GetComponent<Image>().sprite = NewGameNote;
+            NewGameNoteShowing = true;
+        }
+        else
+        {
+            MenuNotePanel.transform.GetChild(0).GetComponent<Image>().sprite = ExitGameNote;
+            ExitGameNoteShowing = true;
+        }
+
+        MenuNotePanel.transform.DOMove(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, MenuNotePanel.transform.position.z), 0.5f);
+        Image[] images = MenuNotePanel.transform.GetComponentsInChildren<Image>();
+        for (int i = 0; i < images.Length; i++)
+        {
+                images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 1f), 0.5f);
+        }
+    }
+
+    public void OnClickYes()
+    {
+        if (NewGameNoteShowing)
+        {
+            NewGame();
+        }
+
+        if (ExitGameNoteShowing)
+        {
+            accessor.ProcessManager.ExitGame();
+        }
+    }
+
+    public void OnClickNo()
+    {
+        NewGameNoteShowing = false;
+        ExitGameNoteShowing = false;
+
+        var s = DOTween.Sequence();
+        s.Append(MenuNotePanel.transform.DOMove(new Vector3(MenuSettingAndNotePaenlStartX, Screen.height * 0.5f, MenuNotePanel.transform.position.z), 0.5f));
+        Image[] images = MenuNotePanel.transform.GetComponentsInChildren<Image>();
+        for (int i = 0; i < images.Length; i++)
+        {
+                s.Insert(0, images[i].DOColor(new Color(images[i].color.r, images[i].color.g, images[i].color.b, 0f), 0.5f));
+        }
+        s.AppendCallback(() => { MenuNotePanel.SetActive(false); });
+    }
+
     private void Start()
     {
         BreatheStart = false;
         ButtonsTransform = transform.Find("Buttons");
         HeadLineTransform = transform.Find("HeadLine");
 
+        BlackSwitcherOriginY = BlackSwitcher.transform.position.y;
+
+        NewGameNoteShowing = false;
+        ExitGameNoteShowing = false;
+
         MenuSettingPanel.SetActive(false);
+        MenuNotePanel.SetActive(false);
 
         bgmMaskRT = transform.Find("SettingPanel/BGMSlider/FillMask").GetComponent<RectTransform>();
         seMaskRT = transform.Find("SettingPanel/SESlider/FillMask").GetComponent<RectTransform>();
@@ -118,7 +217,7 @@ public class S_MenuManager : MonoBehaviour
             images[i].color = new Color(images[i].color.r, images[i].color.g, images[i].color.b, 0f);
         }
 
-        MenuSettingPaenlStartX = MenuSettingPanel.transform.position.x;
+        MenuSettingAndNotePaenlStartX = MenuSettingPanel.transform.position.x;
 
         for (int i = 0; i < ButtonsTransform.childCount; i++)
         {
@@ -129,7 +228,10 @@ public class S_MenuManager : MonoBehaviour
             ButtonsTransform.GetChild(1).GetComponent<Button>().interactable = false;
         }
 
-        Sequence s = DOTween.Sequence();
+        MenuNotePanel.transform.GetChild(1).GetComponent<Image>().alphaHitTestMinimumThreshold = 0.05f;
+        MenuNotePanel.transform.GetChild(2).GetComponent<Image>().alphaHitTestMinimumThreshold = 0.05f;
+
+        var s = DOTween.Sequence();
         if (true)   //之后改成大一轮和大二轮的分支
         {
             s.Insert(0.5f, HeadLineTransform.DOMove(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, HeadLineTransform.transform.position.z), 0.5f));
