@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class ResourceController : MonoBehaviour
     public DioLogueState m_dioState;
     public S_AudioManager m_audioManager;
 
+    public Sequence s;
 
     public bool isComplete = false;
 
@@ -55,7 +57,16 @@ public class ResourceController : MonoBehaviour
                 }
                 else if(re.resourceType == ResourceType.CG)
                 {
-                    m_Image.color = new Color(1, 1, 1, 0);
+                    if (m_dioState.state != DioState.Auto)
+                    {
+                        isComplete = false;
+                        TakeCG(re.path,false);
+                    }
+                    else
+                    {
+                        isComplete = true;
+                        TakeCG(re.path);
+                    }
                 }
             }
         }
@@ -72,9 +83,64 @@ public class ResourceController : MonoBehaviour
                         PlaySE(re.path);
                     }
                 }
+                else if (re.resourceType == ResourceType.CG)
+                {
+                    if (m_dioState.state != DioState.Auto)
+                    {
+                        isComplete = false;
+                        PlayCG(re.path, false);
+                    }
+                    else
+                    {
+                        isComplete = true;
+                        PlayCG(re.path);
+                    }
+                }
             }
         }
 
+    }
+
+    private void PlayCG(string path,bool isAuto = true)
+    {
+        var tex = Resources.Load("CG/" + path.Split('.')[0]) as Texture2D;
+        m_Image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
+        m_Image.color = new Color(1, 1, 1, 1);
+        m_Image.rectTransform.anchoredPosition = Vector2.zero;
+
+        if (!isAuto)
+        {
+            m_Image.rectTransform.anchoredPosition = new Vector2(0,908.0f);
+            s = DOTween.Sequence();
+
+            s.Append(m_Image.rectTransform.DOAnchorPosY(0, 1.5f));
+            s.AppendInterval(0.5f).AppendCallback(() =>
+            {
+                isComplete = true;
+            });
+        }
+    }
+
+    private void TakeCG(string path,bool isAuto = true)
+    {
+        m_Image.rectTransform.anchoredPosition = Vector2.zero;
+
+        if(!isAuto)
+        {
+            m_Image.rectTransform.anchoredPosition = new Vector2(0, 0.0f);
+            s = DOTween.Sequence();
+
+            s.Append(m_Image.rectTransform.DOAnchorPosY(908.0f, 1.5f));
+            s.AppendInterval(0.5f).AppendCallback(() =>
+            {
+                isComplete = true;
+                m_Image.color = new Color(1, 1, 1, 0);
+            });
+        }
+        else
+        {
+            m_Image.color = new Color(1, 1, 1, 0);
+        }
     }
 
     private void PlaySE(string path)
