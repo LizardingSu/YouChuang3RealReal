@@ -2738,6 +2738,7 @@ RectTransform:
   - {fileID: 707020879}
   - {fileID: 1013827104}
   - {fileID: 1068702849}
+  - {fileID: 453844129}
   - {fileID: 357607213}
   - {fileID: 881461734}
   m_Father: {fileID: 0}
@@ -3874,7 +3875,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 259851986}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -4773,6 +4774,120 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ThisItem: 8
   notePanelManager: {fileID: 1286878266}
+--- !u!1001 &453844128
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 259851986}
+    m_Modifications:
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6516141230763807905, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: mask
+      value: 
+      objectReference: {fileID: 357607213}
+    - target: {fileID: 6516141230763807905, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: state
+      value: 
+      objectReference: {fileID: 1765219810}
+    - target: {fileID: 6516141230763807905, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: process
+      value: 
+      objectReference: {fileID: 1765219809}
+    - target: {fileID: 6516141230763807911, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+      propertyPath: m_Name
+      value: LockOutScene
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+--- !u!224 &453844129 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6516141230763807904, guid: 312ba52b393e5f74ab7242e7cec5f7ef, type: 3}
+  m_PrefabInstance: {fileID: 453844128}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &488537217
 GameObject:
   m_ObjectHideFlags: 0
@@ -7784,7 +7899,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 259851986}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -12988,6 +13103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c98c35046d25974184bc8620e8e190c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectdata: {fileID: 11400000, guid: fb4efc7cb32960c42a5bbbec449301e0, type: 2}
   textList: []
   ReadedList: 
   dialogueWillChange:
@@ -13007,6 +13123,7 @@ MonoBehaviour:
   coffee: {fileID: 374283989}
   logController: {fileID: 759485590}
   switchAnim: {fileID: 1068702850}
+  lockOutAnim: {fileID: 0}
   state: 0
   isReading: 0
 --- !u!114 &1765219811
