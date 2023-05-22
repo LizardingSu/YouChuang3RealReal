@@ -9,6 +9,8 @@ public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public Sprite DefaultNode;
     public Sprite ActiveNode;
 
+    public AudioClip NodeClickSE;
+
     private void OnEnable()
     {
         transform.GetChild(0).GetComponent<Image>().sprite = DefaultNode;
@@ -25,6 +27,8 @@ public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void OnPointerClick(PointerEventData eventData)
     {
         S_CalendarPanelManager calendarPanel = transform.parent.parent.parent.parent.GetComponent<S_CalendarPanelManager>();
+
+        calendarPanel.Accessor.AudioManager.PlaySE(NodeClickSE);
 
         int day = calendarPanel.currentActiveDayButton.Value + 1;
         int id = calendarPanel.allDays[day - 1].Nodes[calendarPanel.currentNodes.IndexOf(this.gameObject)].ID;

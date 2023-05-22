@@ -38,6 +38,9 @@ public class S_CalendarPanelManager : MonoBehaviour
     //存放整个游戏流程16天节点数据的列表
     public List<S_DayInCalendar> allDays = new List<S_DayInCalendar>();
 
+    //按钮点击音效
+    public AudioClip ButtonClickSE;
+
     /// <summary>
     /// OnEnable
     /// </summary>
@@ -192,6 +195,8 @@ public class S_CalendarPanelManager : MonoBehaviour
                 button.transform.GetChild(1).GetComponent<UnityEngine.UI.Button>().interactable = true;
             }
         }
+
+        Accessor.AudioManager.PlaySE(ButtonClickSE);
 
         //点击的是当前已激活项时
         if (currentActiveDayButton != null && currentActiveDayButton.Value == buttonIndex)

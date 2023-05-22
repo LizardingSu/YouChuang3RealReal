@@ -53,6 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultNode: {fileID: 21300000, guid: 942ccee7fb18f1744923031aef119c09, type: 3}
   ActiveNode: {fileID: 21300000, guid: 6c4eb1d5141350841a49d7a645aa23aa, type: 3}
+  NodeClickSE: {fileID: 8300000, guid: b6c1a45d5a6882747b568a841ed255ed, type: 3}
 --- !u!1 &6689593795234076160
 GameObject:
   m_ObjectHideFlags: 0
