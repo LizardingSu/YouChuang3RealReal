@@ -134,7 +134,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &4751970377350667869
@@ -177,7 +177,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 7899030817704622871}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -193,3 +193,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee8ab89b8628004290b5c9d3a596e87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  a: {fileID: 8300000, guid: c9ec85b4e2f329f4d9ed1fa9e33b283a, type: 3}

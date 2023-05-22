@@ -14,13 +14,19 @@ public class diologueButtonController : MonoBehaviour
     private uint nextIdx;
 
     private DioLogueState m_dioState;
+    private S_AudioManager m_audioManager;
+
+    public AudioClip a;
 
     public void Awake()
     {
         button = GetComponent<Button>();
         textBox = GetComponent<TMP_Text>();
 
-        m_dioState = GameObject.Find("MainManager").GetComponent<DioLogueState>();
+        var m = GameObject.Find("MainManager");
+        m_dioState = m.GetComponent<DioLogueState>();
+        m_audioManager = m.GetComponent<S_AudioManager>();
+
 
         button.onClick.AddListener(OnClick);
     }
@@ -54,8 +60,10 @@ public class diologueButtonController : MonoBehaviour
         button.image = image;
     }
 
-        public void OnClick()
+    public void OnClick()
     {
+        m_audioManager.PlaySE(a);
+
         m_dioState.OnSelectionSelect(Idx, nextIdx);
     }
 }

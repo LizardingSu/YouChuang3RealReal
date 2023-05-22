@@ -18,14 +18,19 @@ public class InputFieldController : MonoBehaviour
 
     private DioLogueState m_dioState;
     private S_ProcessManager m_processManager;
+    private S_AudioManager m_audioManager;
+
+    public AudioClip a;
 
     public bool FirstTime = true;
 
 
     private void Awake()
     {
-        m_dioState = GameObject.Find("MainManager").GetComponent<DioLogueState>();
-        m_processManager = GameObject.Find("MainManager").GetComponent<S_ProcessManager>();
+        var m = GameObject.Find("MainManager");
+        m_dioState =m.GetComponent<DioLogueState>();
+        m_processManager = m.GetComponent<S_ProcessManager>();
+        m_audioManager = m.GetComponent<S_AudioManager>();
 
         button.onClick.AddListener(OnClick);
     }
@@ -36,6 +41,8 @@ public class InputFieldController : MonoBehaviour
     }
     public void OnClick()
     {
+        m_audioManager.PlaySE(a);
+
         singleInput.inputField.ActivateInputField();
 
         //如果是第一次点击，则固定不会触发下一句对话
