@@ -8,6 +8,8 @@ using Unity.VisualScripting;
 
 public class S_MenuManager : MonoBehaviour
 {
+    public AudioClip MenuBGM;
+
     public S_CentralAccessor accessor;
 
     public GameObject MenuSettingPanel;
@@ -76,6 +78,7 @@ public class S_MenuManager : MonoBehaviour
         {
             HideSettingPanel();
             OnClickNo();
+            accessor.AudioManager.PlayBGM(MenuBGM);
             accessor.StateManager.CancelCurrentState();
             accessor.StateManager.StateSwitchToLog();
             gameObject.SetActive(true);

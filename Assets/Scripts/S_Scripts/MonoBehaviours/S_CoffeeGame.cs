@@ -51,6 +51,10 @@ public class S_CoffeeGame : MonoBehaviour
 
     public GameObject Refrigerator;
 
+    [Header("音效")]
+    public AudioClip CoffeeMachineSE;
+
+    public AudioClip GrinderMachineSE;
 
     //表示当前是否正在进行游戏
     [HideInInspector]
@@ -313,6 +317,8 @@ public class S_CoffeeGame : MonoBehaviour
     {
         if (accessor._DioLogueState.date < MachineAvailableDay)
         {
+            accessor.AudioManager.PlaySE(GrinderMachineSE);
+
             IEnumerator PlayGrinderAnimation()
             {
                 Grinder.GetComponent<Image>().sprite = GrinderFrames[0];
@@ -529,6 +535,7 @@ public class S_CoffeeGame : MonoBehaviour
             if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Extract)
             {
                 currentFinishedStepNumber++;
+                accessor.AudioManager.PlaySE(CoffeeMachineSE);
                 State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("萃取", "<s><color=grey>萃取</color></s>");
                 if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
                 {
