@@ -28,12 +28,27 @@ public class S_NotePanelManager : MonoBehaviour
         }
     }
 
+    public void CancelSelect()
+    {
+        if (CurrentActiveItem != null)
+        {
+            NoteScene.transform.Find("BlackMask").gameObject.SetActive(true);
+            NoteScene.transform.Find("DialogBoxes").gameObject.SetActive(true);
+            NoteScene.transform.Find("Buttons").gameObject.SetActive(true);
+            transform.Find("DefaultText").gameObject.SetActive(true);
+            transform.Find("InfoBox").gameObject.SetActive(false);
+            CurrentActiveItem.GetComponent<Image>().material = null;
+            CurrentActiveItem = null;
+        }
+    }
+
     public void ItemClickedInNotePanel(S_ItemWithInfo item)
     {
         if (CurrentActiveItem == null)
         {
             NoteScene.transform.Find("BlackMask").gameObject.SetActive(false);
             NoteScene.transform.Find("DialogBoxes").gameObject.SetActive(false);
+            NoteScene.transform.Find("Buttons").gameObject.SetActive(false);
             transform.Find("DefaultText").gameObject.SetActive(false);
             transform.Find("InfoBox").gameObject.SetActive(true);
         }
@@ -75,6 +90,7 @@ public class S_NotePanelManager : MonoBehaviour
 
         foreach(var element in ElementsInNote)
         {
+            if (element.Value.GetComponent<Image>() != null)
             element.Value.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
         }
     }
