@@ -14394,7 +14394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c98c35046d25974184bc8620e8e190c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: fb4efc7cb32960c42a5bbbec449301e0, type: 2}
+  selectdata: {fileID: 11400000, guid: fb4efc7cb32960c42a5bbbec449301e0, type: 2}
   textList: []
   ReadedList: 
   dialogueWillChange:
