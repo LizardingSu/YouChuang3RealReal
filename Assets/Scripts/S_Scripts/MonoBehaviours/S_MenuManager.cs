@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.IO;
 using DG.Tweening;
 using Unity.VisualScripting;
+using DG.Tweening.Plugins.Core.PathCore;
 
 public class S_MenuManager : MonoBehaviour
 {
@@ -102,6 +103,7 @@ public class S_MenuManager : MonoBehaviour
         accessor._DioLogueState.LoadNewSceneImmediate();
         Invoke("Temp_HideMenu", 1.2f);
     }
+
 
     public void ContinueGame()
     {
@@ -316,6 +318,12 @@ public class S_MenuManager : MonoBehaviour
         if (BreatheStart)
         {
             HeadLineTransform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, Mathf.Sin(Time.time / BreatheSpeed) * BreatheRange);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            accessor._DioLogueState.LoadScene4();
+            Invoke("Temp_HideMenu", 1.2f);
         }
     }
 }

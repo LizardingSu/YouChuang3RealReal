@@ -72,22 +72,23 @@ public class DioLogueState : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("Scene_4");
 
-            var pm = centralAccessor.ProcessManager;
-            pm.DeleteSaving();
-            pm.Load();
-
-            date = 4;
-            pm.Save(4000, 1, "");
-
-            Init(date, path);
-            switchAnim.SwitchToNewScene(3, 4);
-        }
     }
 
+    public void LoadScene4()
+    {
+        Debug.Log("Scene_4");
+
+        var pm = centralAccessor.ProcessManager;
+        pm.DeleteSaving();
+        pm.Load();
+
+        date = 4;
+        pm.Save(4000, 1, "");
+
+        Init(date, path);
+        switchAnim.SwitchToNewScene(3, 4);
+    }
 
     public void LoadNewSceneImmediate()
     {
@@ -190,6 +191,7 @@ public class DioLogueState : MonoBehaviour
             {
                 var p = centralAccessor.ProcessManager;
                 bool lockOut = true;
+
                 foreach(var m in p.m_Saving1.Choices)
                 {
                     if (m.Choice == 1 || m.Choice == -2 || m.ID % 1000 > date)
@@ -199,7 +201,7 @@ public class DioLogueState : MonoBehaviour
 
                     if(r == null)
                     {
-                        lockOut = false;
+                        lockOut = true;
                         break;
                     }
 

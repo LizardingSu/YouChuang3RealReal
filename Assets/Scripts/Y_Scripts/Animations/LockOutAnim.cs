@@ -85,6 +85,7 @@ public class LockOutAnim : MonoBehaviour
         buttonToContinue.interactable = false;
 
         this.day = day;
+        this.numT.text = day.ToString();
 
         blackMask.gameObject.SetActive(true);
         blackMask.anchoredPosition = new Vector2(0, 440.0f);
