@@ -98,11 +98,17 @@ public class DioLogueState : MonoBehaviour
         pm.DeleteSaving();
         pm.Load();
 
+//》》》》》》》要改
         date = 1;
-        pm.Save(1000, 1, "");
+        //date = 0;
+//》》》》》》》
 
         Init(date, path);
+
+//》》》》》》》要改
         switchAnim.SwitchToNewScene(0, 1);
+        //xxx.xxx();
+//》》》》》》》
     }
     public void ContinueGame()
     {
@@ -185,6 +191,12 @@ public class DioLogueState : MonoBehaviour
         //如果是结尾，则自动保存 转场
         if(curData.processState == ProcessState.Coffee&&curData.charaID == -1)
         {
+            if(date == 0)
+            {
+                switchAnim.SwitchToNewScene(date, date + 1);
+                return;
+            }
+
             centralAccessor.ProcessManager.Save((int)date * 1000 + lastDio, -2, "");
 
             if (date%4 == 0)

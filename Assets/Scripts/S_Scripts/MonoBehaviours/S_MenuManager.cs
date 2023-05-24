@@ -320,10 +320,10 @@ public class S_MenuManager : MonoBehaviour
             HeadLineTransform.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, Mathf.Sin(Time.time / BreatheSpeed) * BreatheRange);
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            accessor._DioLogueState.LoadScene4();
-            Invoke("Temp_HideMenu", 1.2f);
-        }
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    accessor._DioLogueState.LoadScene4();
+        //    Invoke("Temp_HideMenu", 1.2f);
+        //}
     }
 }

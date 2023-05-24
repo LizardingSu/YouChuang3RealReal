@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class ResourceController : MonoBehaviour
 {
@@ -10,13 +11,17 @@ public class ResourceController : MonoBehaviour
     public DioLogueState m_dioState;
     public S_AudioManager m_audioManager;
 
+    public VideoPlayer m_videoPlayer;
+    public RenderTexture m_videoTexture;
+
     public Sequence s;
 
     public bool isComplete = false;
 
     private AudioClip m_BGM;
+    private VideoClip m_VideoClip;
 
-    public Image m_Image;
+    public RawImage m_Image;
 
     void Awake()
     {
@@ -24,6 +29,7 @@ public class ResourceController : MonoBehaviour
         m_dioState.dialogueWillChange.AddListener(DiologueWillChange);
 
         m_dioState.isComplete += IsComplete;
+        m_Image.color = new Color(1, 1, 1, 0);
     }
 
 
@@ -33,6 +39,7 @@ public class ResourceController : MonoBehaviour
         m_dioState.dialogueWillChange.RemoveListener(DiologueWillChange);
 
         m_dioState.isComplete -= IsComplete;
+        
     }
 
     private void DiologueWillChange(DiologueData data1,DiologueData data2)
@@ -67,6 +74,10 @@ public class ResourceController : MonoBehaviour
                         isComplete = true;
                         TakeCG(re.path);
                     }
+                }
+                else if(re.resourceType == ResourceType.VIDEO)
+                {
+                    StopVideo();
                 }
             }
         }
@@ -104,7 +115,7 @@ public class ResourceController : MonoBehaviour
     private void PlayCG(string path,bool isAuto = true)
     {
         var tex = Resources.Load("CG/" + path.Split('.')[0]) as Texture2D;
-        m_Image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
+        m_Image.texture = tex;
         m_Image.color = new Color(1, 1, 1, 1);
         m_Image.rectTransform.anchoredPosition = Vector2.zero;
 
@@ -120,7 +131,6 @@ public class ResourceController : MonoBehaviour
             });
         }
     }
-
     private void TakeCG(string path,bool isAuto = true)
     {
         m_Image.rectTransform.anchoredPosition = Vector2.zero;
@@ -151,11 +161,31 @@ public class ResourceController : MonoBehaviour
 
         StartCoroutine(WaitForSoundsComplete(a.length));
     }
-
     private IEnumerator WaitForSoundsComplete(float time)
     {
         yield return new WaitForSeconds(time+0.5f);
         isComplete = true;
+    }
+
+    private void PlayVideo(string path)
+    {
+        m_VideoClip = Resources.Load("CG" + path.Split('.')[0]) as VideoClip;
+        m_Image.color = new Color(1, 1, 1, 1);
+
+        //播放前先释放
+        m_videoTexture.Release();
+        m_videoTexture.Create();
+
+        m_Image.texture = m_videoTexture;
+        m_videoPlayer.clip = m_VideoClip;
+
+        m_videoPlayer.Play();
+    }
+    private void StopVideo()
+    {
+        m_Image.texture = null;
+        m_Image.color = new Color(1, 1, 1, 0);
+        m_videoPlayer.Pause();
     }
 
     private void DiologueChanged(DiologueData data)
@@ -167,16 +197,23 @@ public class ResourceController : MonoBehaviour
 
         foreach (var re in resources)
         {
-            if(re.resourceType == ResourceType.BGM)
+            if(re.resourcePlace == ResourcePlace.In)
             {
-                m_BGM = Resources.Load("BGM/" + re.path.Split('.')[0]) as AudioClip;
-                m_audioManager.PlayBGM(m_BGM);
-            }
-            else if(re.resourceType == ResourceType.CG)
-            {
-                var tex = Resources.Load("CG/" + re.path.Split('.')[0]) as Texture2D;
-                m_Image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
-                m_Image.color = new Color(1, 1, 1, 1);
+                if (re.resourceType == ResourceType.BGM)
+                {
+                    m_BGM = Resources.Load("BGM/" + re.path.Split('.')[0]) as AudioClip;
+                    m_audioManager.PlayBGM(m_BGM);
+                }
+                else if (re.resourceType == ResourceType.CG)
+                {
+                    var tex = Resources.Load("CG/" + re.path.Split('.')[0]) as Texture2D;
+                    m_Image.texture = tex;
+                    m_Image.color = new Color(1, 1, 1, 1);
+                }
+                else if(re.resourceType == ResourceType.VIDEO)
+                {
+                    PlayVideo(re.path);
+                }
             }
         }
     }

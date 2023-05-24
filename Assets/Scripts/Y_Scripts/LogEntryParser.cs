@@ -8,7 +8,8 @@ public enum ResourceType
 {
     BGM,
     SE,
-    CG
+    CG,
+    VIDEO
 }
 
 public enum ResourcePlace
@@ -201,6 +202,9 @@ static public class LogEntryParser
                     break;
                 case 'm':
                     type= ResourceType.SE;
+                    break;
+                case 'v':
+                    type = ResourceType.VIDEO;
                     break;
             }
 
