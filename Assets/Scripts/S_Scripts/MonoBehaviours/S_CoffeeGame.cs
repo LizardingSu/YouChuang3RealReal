@@ -179,6 +179,12 @@ public class S_CoffeeGame : MonoBehaviour
             //StartCoroutine(HideGamePanel());
             Sequence s = DOTween.Sequence();
 
+            if (accessor.StateManager.State != PlaySceneState.Log)
+            {
+                accessor.StateManager.CancelCurrentState();
+                accessor.StateManager.StateSwitchToLog();
+            }
+
             RectTransform r = GetComponent<RectTransform>();
             s.Append(r.DOMove(new Vector2(r.position.x, GamePanelOriginPosY), 0.8f));
 

@@ -486,7 +486,7 @@ VideoPlayer:
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
-  m_RenderMode: 0
+  m_RenderMode: 2
   m_AspectRatio: 2
   m_DataSource: 0
   m_PlaybackSpeed: 1
@@ -586,7 +586,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: d0ff60be457714d49b149b39fdea39ad, type: 3}
+  m_Texture: {fileID: 8400000, guid: d48dfff52ec8f0a41bbc7266e45f3534, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
