@@ -28,6 +28,10 @@ MonoBehaviour:
   - id: 6
     name: "\u74F6\u4E2D\u8C46"
   - id: 7
-    name: "\u5C0F\u699B"
+    name: "\u7384\u5807"
   - id: 8
     name: "\u963F\u6D9F"
+  - id: 9
+    name: "\u5C0F\u699B"
+  - id: 10
+    name: "\u91D1\u4E4B\u9B3C"

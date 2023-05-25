@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: SelectData
   m_EditorClassIdentifier: 
   data:
-  - SelectID: 1077
-    rightChoice: 79
-  - SelectID: 2101
-    rightChoice: 103
-  - SelectID: 2191
-    rightChoice: 193
+  - SelectID: 1086
+    rightChoice: 88
+  - SelectID: 2108
+    rightChoice: 110
+  - SelectID: 2248
+    rightChoice: 250
   - SelectID: 3019
     rightChoice: 21

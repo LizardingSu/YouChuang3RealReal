@@ -29,7 +29,7 @@ public class ResourceController : MonoBehaviour
         m_dioState.dialogueWillChange.AddListener(DiologueWillChange);
 
         m_dioState.isComplete += IsComplete;
-        m_Image.color = new Color(1, 1, 1, 0);
+        m_Image.color = new Color(0, 0, 0, 1);
     }
 
 
@@ -144,12 +144,19 @@ public class ResourceController : MonoBehaviour
             s.AppendInterval(0.5f).AppendCallback(() =>
             {
                 isComplete = true;
-                m_Image.color = new Color(1, 1, 1, 0);
+
+                if (m_dioState.date == 0)
+                    m_Image.color = new Color(0, 0, 0, 1);
+                else
+                    m_Image.color = new Color(1, 1, 1, 0);
             });
         }
         else
         {
-            m_Image.color = new Color(1, 1, 1, 0);
+            if (m_dioState.date == 0)
+                m_Image.color = new Color(0, 0, 0, 1);
+            else
+                m_Image.color = new Color(1, 1, 1, 0);
         }
     }
 

@@ -19,9 +19,5 @@ public class S_CentralAccessor : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) 
-        {
-            MenuManager.NewGame();
-        }
     }
 }

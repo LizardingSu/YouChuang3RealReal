@@ -94,7 +94,10 @@ public class S_StateManager : MonoBehaviour
     {
         LogPanel.SetActive(true);
         State = PlaySceneState.Log;
-        GameObject.Find("MainManager").GetComponent<DioLogueState>().SetButtonsActive(true);
+        if (GameObject.Find("MainManager").GetComponent<DioLogueState>().centralAccessor.GameManager.GamePlaying == false)
+        {
+            GameObject.Find("MainManager").GetComponent<DioLogueState>().SetButtonsActive(true);
+        }
     }
 
     public void StateSwitchToCalendar()

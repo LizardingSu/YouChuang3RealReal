@@ -90,7 +90,7 @@ public class DioLogueState : MonoBehaviour
         switchAnim.SwitchToNewScene(3, 4);
     }
 
-    public void LoadNewSceneImmediate()
+    public void LoadNewSceneImmediate(int i)
     {
         Debug.Log("NewScene");
 
@@ -98,17 +98,9 @@ public class DioLogueState : MonoBehaviour
         pm.DeleteSaving();
         pm.Load();
 
-//》》》》》》》要改
-        date = 1;
-        //date = 0;
-//》》》》》》》
+        date = (uint)i;
 
         Init(date, path);
-
-//》》》》》》》要改
-        switchAnim.SwitchToNewScene(0, 1);
-        //xxx.xxx();
-//》》》》》》》
     }
     public void ContinueGame()
     {

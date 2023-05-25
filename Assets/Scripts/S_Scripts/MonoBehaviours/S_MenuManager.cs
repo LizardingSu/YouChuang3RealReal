@@ -98,10 +98,11 @@ public class S_MenuManager : MonoBehaviour
         ShowMenu(false);
     }
 
-    public void NewGame()
+    public void NewGame(int i)
     {
         //accessor._DioLogueState.LoadNewSceneImmediate();
         //Invoke("Temp_HideMenu", 1.2f);
+        accessor._DioLogueState.LoadNewSceneImmediate(i);
 
         BlackSwitcher.SetActive(true);
         var s = DOTween.Sequence();
@@ -120,21 +121,25 @@ public class S_MenuManager : MonoBehaviour
             //accessor.StateManager.CancelCurrentState();
             //accessor.StateManager.StateSwitchToLog();
             gameObject.SetActive(false);
-            accessor._DioLogueState.ReadToCurrentID(0, -1);
+            accessor._DioLogueState.ReadToCurrentID(i, -1);
         });
         s.AppendInterval(0.3f);
         s.Append(BlackSwitcher.GetComponent<Image>().DOColor(new Color(Color.white.r, Color.white.g, Color.white.b, 0f), 1f));
+        s.AppendCallback(() =>
+        {
+            accessor._DioLogueState.ProcessInput();
+        });
         s.AppendInterval(1f);
-        //s.AppendCallback(() =>
-        //{
-
-        //});
         s.AppendCallback(() =>
         {
             BlackSwitcher.GetComponent<Image>().raycastTarget = false;
             BlackSwitcher.SetActive(false);
-            accessor._DioLogueState.ProcessInput();
+            accessor._DioLogueState.SetButtonsActive(true);
         });
+        //s.AppendCallback(() =>
+        //{
+
+        //});
     }
 
 
@@ -254,7 +259,7 @@ public class S_MenuManager : MonoBehaviour
     {
         if (NewGameNoteShowing)
         {
-            NewGame();
+            NewGame(0);
         }
 
         if (ExitGameNoteShowing)

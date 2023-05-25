@@ -29,6 +29,7 @@ public class SwitchSceneAnim : MonoBehaviour
 
     public DioLogueState diologueState;
     public S_ProcessManager processManager;
+    public RawImage image;
     public Button buttonToContinue;
 
     public Selectable mask;
@@ -51,8 +52,9 @@ public class SwitchSceneAnim : MonoBehaviour
         yield return new WaitForSeconds(delay1);
         //将blackScene设置为Active
         blackScene.gameObject.SetActive(true);
+        image.color = new Color(1, 1, 1, 0);
         //将各项都初始化
-        if(day1 == 0)
+        if (day1 == 0)
             day_First.text = "?";
         else
             day_First.text = Convert.ToString(day1);

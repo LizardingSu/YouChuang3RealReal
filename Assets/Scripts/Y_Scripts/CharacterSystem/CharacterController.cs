@@ -511,11 +511,17 @@ public class CharacterController : MonoBehaviour
 
     private void Narration()
     {
+
         if (left.curState == CurState.UP)
             left.MoveHideName(hideNameTime);
 
         if(right.curState == CurState.UP)
             right.MoveHideName(hideNameTime);
+
+        if (diologueState.date == 0)
+        {
+            return;
+        }
 
         left.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
         right.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
