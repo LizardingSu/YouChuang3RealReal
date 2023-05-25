@@ -173,7 +173,8 @@ public class S_CalendarPanelManager : MonoBehaviour
             sliderRect.sizeDelta = new Vector2(sliderRect.rect.width, sliderDefaultHeight);
         }
 
-        DayButtons[Accessor._DioLogueState.date - 1].GetComponent<RectTransform>().GetChild(1).GetComponent<UnityEngine.UI.Image>().material = Accessor.StateManager.NotePanel.GetComponent<S_NotePanelManager>().OutlineMaterial;
+        if (!(Accessor._DioLogueState.date == 0))
+            DayButtons[Accessor._DioLogueState.date - 1].GetComponent<RectTransform>().GetChild(1).GetComponent<UnityEngine.UI.Image>().material = Accessor.StateManager.NotePanel.GetComponent<S_NotePanelManager>().OutlineMaterial;
     }
 
     /// <summary>

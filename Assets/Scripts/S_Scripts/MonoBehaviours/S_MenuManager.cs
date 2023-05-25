@@ -100,8 +100,41 @@ public class S_MenuManager : MonoBehaviour
 
     public void NewGame()
     {
-        accessor._DioLogueState.LoadNewSceneImmediate();
-        Invoke("Temp_HideMenu", 1.2f);
+        //accessor._DioLogueState.LoadNewSceneImmediate();
+        //Invoke("Temp_HideMenu", 1.2f);
+
+        BlackSwitcher.SetActive(true);
+        var s = DOTween.Sequence();
+
+        BlackSwitcher.transform.position = new Vector3(BlackSwitcher.transform.position.x, BlackSwitcherOriginY, BlackSwitcher.transform.position.z);
+        BlackSwitcher.GetComponent<Image>().color = Color.white;
+        BlackSwitcher.GetComponent<Image>().raycastTarget = true;
+
+
+        s.Append(BlackSwitcher.transform.DOMoveY(BlackSwitcherOriginY + BlackSwitcherUpDelta, 1.2f));
+        s.AppendCallback(() =>
+        {
+            HideSettingPanel();
+            OnClickNo();
+            //accessor.AudioManager.PlayBGM(MenuBGM);
+            //accessor.StateManager.CancelCurrentState();
+            //accessor.StateManager.StateSwitchToLog();
+            gameObject.SetActive(false);
+            accessor._DioLogueState.ReadToCurrentID(0, -1);
+        });
+        s.AppendInterval(0.3f);
+        s.Append(BlackSwitcher.GetComponent<Image>().DOColor(new Color(Color.white.r, Color.white.g, Color.white.b, 0f), 1f));
+        s.AppendInterval(1f);
+        //s.AppendCallback(() =>
+        //{
+
+        //});
+        s.AppendCallback(() =>
+        {
+            BlackSwitcher.GetComponent<Image>().raycastTarget = false;
+            BlackSwitcher.SetActive(false);
+            accessor._DioLogueState.ProcessInput();
+        });
     }
 
 
