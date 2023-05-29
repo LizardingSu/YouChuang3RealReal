@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -120,10 +121,14 @@ public class CharacterController : MonoBehaviour
                 //让人物进场的动画
                 if (data2.charaID > 1 && data.charaID > 1)
                 {
+                    left.SetAllDatas(true, data2.charaID, characterFiles.characterList[data2.charaID].name, data2.emojiID);
+                    left.SetName(data2.name);
                     left.FadeAnim(fadeTime);
                 }
                 else if (data2.charaID <= 1 && data.charaID <= 1)
                 {
+                    right.SetAllDatas(true, data2.charaID, characterFiles.characterList[data2.charaID].name, data2.emojiID);
+                    right.SetName(data2.name);
                     right.FadeAnim(fadeTime);
                 }
             }
@@ -210,6 +215,8 @@ public class CharacterController : MonoBehaviour
                     {
                         //窗口的情况
                         bool isIn = false;
+
+
                         foreach(var windowsCharacter in windowsCharacters)
                         {
                             if (charID == windowsCharacter.CharID)
@@ -218,7 +225,7 @@ public class CharacterController : MonoBehaviour
                                 break;
                             }
                         }
-                        if (!isIn)
+                        if ((!isIn)&&IsWindow(charID))
                         {
                             windowsCharacters[curPlace].transform.SetAsLastSibling();
                             windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
@@ -279,10 +286,13 @@ public class CharacterController : MonoBehaviour
 
                 if (charID > 1)
                 {
-                    var obj = windowsCharacters.Find(x => x.CharID == charID);
-                    obj.SetAllDatas(false);
-                    charSortedList.Remove(charID);
-                    SortWindowsPos();
+                    if (IsWindow(charID))
+                    {
+                        var obj = windowsCharacters.Find(x => x.CharID == charID);
+                        obj.SetAllDatas(false);
+                        charSortedList.Remove(charID);
+                        SortWindowsPos();
+                    }
                 }
             }
             else
@@ -340,11 +350,14 @@ public class CharacterController : MonoBehaviour
         if (charID > 1)
         {
             //对于开头，不可能出现一个角色已经In过的情况
-            windowsCharacters[curPlace].transform.SetAsLastSibling();
-            windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
-            charSortedList.Add(charID);
-            SortWindowsPos();
-            curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
+            if (IsWindow(charID))
+            {
+                windowsCharacters[curPlace].transform.SetAsLastSibling();
+                windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
+                charSortedList.Add(charID);
+                SortWindowsPos();
+                curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
+            }
 
             //可能存在当前角色In的时候，左侧已经有对话框出现了，此时只需要ShowName时间而不是MoveUp时间，并且另一侧如果已经有对话框，则需要MoveDown
             if (left.curState == CurState.HIDE)
@@ -387,11 +400,14 @@ public class CharacterController : MonoBehaviour
         if (charID > 1)
         {
             //对于开头，不可能出现一个角色已经In过的情况
-            windowsCharacters[curPlace].transform.SetAsLastSibling();
-            windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
-            charSortedList.Add(charID);
-            SortWindowsPos();
-            curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
+            if (IsWindow(charID))
+            {
+                windowsCharacters[curPlace].transform.SetAsLastSibling();
+                windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
+                charSortedList.Add(charID);
+                SortWindowsPos();
+                curPlace = windowsCharacters.FindIndex(x => x.CharID == -1);
+            }
 
             //可能存在当前角色In的时候，左侧已经有对话框出现了，此时只需要ShowName时间而不是MoveUp时间，并且另一侧如果已经有对话框，则需要MoveDown
             if (left.curState == CurState.HIDE)
@@ -453,7 +469,7 @@ public class CharacterController : MonoBehaviour
                         }
                     }
 
-                    if (!isIn)
+                    if (!isIn&&IsWindow(charID))
                     {
                         windowsCharacters[curPlace].transform.SetAsLastSibling();
                         windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
@@ -465,10 +481,13 @@ public class CharacterController : MonoBehaviour
                 }
                 else if (state == CharacterState.Leave)
                 {
-                    var obj = windowsCharacters.Find(x => x.CharID == charID);
-                    obj.SetAllDatas(false);
-                    charSortedList.Remove(charID);
-                    SortWindowsPos();
+                    if (IsWindow(charID))
+                    {
+                        var obj = windowsCharacters.Find(x => x.CharID == charID);
+                        obj.SetAllDatas(false);
+                        charSortedList.Remove(charID);
+                        SortWindowsPos();
+                    }
                 }
                 else
                 {
@@ -563,5 +582,10 @@ public class CharacterController : MonoBehaviour
             var m = listCount - i;
             windowsCharacters.Find(x => x.CharID == charSortedList[i]).GetComponent<RectTransform>().anchoredPosition = new Vector2(m * place, -365);
         }
+    }
+
+    private bool IsWindow(int charID)
+    {
+        return charID != 7 && charID != 8 && charID != 9 && charID != 10;
     }
 }

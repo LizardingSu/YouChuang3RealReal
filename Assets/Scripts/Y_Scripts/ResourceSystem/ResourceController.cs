@@ -11,17 +11,15 @@ public class ResourceController : MonoBehaviour
     public DioLogueState m_dioState;
     public S_AudioManager m_audioManager;
 
-    public VideoPlayer m_videoPlayer;
-    public RenderTexture m_videoTexture;
-
     public Sequence s;
 
     public bool isComplete = false;
 
     private AudioClip m_BGM;
-    private VideoClip m_VideoClip;
 
-    public RawImage m_Image;
+    public Animator m_animator;
+
+    public Image m_Image;
 
     void Awake()
     {
@@ -114,7 +112,7 @@ public class ResourceController : MonoBehaviour
     private void PlayCG(string path,bool isAuto = true)
     {
         var tex = Resources.Load("CG/" + path.Split('.')[0]) as Texture2D;
-        m_Image.texture = tex;
+        m_Image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
         m_Image.color = new Color(1, 1, 1, 1);
         m_Image.rectTransform.anchoredPosition = Vector2.zero;
 
@@ -175,23 +173,22 @@ public class ResourceController : MonoBehaviour
 
     private void PlayVideo(string path)
     {
-        m_VideoClip = Resources.Load("CG" + path.Split('.')[0]) as VideoClip;
         m_Image.color = new Color(1, 1, 1, 1);
 
-        //播放前先释放
-        m_videoTexture.Release();
-        m_videoTexture.Create();
+        m_animator.enabled = true;
+        m_animator.Play(path);
 
-        m_Image.texture = m_videoTexture;
-        m_videoPlayer.clip = m_VideoClip;
-
-        m_videoPlayer.Play();
     }
     private void StopVideo()
     {
-        m_Image.texture = null;
-        m_Image.color = new Color(1, 1, 1, 0);
-        m_videoPlayer.Pause();
+        m_Image.sprite = null;
+
+        m_animator.enabled =false;
+
+        if (m_dioState.date != 0)
+            m_Image.color = new Color(1, 1, 1, 0);
+        else
+            m_Image.color = new Color(0, 0, 0, 1);
     }
 
     private void DiologueChanged(DiologueData data)
@@ -213,7 +210,7 @@ public class ResourceController : MonoBehaviour
                 else if (re.resourceType == ResourceType.CG)
                 {
                     var tex = Resources.Load("CG/" + re.path.Split('.')[0]) as Texture2D;
-                    m_Image.texture = tex;
+                    m_Image.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
                     m_Image.color = new Color(1, 1, 1, 1);
                 }
                 else if(re.resourceType == ResourceType.VIDEO)

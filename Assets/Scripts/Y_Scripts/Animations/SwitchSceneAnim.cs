@@ -29,7 +29,7 @@ public class SwitchSceneAnim : MonoBehaviour
 
     public DioLogueState diologueState;
     public S_ProcessManager processManager;
-    public RawImage image;
+    public Image image;
     public Button buttonToContinue;
 
     public Selectable mask;
