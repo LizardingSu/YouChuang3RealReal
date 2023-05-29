@@ -91,6 +91,15 @@ public class S_MenuManager : MonoBehaviour
             BlackSwitcher.GetComponent<Image>().raycastTarget = false;
             BlackSwitcher.SetActive(false);
         });
+
+        if (!File.Exists(Application.persistentDataPath + "/ApodaSaving/" + accessor.ProcessManager.m_SavingName1))
+        {
+            ButtonsTransform.GetChild(1).GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            ButtonsTransform.GetChild(1).GetComponent<Button>().interactable = true;
+        }
     }
 
     public void Temp_HideMenu()

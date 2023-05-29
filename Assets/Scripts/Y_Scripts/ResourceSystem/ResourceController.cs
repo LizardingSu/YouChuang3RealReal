@@ -29,7 +29,6 @@ public class ResourceController : MonoBehaviour
         m_dioState.dialogueWillChange.AddListener(DiologueWillChange);
 
         m_dioState.isComplete += IsComplete;
-        m_Image.color = new Color(0, 0, 0, 1);
     }
 
 

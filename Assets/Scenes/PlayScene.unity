@@ -13305,6 +13305,7 @@ MonoBehaviour:
   characterController: {fileID: 1388609666}
   coffee: {fileID: 374283989}
   logController: {fileID: 759485590}
+  resourceController: {fileID: 1752218124}
   switchAnim: {fileID: 1068702850}
   lockOutAnim: {fileID: 453844130}
   state: 0

@@ -70,6 +70,8 @@ public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         sm.CancelStateCalendar();
         sm.StateSwitchToLog();
 
+        accessor._DioLogueState.SetButtonsActive(true);
+
         accessor._DioLogueState.ReadToCurrentID(day, id);
     }
 

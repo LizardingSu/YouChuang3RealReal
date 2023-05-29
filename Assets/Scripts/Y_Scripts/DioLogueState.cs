@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static UnityEngine.Windows.WebCam.VideoCapture;
 
 //不好说
 public enum DioState
@@ -44,6 +45,7 @@ public class DioLogueState : MonoBehaviour
     public CharacterController characterController;
     public S_CoffeeGame coffee;
     public LogController logController;
+    public ResourceController resourceController;
     public SwitchSceneAnim switchAnim;
     public LockOutAnim lockOutAnim;
 
@@ -373,6 +375,11 @@ public class DioLogueState : MonoBehaviour
     //清除characterController,logController所有状态
     private void Clear()
     {
+        if (date == 0)
+            resourceController.m_Image.color = new Color(0, 0, 0, 1);
+        else
+            resourceController.m_Image.color = new Color(1, 1, 1, 0);
+
         characterController.Clear();
         logController.Clear();
         coffee.Clear();
