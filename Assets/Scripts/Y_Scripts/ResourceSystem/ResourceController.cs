@@ -27,6 +27,7 @@ public class ResourceController : MonoBehaviour
         m_dioState.dialogueWillChange.AddListener(DiologueWillChange);
 
         m_dioState.isComplete += IsComplete;
+        m_animator.enabled = false;
     }
 
 

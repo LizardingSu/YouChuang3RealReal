@@ -44,6 +44,9 @@ public class S_ProcessManager : MonoBehaviour
     {
         Debug.Log(id + "  " + answer);
 
+        bool end = false;
+        int endIndex = 0;
+
         bool exist = false;
         int existIndex = 0;
 
@@ -56,6 +59,41 @@ public class S_ProcessManager : MonoBehaviour
                 break;
             }
             existIndex++;
+        }
+
+        if(option != 1)
+        {
+            //找到endIndex和是否有末尾
+            for (int i = 0; i < m_Saving1.Choices.Count; i++)
+            {
+                var c = m_Saving1.Choices[i];
+
+                if ((int)(id / 1000) == (int)(c.ID / 1000))
+                {
+                    if (c.Choice == -2)
+                    {
+                        end = true;
+                        endIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            //如果有末尾的时候
+            if (end)
+            {
+                if(id == m_Saving1.Choices[endIndex].ID)
+                {
+                    //当当前id和末尾id一致时 进入exist中的情况
+                }
+                else if (option == -2||(exist && m_Saving1.Choices[existIndex].Choice != option))
+                {
+                    m_Saving1.Choices.RemoveAt(endIndex);
+                    if (exist && existIndex > endIndex)
+                        existIndex--;
+                }
+
+            }
         }
 
         if (exist)

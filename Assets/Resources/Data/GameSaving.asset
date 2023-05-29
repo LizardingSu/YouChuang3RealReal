@@ -13,9 +13,36 @@ MonoBehaviour:
   m_Name: GameSaving
   m_EditorClassIdentifier: 
   Choices:
-  - ID: 1002
-    Choice: 5
+  - ID: 1000
+    Choice: 1
     Answer: 
-  - ID: 1008
-    Choice: 12
+  - ID: 1086
+    Choice: 114
+    Answer: 
+  - ID: 1318
+    Choice: -2
+    Answer: 
+  - ID: 2000
+    Choice: 1
+    Answer: 
+  - ID: 3000
+    Choice: 1
+    Answer: 
+  - ID: 3339
+    Choice: -2
+    Answer: 
+  - ID: 4000
+    Choice: 1
+    Answer: 
+  - ID: 3019
+    Choice: 41
+    Answer: 
+  - ID: 2108
+    Choice: 110
+    Answer: "\u963F\u6D9F"
+  - ID: 2248
+    Choice: 250
+    Answer: "\u5982\u5176\u4E0A\uFF0C\u540C\u5176\u4E0B"
+  - ID: 2292
+    Choice: -2
     Answer: 

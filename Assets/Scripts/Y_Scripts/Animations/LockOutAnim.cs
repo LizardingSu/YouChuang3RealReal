@@ -76,7 +76,7 @@ public class LockOutAnim : MonoBehaviour
         });
     }
 
-    public void LockOutScene(int day)
+    public void LockOutScene(int day,bool lockOut = true)
     {
         m_sequence = DOTween.Sequence();
 
@@ -96,6 +96,9 @@ public class LockOutAnim : MonoBehaviour
         m_chainRect2.anchoredPosition = new Vector2(-1920, 0);
         m_chainRect1.GetComponent<Image>().color = new Color(1, 1, 1, 1);
         m_chainRect2.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+
+        if (!lockOut)
+            tipsT.text = "恭喜你通过了这四天！第五天还没做。";
 
         var inv = new Color(1, 1, 1, 0);
         var v = new Color(1, 1, 1, 1);

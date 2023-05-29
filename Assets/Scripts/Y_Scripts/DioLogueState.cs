@@ -196,23 +196,24 @@ public class DioLogueState : MonoBehaviour
             if (date%4 == 0)
             {
                 var p = centralAccessor.ProcessManager;
-                bool lockOut = true;
+                bool lockOut = false;
 
                 foreach(var m in p.m_Saving1.Choices)
                 {
-                    if (m.Choice == 1 || m.Choice == -2 || m.ID % 1000 > date)
+                    if (m.Choice == 1 || m.Choice == -2 || (int)(m.ID / 1000) > date)
                         continue;
 
                     var r = selectdata.data.Find(x => x.SelectID == m.ID);
 
-                    if(r == null)
+                    //如果当前这个找不到对应selectdata中的内容，则说明是无关选项，直接continue
+                    if (r == null)
                     {
-                        lockOut = true;
-                        break;
+                        continue;
                     }
 
                     var c = r.rightChoice.Split('|');
 
+                    //如果其中有一个和data中的能对应上，则lockOut为false（不lockOut），如果isT为false，则说明不对应，则直接lockOut为TRUE
                     bool isT = false;
                     foreach(var n in c)
                     {
@@ -222,19 +223,23 @@ public class DioLogueState : MonoBehaviour
                             break;
                         }
                     }
-
-                    if (!isT)
+                    if ( !isT)
                     {
-                        lockOut = false;
+                        lockOut = true;
                         break;
                     }
 
-                    lockOut = isT;
+                    lockOut = false;
                 }
 
                 if (lockOut)
                 {
                     lockOutAnim.LockOutScene((int)date);
+                    return;
+                }
+                else
+                {
+                    lockOutAnim.LockOutScene((int)date,false);
                     return;
                 }
             }
