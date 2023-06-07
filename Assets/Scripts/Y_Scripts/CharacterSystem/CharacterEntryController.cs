@@ -3,12 +3,9 @@ using DG.Tweening.Core.Enums;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using TMPro;
-using UnityEditor.U2D.Path;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 public enum CurState
 {

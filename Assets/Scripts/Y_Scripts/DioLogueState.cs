@@ -400,34 +400,17 @@ public class DioLogueState : MonoBehaviour
         }
     }
 
-    //读取到对应的ID和天数，要求对应ID是必定可访问到的
-    public void ReadToCurrentID(int day, int Idx)
+    public IEnumerator ReadToCurrentIDCoroutine(int Idx)
     {
-        //首先判断需不需要重新Init
-        if (textList.Count == 0 || date != day)
-        {
-            Init((uint)day, path);
-        }
-
-        //清除所有场景要素
-        Clear();
-
-        //如果跳转ID为-1，则直接结束
-        if (Idx == -1)
-        {
-            return;
-        }
-
-        state = DioState.Auto;
-
-        //第一句话
-        if (curData == null)
-        {
-            ProcessInput();
-        }
+        int i = 0;
 
         while (curData.idx != Idx)
         {
+            if (i % 5 == 0)
+                yield return null;
+
+            i++;
+
             //如果是这两者，则说明不会自动到下一句话，所以必须触发他的下一句条件
             if (curData.processState == ProcessState.Coffee)
             {
@@ -457,5 +440,66 @@ public class DioLogueState : MonoBehaviour
         logController.RefillToButtom();
 
         state = DioState.Normal;
+    }
+
+    //读取到对应的ID和天数，要求对应ID是必定可访问到的
+    public void ReadToCurrentID(int day, int Idx)
+    {
+        //首先判断需不需要重新Init(不能异步)
+        if (textList.Count == 0 || date != day)
+        {
+            Init((uint)day, path);
+        }
+
+        //清除所有场景要素
+        Clear();
+
+        //如果跳转ID为-1，则直接结束
+        if (Idx == -1)
+        {
+            return;
+        }
+
+        state = DioState.Auto;
+
+        //第一句话
+        if (curData == null)
+        {
+            ProcessInput();
+        }
+
+        StartCoroutine(ReadToCurrentIDCoroutine(Idx));
+
+        //while (curData.idx != Idx)
+        //{
+        //    //如果是这两者，则说明不会自动到下一句话，所以必须触发他的下一句条件
+        //    if (curData.processState == ProcessState.Coffee)
+        //    {
+        //        coffee.EndCoffeeGame();
+        //    }
+        //    else if (curData.processState == ProcessState.Select)
+        //    {
+        //        var choices = centralAccessor.ProcessManager.m_Saving1.Choices;
+        //        foreach (var choice in choices)
+        //        {
+        //            var id = choice.ID;
+        //            var idx = id % 1000;
+        //            var today = (id - idx) / 1000;
+        //            if (idx == curData.idx && today == curData.date)
+        //            {
+        //                OnSelectionSelect((uint)idx, (uint)choice.Choice);
+        //                break;
+        //            }
+        //        }
+        //    }
+
+        //    ProcessInput();
+        //}
+
+        ////最后一句话时进行RightLogController的初始化
+        //logController.rightLogController.Init(logController.logEntries.Last());
+        //logController.RefillToButtom();
+
+        //state = DioState.Normal;
     }
 }

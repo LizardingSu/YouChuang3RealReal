@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -63,9 +64,22 @@ public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         StartCoroutine(JumpNode(day, id, calendarPanel.Accessor));
     }
 
+    private async void JumpNodeAsync(int day, int id, S_CentralAccessor accessor)
+    {
+        await Task.Run(() => {
+            accessor._DioLogueState.ReadToCurrentID(day, id);
+        });
+
+        var sm = GameObject.Find("MainManager").GetComponent<S_StateManager>();
+        sm.CancelStateCalendar();
+        sm.StateSwitchToLog();
+
+        accessor._DioLogueState.SetButtonsActive(true);
+    }
+
     IEnumerator JumpNode(int day, int id, S_CentralAccessor accessor)
     {
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(0.2f);
         var sm = GameObject.Find("MainManager").GetComponent<S_StateManager>();
         sm.CancelStateCalendar();
         sm.StateSwitchToLog();
