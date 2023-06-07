@@ -190,7 +190,7 @@ public class CharacterController : MonoBehaviour
 
             if(charID == -1&&emojiID == -1&& data.processState == ProcessState.Diologue)
             {
-                Debug.Log(data.idx + "  " + "Left" + left.curState + "  " + "Right" + right.curState);
+                //Debug.Log(data.idx + "  " + "Left" + left.curState + "  " + "Right" + right.curState);
                 Narration();
                 return;
             }

@@ -2753,6 +2753,7 @@ RectTransform:
   - {fileID: 1068702849}
   - {fileID: 453844129}
   - {fileID: 357607213}
+  - {fileID: 1716780964}
   - {fileID: 881461734}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -3162,9 +3163,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1765219810}
-        m_TargetAssemblyTypeName: DioLogueState, Assembly-CSharp
-        m_MethodName: DelayedContinueGame
+      - m_Target: {fileID: 707020882}
+        m_TargetAssemblyTypeName: S_MenuManager, Assembly-CSharp
+        m_MethodName: ContinueGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7986,7 +7987,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 259851986}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -12765,6 +12766,121 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1704141491}
   m_CullTransparentMesh: 1
+--- !u!1 &1716780963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1716780964}
+  - component: {fileID: 1716780966}
+  - component: {fileID: 1716780965}
+  - component: {fileID: 1716780967}
+  m_Layer: 5
+  m_Name: Guider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1716780964
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716780963}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 259851986}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1716780965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716780963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1716780966
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716780963}
+  m_CullTransparentMesh: 1
+--- !u!114 &1716780967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716780963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65121ae48e0a6f049b774cf244d96a43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accessor: {fileID: 1765219807}
+  GuiderList: 
+  GuiderCount: 5
+  Guider1:
+  - {fileID: 21300000, guid: f0e4e1dd7574de343a551518dfdadb58, type: 3}
+  - {fileID: 21300000, guid: 9df7fbd069e82c94f8c8664fe308f8c2, type: 3}
+  - {fileID: 21300000, guid: b9786ec2cb02395429900efbaa0ab5a3, type: 3}
+  - {fileID: 21300000, guid: 5ff854ce20e66704d88308b4089c0720, type: 3}
+  - {fileID: 21300000, guid: aabf38e7f56db66419a4223f7990d55c, type: 3}
+  - {fileID: 21300000, guid: ff8fb210b033e644c90905ec4eafc230, type: 3}
+  - {fileID: 21300000, guid: 487f4f269ab690c488cfa3e95f2c423d, type: 3}
+  - {fileID: 21300000, guid: b3112587e6c3c6047b7edae87bb115bc, type: 3}
+  - {fileID: 21300000, guid: 9b6a936715d5c4446bc533d261cdd7bb, type: 3}
+  Guider2:
+  - {fileID: 21300000, guid: 2d9f79bde61d5474fae7f1881077f851, type: 3}
+  - {fileID: 21300000, guid: fd3069e6802d69841b8230010492a964, type: 3}
+  Guider3:
+  - {fileID: 21300000, guid: c700c314ec6bae84fa2ab4af6506d9f7, type: 3}
+  - {fileID: 21300000, guid: 3c802df9335109b4b9122178e8892f98, type: 3}
+  - {fileID: 21300000, guid: a856227450038fe48814744e0f75d5be, type: 3}
+  - {fileID: 21300000, guid: 996b5f23710740641a3a2fc31f0c2807, type: 3}
+  Guider4:
+  - {fileID: 21300000, guid: a96e71f9f65a26a469274d95bdd6b43b, type: 3}
+  Guider5:
+  - {fileID: 21300000, guid: 482106a49b538b2489e38d927290a907, type: 3}
+  - {fileID: 21300000, guid: 729ec3061e5911649a695d1cea6d0eb1, type: 3}
 --- !u!1 &1721644476
 GameObject:
   m_ObjectHideFlags: 0
@@ -13228,6 +13344,7 @@ MonoBehaviour:
   DataManager: {fileID: 1765219811}
   MenuManager: {fileID: 707020882}
   GameManager: {fileID: 374283989}
+  GuiderManager: {fileID: 1716780967}
   _DioLogueState: {fileID: 1765219810}
   TransAnim: {fileID: 1013827103}
 --- !u!114 &1765219808
@@ -13260,8 +13377,10 @@ MonoBehaviour:
   accessor: {fileID: 1765219807}
   m_Saving1: {fileID: 11400000, guid: 0bc453997656fbe42a474237a6559674, type: 2}
   m_Profile: {fileID: 11400000, guid: d6eae424ed349ed45ba5b1f7dabfa214, type: 2}
+  m_GuiderSave: {fileID: 11400000, guid: 9c3a674d4a1e9d24fb27e2a3a43e71c2, type: 2}
   m_SavingName1: SavingFile.txt
   m_ProfileName: Profile.txt
+  m_GuiderName: GuiderSave.txt
 --- !u!114 &1765219810
 MonoBehaviour:
   m_ObjectHideFlags: 0

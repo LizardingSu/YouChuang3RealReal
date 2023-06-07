@@ -149,11 +149,14 @@ public class S_MenuManager : MonoBehaviour
         //{
 
         //});
+        accessor.ProcessManager.DeleteFile(accessor.ProcessManager.m_GuiderName);
+        accessor.ProcessManager.LoadGuider();
     }
 
 
     public void ContinueGame()
     {
+        accessor.ProcessManager.LoadGuider();
         accessor._DioLogueState.DelayedContinueGame();
         //Invoke("Temp_HideMenu", 1f);
     }

@@ -150,7 +150,7 @@ public class S_CoffeeGame : MonoBehaviour
             Sequence s = DOTween.Sequence();
             s.Append(r.DOMove(new Vector2(r.position.x, r.position.y), 1.8f));
             s.Append(r.DOMove(new Vector2(r.position.x, GamePanelOriginPosY + DeltaY), 1f));
-
+            s.AppendCallback(() => { accessor.GuiderManager.GuideCheck(true); });
 
             //YLT用来作不明觉厉功能的代码
             DioLogueState ds = accessor._DioLogueState;
