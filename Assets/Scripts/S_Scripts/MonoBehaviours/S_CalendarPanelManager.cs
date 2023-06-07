@@ -228,8 +228,8 @@ public class S_CalendarPanelManager : MonoBehaviour
         GameObject slider = DayButtons[currentActiveDayButton.Value].GetComponent<RectTransform>().GetChild(0).gameObject;
         GameObject line = slider.transform.GetChild(0).gameObject;
         int currentNodeIndex = 0;
-        Debug.Log(currentActiveDayButton);
-        Debug.Log(allDays[currentActiveDayButton.Value].Nodes.Count);
+        //Debug.Log(currentActiveDayButton);
+        //Debug.Log(allDays[currentActiveDayButton.Value].Nodes.Count);
         foreach (S_NodeInDay node in allDays[currentActiveDayButton.Value].Nodes)
         {
 

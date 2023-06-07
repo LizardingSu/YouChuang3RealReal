@@ -303,6 +303,14 @@ public class DioLogueState : MonoBehaviour
             UpdateDiologue();
             return;
         }
+        //新手教程相关，SYJ在此添加
+        else
+        {
+            if (centralAccessor.GuiderManager.GuideCheck())
+            {
+                return;
+            }
+        }
 
         //如果当前不是正在读文本，则开启神奇妙妙协程
         if (!isReading)
@@ -372,7 +380,7 @@ public class DioLogueState : MonoBehaviour
     //设置点击事件按钮的启动和关闭
     public void SetButtonsActive(bool active)
     {
-        Debug.Log(active);
+        //Debug.Log(active);
         foreach (var button in update_button)
             button.enabled = active;
     }

@@ -11,6 +11,7 @@ public class S_CentralAccessor : MonoBehaviour
     public S_DataManager DataManager;
     public S_MenuManager MenuManager;
     public S_CoffeeGame GameManager;
+    public S_GuiderManager GuiderManager;
 
     public DioLogueState _DioLogueState;
 

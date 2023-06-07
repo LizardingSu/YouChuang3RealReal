@@ -26,12 +26,18 @@ public class S_ProcessManager : MonoBehaviour
     //配置文件
     public S_Profile m_Profile;
 
+    //新手教程触发记录
+    public S_GuiderSave m_GuiderSave;
+
     //大一轮存档名字
     [HideInInspector]
     public string m_SavingName1 = "SavingFile.txt";
 
     [HideInInspector]
     public string m_ProfileName = "Profile.txt";
+
+    [HideInInspector]
+    public string m_GuiderName = "GuiderSave.txt";
 
 
     /// <summary>
@@ -130,6 +136,41 @@ public class S_ProcessManager : MonoBehaviour
         }
     }
 
+    public void SaveGuider()
+    {
+        m_GuiderSave.GuiderList.Clear();
+        foreach(var item in accessor.GuiderManager.GuiderList)
+        {
+            m_GuiderSave.GuiderList.Add(item);
+        }
+
+        WriteFile(m_GuiderSave, m_GuiderName);
+    }
+
+    public void LoadGuider()
+    {
+        if (ReadFile(m_GuiderSave, m_GuiderName))
+        {
+            accessor.GuiderManager.GuiderList.Clear();
+            foreach(var item in m_GuiderSave.GuiderList)
+            {
+                accessor.GuiderManager.GuiderList.Add(item);
+            }
+        }
+        else
+        {
+            Debug.Log("未检测到教程记录，已重新生成");
+            accessor.GuiderManager.GuiderList.Clear();
+            m_GuiderSave.GuiderList.Clear();
+            for (int i = 0; i < accessor.GuiderManager.GuiderCount; i++)
+            {
+                accessor.GuiderManager.GuiderList.Add(true);
+                m_GuiderSave.GuiderList.Add(true);
+            }
+
+            WriteFile(m_GuiderSave, m_GuiderName);
+        }
+    }
 
     public void SaveProfile()
     {
@@ -288,6 +329,20 @@ public class S_ProcessManager : MonoBehaviour
         else
         {
             Debug.Log("存档删除失败，存档文件不存在");
+        }
+    }
+
+    //通用删除文件
+    public void DeleteFile(string FileName)
+    {
+        if (File.Exists(Application.persistentDataPath + "/ApodaSaving/" + FileName))
+        {
+            File.Delete(Application.persistentDataPath + "/ApodaSaving/" + FileName);
+            Debug.Log("删除成功");
+        }
+        else
+        {
+            Debug.Log("删除" + FileName + "失败，文件不存在");
         }
     }
 }
