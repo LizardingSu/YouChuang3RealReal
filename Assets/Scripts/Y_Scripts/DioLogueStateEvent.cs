@@ -8,7 +8,10 @@ public enum CharacterState
 {
     None,
     In,
-    Leave
+    Leave,
+    Shake,
+    Tremble,
+    Twinkle
 }
 
 public enum ProcessState

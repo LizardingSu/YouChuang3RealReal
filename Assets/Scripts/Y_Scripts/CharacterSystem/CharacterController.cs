@@ -77,7 +77,7 @@ public class CharacterController : MonoBehaviour
         curPlace = 0;
         charSortedList.Clear();
 
-        foreach(var c in windowsCharacters)
+        foreach (var c in windowsCharacters)
             c.SetAllDatas(false);
 
         //全部移动下去
@@ -87,23 +87,23 @@ public class CharacterController : MonoBehaviour
         right.SetAllDatas(true);
 
         whiteMask.mask = 0;
-        whiteMask.material.SetFloat("_MyMask",whiteMask.mask);
+        whiteMask.material.SetFloat("_MyMask", whiteMask.mask);
     }
-   
+
     public void KillAllAnim()
     {
         left.KillAllAnim();
-        right.KillAllAnim();    
+        right.KillAllAnim();
     }
 
     //无法处理回环情况,但是没有这种情况
-   private void WillChangeCharacter(DiologueData data,DiologueData data2)
+    private void WillChangeCharacter(DiologueData data, DiologueData data2)
     {
         //如果后续不是对话就会出错
         if (data.processState == ProcessState.Coffee)
         {
             //如果是正常读的时候，则需要白幕布消失，如果不是则不需要
-            if(diologueState.state == DioState.Normal)
+            if (diologueState.state == DioState.Normal)
             {
                 whiteMask.FadeAndReFill(false);
             }
@@ -111,9 +111,9 @@ public class CharacterController : MonoBehaviour
             isCoffeeBefore = true;
         }
         //如果上次和这次都有人在同侧，且这次有人入场，则播放入场动画
-        else if(data.processState == ProcessState.Diologue||data.processState == ProcessState.Select)
+        else if (data.processState == ProcessState.Diologue || data.processState == ProcessState.Select)
         {
-            if(data2.processState == ProcessState.Diologue&&data2.charaState == CharacterState.In)
+            if (data2.processState == ProcessState.Diologue && data2.charaState == CharacterState.In)
             {
 
                 if (diologueState.state != DioState.Normal) return;
@@ -133,12 +133,25 @@ public class CharacterController : MonoBehaviour
                 }
             }
         }
+        else if(data2.processState == ProcessState.Diologue&& data2.charaState == CharacterState.Twinkle)
+        {
+            if (diologueState.state != DioState.Normal) return;
+
+            if (data2.charaID > 1)
+            {
+                left.Twinkle();
+            }
+            else
+            {
+                right.Twinkle();
+            }
+        }
     }
 
-   private void ChangeCharacters(DiologueData data)
+    private void ChangeCharacters(DiologueData data)
     {
         //如果是初始化阶段
-        if(data.idx == 0)
+        if (data.idx == 0)
         {
             //展开白色幕布
             whiteMask.FadeAndReFill(false);
@@ -163,7 +176,7 @@ public class CharacterController : MonoBehaviour
                 //收起白色幕布
                 StartCoroutine(FoldWhite(whiteFoldDelay));
 
-                Debug.Log(data.idx+"  "+"Left" + left.curState+"  "+"Right" + right.curState);
+                Debug.Log(data.idx + "  " + "Left" + left.curState + "  " + "Right" + right.curState);
                 return;
             }
 
@@ -182,13 +195,13 @@ public class CharacterController : MonoBehaviour
         }
 
         //如果是对话或者选择阶段才进入
-        if(data.processState == ProcessState.Select||data.processState == ProcessState.Diologue) 
+        if (data.processState == ProcessState.Select || data.processState == ProcessState.Diologue)
         {
             var state = data.charaState;
             var charID = data.charaID;
             var emojiID = data.emojiID;
 
-            if(charID == -1&&emojiID == -1&& data.processState == ProcessState.Diologue)
+            if (charID == -1 && emojiID == -1 && data.processState == ProcessState.Diologue)
             {
                 //Debug.Log(data.idx + "  " + "Left" + left.curState + "  " + "Right" + right.curState);
                 Narration();
@@ -201,7 +214,7 @@ public class CharacterController : MonoBehaviour
             if (state == CharacterState.In)
             {
                 //如果第一次初始化的时候就In了
-                if(data.idx == 0)
+                if (data.idx == 0)
                 {
                     //协程，你是个傻呗！
                     if (diologueState.state == DioState.Auto)
@@ -217,7 +230,7 @@ public class CharacterController : MonoBehaviour
                         bool isIn = false;
 
 
-                        foreach(var windowsCharacter in windowsCharacters)
+                        foreach (var windowsCharacter in windowsCharacters)
                         {
                             if (charID == windowsCharacter.CharID)
                             {
@@ -225,7 +238,7 @@ public class CharacterController : MonoBehaviour
                                 break;
                             }
                         }
-                        if ((!isIn)&&IsWindow(charID))
+                        if ((!isIn) && IsWindow(charID))
                         {
                             windowsCharacters[curPlace].transform.SetAsLastSibling();
                             windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
@@ -335,6 +348,9 @@ public class CharacterController : MonoBehaviour
 
             //更改颜色
             ChangeColor();
+
+            //立绘动画
+            AnimationOfCharacter(data);
         }
     }
 
@@ -385,9 +401,11 @@ public class CharacterController : MonoBehaviour
             right.SetAllDatas(true, charID, name, emojiID);
             right.SetName(data.name);
         }
+
+        AnimationOfCharacter(data);
     }
 
-    private IEnumerator ShowUpAtStart(float time,DiologueData data)
+    private IEnumerator ShowUpAtStart(float time, DiologueData data)
     {
         yield return new WaitForSeconds(time);
 
@@ -435,10 +453,12 @@ public class CharacterController : MonoBehaviour
             right.SetAllDatas(true, charID, name, emojiID);
             right.SetName(data.name);
         }
+
+        AnimationOfCharacter(data);
     }
 
     //升起所有characterPanel
-    private IEnumerator ShowUpAfterCoffee(DiologueData data,float time)
+    private IEnumerator ShowUpAfterCoffee(DiologueData data, float time)
     {
         var state = data.charaState;
         var charID = data.charaID;
@@ -446,7 +466,7 @@ public class CharacterController : MonoBehaviour
 
         yield return new WaitForSeconds(time);
 
-        if(charID == -1&&emojiID == -1)
+        if (charID == -1 && emojiID == -1)
         {
             Narration();
         }
@@ -469,7 +489,7 @@ public class CharacterController : MonoBehaviour
                         }
                     }
 
-                    if (!isIn&&IsWindow(charID))
+                    if (!isIn && IsWindow(charID))
                     {
                         windowsCharacters[curPlace].transform.SetAsLastSibling();
                         windowsCharacters[curPlace].SetAllDatas(true, charID, name, 0);
@@ -526,6 +546,8 @@ public class CharacterController : MonoBehaviour
             //改变颜色
             ChangeColor();
         }
+
+        AnimationOfCharacter(data);
     }
 
     private void Narration()
@@ -534,7 +556,7 @@ public class CharacterController : MonoBehaviour
         if (left.curState == CurState.UP)
             left.MoveHideName(hideNameTime);
 
-        if(right.curState == CurState.UP)
+        if (right.curState == CurState.UP)
             right.MoveHideName(hideNameTime);
 
         if (diologueState.date == 0)
@@ -555,13 +577,30 @@ public class CharacterController : MonoBehaviour
         if (right.image.color != new Color(1, 1, 1, 0))
             right.image.color = new Color(1, 1, 1, 1);
 
-        if (left.curState == CurState.HIDE && right.curState == CurState.UP&& left.image.color != new Color(1, 1, 1, 0))
+        if (left.curState == CurState.HIDE && right.curState == CurState.UP && left.image.color != new Color(1, 1, 1, 0))
         {
             left.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
         }
         else if (left.curState == CurState.UP && right.curState == CurState.HIDE && right.image.color != new Color(1, 1, 1, 0))
         {
             right.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
+        }
+    }
+    private void AnimationOfCharacter(DiologueData data)
+    {
+        if (data.charaState == CharacterState.None || data.charaState == CharacterState.In || data.charaState == CharacterState.Leave)
+            return;
+
+        var charaEntry = data.charaID > 1?left:right;
+
+        switch (data.charaState)
+        {
+            case CharacterState.Shake:
+                charaEntry.Shake();
+                break;
+            case CharacterState.Tremble:
+                charaEntry.Tremble();
+                break;
         }
     }
 

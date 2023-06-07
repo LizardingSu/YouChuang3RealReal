@@ -127,6 +127,15 @@ static public class LogEntryParser
             case "Out":
                 characterState = CharacterState.Leave;
                 break;
+            case "Shake":
+                characterState = CharacterState.Shake;
+                break;
+            case "Tremble":
+                characterState = CharacterState.Tremble;
+                break;
+            case "Twinkle":
+                characterState = CharacterState.Twinkle;
+                break;
         }
 
         return new DiologueData(date, processState,idx, nextIdx, charId, emojiId, characterState, name, log, resource);

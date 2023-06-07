@@ -1,10 +1,14 @@
 using DG.Tweening;
+using DG.Tweening.Core.Enums;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using TMPro;
+using UnityEditor.U2D.Path;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public enum CurState
 {
@@ -18,7 +22,12 @@ public class CharacterEntryController : MonoBehaviour
     public CurState curState = CurState.DOWN;
     public RectTransform rectTransform;
     public Image image;
+    public Image whiteMask;
+
     public TMP_Text nameBox;
+
+    Coroutine c;
+    Sequence s;
 
     public int CharID;
     public string Name;
@@ -96,10 +105,52 @@ public class CharacterEntryController : MonoBehaviour
         rc.DOAnchorPosX(0, time);
     }
 
+    public void Twinkle()
+    {
+        whiteMask.gameObject.SetActive(true);
+
+        c = StartCoroutine(WaitToSetFalse());
+    }
+    private IEnumerator WaitToSetFalse()
+    {
+        yield return new WaitForSeconds(0.6f);
+
+        whiteMask.gameObject.SetActive(false);
+    }
+
+    public void Shake()
+    {
+        var r = image.GetComponent<RectTransform>();
+        r.DOKill(true);
+
+        r.DOShakeAnchorPos(1.4f, 80.0f, 10, 10);
+    }
+    public void Tremble()
+    {
+        var r = image.GetComponent<RectTransform>();
+        s.Kill(true);
+
+        s = DOTween.Sequence();
+
+        s.Append(r.DOShakeAnchorPos(1.8f, new Vector2(20f, 0), 4, 0, false, true, ShakeRandomnessMode.Harmonic));
+        s.Join(r.DOAnchorPosY(-50f, 1.8f).SetEase(Ease.OutCirc));
+        s.Append(r.DOAnchorPos(new Vector2(0, 0), 1.0f).SetEase(Ease.OutCirc));
+
+
+    }
+
     public void KillAllAnim()
     {
         image.GetComponent<RectTransform>().DOKill(true);
+        image.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+
         rectTransform.DOKill(true);
+
+        StopCoroutine(c);
+        whiteMask.gameObject.SetActive(false);
+
+        s.Kill(true);
+        
     }
 
     public void SetName(string name)
@@ -113,6 +164,6 @@ public class CharacterEntryController : MonoBehaviour
 
     public void LateUpdate()
     {
-
+ 
     }
 }
