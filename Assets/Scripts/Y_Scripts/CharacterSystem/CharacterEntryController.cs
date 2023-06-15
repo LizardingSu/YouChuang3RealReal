@@ -26,7 +26,7 @@ public class CharacterEntryController : MonoBehaviour
 
     public TMP_Text nameBox;
 
-    Coroutine c;
+    Coroutine c = null;
     Sequence s;
 
     public int CharID;
@@ -146,7 +146,8 @@ public class CharacterEntryController : MonoBehaviour
 
         rectTransform.DOKill(true);
 
-        StopCoroutine(c);
+        if (c!=null)
+            StopCoroutine(c);
         whiteMask.gameObject.SetActive(false);
 
         s.Kill(true);

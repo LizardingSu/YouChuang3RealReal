@@ -71,7 +71,6 @@ public class S_NodeController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         sm.StateSwitchToLog();
 
         accessor._DioLogueState.SetButtonsActive(true);
-
         accessor._DioLogueState.ReadToCurrentID(day, id);
     }
 

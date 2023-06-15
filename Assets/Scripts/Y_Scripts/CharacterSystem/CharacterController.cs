@@ -591,6 +591,9 @@ public class CharacterController : MonoBehaviour
         if (data.charaState == CharacterState.None || data.charaState == CharacterState.In || data.charaState == CharacterState.Leave)
             return;
 
+        if (diologueState.state == DioState.Auto)
+            return;
+
         var charaEntry = data.charaID > 1?left:right;
 
         switch (data.charaState)
