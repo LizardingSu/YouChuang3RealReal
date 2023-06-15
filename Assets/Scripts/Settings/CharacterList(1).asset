@@ -35,3 +35,7 @@ MonoBehaviour:
     name: "\u5C0F\u699B"
   - id: 10
     name: "\u91D1\u4E4B\u9B3C"
+  - id: 11
+    name: "\u963F\u72B8"
+  - id: 12
+    name: "\u5C0F\u7C89\u5E3D"
