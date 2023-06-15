@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using TMPro;
-using UnityEditor.U2D.Path;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
@@ -107,13 +106,14 @@ public class CharacterEntryController : MonoBehaviour
 
     public void Twinkle()
     {
+        Debug.Log("Twinkle");
         whiteMask.gameObject.SetActive(true);
 
         c = StartCoroutine(WaitToSetFalse());
     }
     private IEnumerator WaitToSetFalse()
     {
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.1f);
 
         whiteMask.gameObject.SetActive(false);
     }

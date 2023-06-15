@@ -132,18 +132,18 @@ public class CharacterController : MonoBehaviour
                     right.FadeAnim(fadeTime);
                 }
             }
-        }
-        else if(data2.processState == ProcessState.Diologue&& data2.charaState == CharacterState.Twinkle)
-        {
-            if (diologueState.state != DioState.Normal) return;
+            else if (data2.processState == ProcessState.Diologue && data2.charaState == CharacterState.Twinkle)
+            {
+                if (diologueState.state != DioState.Normal) return;
 
-            if (data2.charaID > 1)
-            {
-                left.Twinkle();
-            }
-            else
-            {
-                right.Twinkle();
+                if (data2.charaID > 1)
+                {
+                    left.Twinkle();
+                }
+                else
+                {
+                    right.Twinkle();
+                }
             }
         }
     }
