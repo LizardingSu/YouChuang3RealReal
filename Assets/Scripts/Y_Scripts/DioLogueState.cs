@@ -102,6 +102,11 @@ public class DioLogueState : MonoBehaviour
 
         date = (uint)i;
 
+        if (date == 0)
+            resourceController.m_Image.color = new Color(0, 0, 0, 1);
+        else
+            resourceController.m_Image.color = new Color(1, 1, 1, 0);
+
         Init(date, path);
     }
     public void ContinueGame()
