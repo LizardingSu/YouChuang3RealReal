@@ -8581,7 +8581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 830521794006882215, guid: 35ff6bd0d9251c345854eb63ba65da59, type: 3}
       propertyPath: m_IgnoreParentGroups
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 830521794202332066, guid: 35ff6bd0d9251c345854eb63ba65da59, type: 3}
       propertyPath: m_SizeDelta.x
