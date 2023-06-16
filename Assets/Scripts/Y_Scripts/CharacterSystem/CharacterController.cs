@@ -628,6 +628,6 @@ public class CharacterController : MonoBehaviour
 
     private bool IsWindow(int charID)
     {
-        return charID != 7 && charID != 8 && charID != 9 && charID != 10;
+        return charID != 7 && charID != 8 && charID != 9 && charID != 10 && charID != 11 && charID != 12;
     }
 }
