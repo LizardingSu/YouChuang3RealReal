@@ -271,7 +271,7 @@ public class S_MenuManager : MonoBehaviour
     {
         if (NewGameNoteShowing)
         {
-            NewGame(0);
+            NewGame(4);
         }
 
         if (ExitGameNoteShowing)

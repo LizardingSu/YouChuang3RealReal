@@ -103,6 +103,7 @@ public class DioLogueState : MonoBehaviour
         date = (uint)i;
 
         resourceController.m_Image.sprite = null;
+        resourceController.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
 
         if (date == 0)
             resourceController.m_Image.color = new Color(0, 0, 0, 1);
@@ -396,6 +397,7 @@ public class DioLogueState : MonoBehaviour
     private void Clear()
     {
         resourceController.m_Image.sprite = null;
+        resourceController.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
 
         if (date == 0)
             resourceController.m_Image.color = new Color(0, 0, 0, 1);

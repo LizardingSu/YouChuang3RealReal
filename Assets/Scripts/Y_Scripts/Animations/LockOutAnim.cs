@@ -65,12 +65,16 @@ public class LockOutAnim : MonoBehaviour
         m_sequence.Join(m_chainRect1.GetComponent<Image>().DOColor(new Color(1, 1, 1, 0), 1));
         m_sequence.Join(m_chainRect2.GetComponent<Image>().DOColor(new Color(1, 1, 1, 0), 1));
 
-        m_sequence.AppendInterval(1).AppendCallback(() =>
+        m_sequence.AppendInterval(0.5f).AppendCallback(() =>
         {
             blackScene.gameObject.SetActive(false);
 
             state.ProcessInput();
             process.Save((int)(day-3) * 1000, 1, "");
+        });
+
+        m_sequence.AppendInterval(0.5f).AppendCallback(() =>
+        {
             mask.gameObject.SetActive(false);
             state.SetButtonsActive(true);
         });
