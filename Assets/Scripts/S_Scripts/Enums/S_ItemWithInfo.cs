@@ -16,5 +16,6 @@ public enum S_ItemWithInfo
     Milk,
     Refrigerator,
     HotButton,
-    ColdButton
+    ColdButton,
+    Locker
 }

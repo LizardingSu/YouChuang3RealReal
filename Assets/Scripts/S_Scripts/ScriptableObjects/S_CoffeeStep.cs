@@ -13,7 +13,9 @@ public enum S_Steps
     HotWater,
     Ice,
     Milks,
-    CAVA
+    CAVA,
+    LeftBeans,
+    RigthBeans
 }
 
 [Serializable]

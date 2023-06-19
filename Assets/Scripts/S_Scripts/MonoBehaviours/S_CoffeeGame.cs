@@ -18,7 +18,9 @@ public class S_CoffeeGame : MonoBehaviour
 
     public float DeltaY;
 
-    public int MachineAvailableDay;
+    public int MachineBrokenDay;
+
+    public int LockerAvailableDay;
 
     public GameObject ObjectScene;
 
@@ -47,9 +49,19 @@ public class S_CoffeeGame : MonoBehaviour
     [Header("有点击动画对象")]
     public GameObject Grinder;
 
+    public GameObject CoffeeMachine;
+
+    public GameObject ShouMo;
+
+    public GameObject Funnel;
+
     public GameObject Locker;
 
     public GameObject Refrigerator;
+
+    public GameObject LeftBeans;
+
+    public GameObject RightBeans;
 
     [Header("音效")]
     public AudioClip CoffeeMachineSE;
@@ -138,6 +150,33 @@ public class S_CoffeeGame : MonoBehaviour
                 b.interactable = true;
             }
         }
+
+        //根据天数进行某些初始化
+        int date = (int)accessor._DioLogueState.date;
+
+        if (date < MachineBrokenDay)
+        {
+            Grinder.GetComponent<Image>().raycastTarget = true;
+            CoffeeMachine.GetComponent<Image>().raycastTarget = true;
+            ShouMo.GetComponent<Image>().raycastTarget = false;
+            Funnel.GetComponent<Image>().raycastTarget = false;
+        }
+        else
+        {
+            Grinder.GetComponent<Image>().raycastTarget = false;
+            CoffeeMachine.GetComponent<Image>().raycastTarget = false;
+            ShouMo.GetComponent<Image>().raycastTarget = true;
+            Funnel.GetComponent<Image>().raycastTarget = true;
+        }
+
+        if (date < LockerAvailableDay)
+        {
+            Locker.GetComponent<Image>().raycastTarget = false;
+        }
+        else
+        {
+            Locker.GetComponent<Image>().raycastTarget = true;
+        }
     }
 
     public void StartCoffeeGame(DiologueData data)
@@ -217,6 +256,15 @@ public class S_CoffeeGame : MonoBehaviour
 
             //StartCoroutine(SetButtonsActive(1.2f, true));
             GamePlaying = false;
+
+            if (LockerOpened)
+            {
+                Locker.GetComponent<Image>().sprite = LockerFrames[0];
+                LockerOpened = false;
+                Locker.GetComponent<S_Highlighter>().enabled = true;
+                LeftBeans.SetActive(false);
+                RightBeans.SetActive(false);
+            }
         }
 
         
@@ -321,7 +369,7 @@ public class S_CoffeeGame : MonoBehaviour
     //搅拌机点击事件
     public void OnClickGrinder()
     {
-        if (accessor._DioLogueState.date < MachineAvailableDay)
+        if (accessor._DioLogueState.date < MachineBrokenDay)
         {
             accessor.AudioManager.PlaySE(GrinderMachineSE);
 
@@ -371,7 +419,7 @@ public class S_CoffeeGame : MonoBehaviour
     //滴滤架点击事件
     public void OnClickFunnel()
     {
-        if (accessor._DioLogueState.date >= MachineAvailableDay)
+        if (accessor._DioLogueState.date >= MachineBrokenDay)
         {
             if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Extract)
             {
@@ -468,34 +516,95 @@ public class S_CoffeeGame : MonoBehaviour
     //柜子点击事件
     public void OnClickLocker()
     {
-        if (accessor._DioLogueState.date >= MachineAvailableDay)
+        if (accessor._DioLogueState.date >= LockerAvailableDay)
         {
-            if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Ice)
+            if (!GameFinished)  // && (currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.LeftBeans || currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.RigthBeans)
             {
                 if (!LockerOpened)
                 {
                     Locker.GetComponent<Image>().sprite = LockerFrames[1];
                     LockerOpened = true;
+                    Locker.GetComponent<S_Highlighter>().enabled = false;
+                    LeftBeans.SetActive(true);
+                    RightBeans.SetActive(true);
                 }
                 else
                 {
-                    Locker.GetComponent<Image>().sprite = LockerFrames[0];
-                    LockerOpened = false;
-                    currentFinishedStepNumber++;
-                    State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("CAVA", "<s><color=grey>CAVA</color></s>");
-                    if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
-                    {
-                        //Debug.Log("replace");
-                        Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
-                        currentSprite++;
-                    }
-                    IsGameFinished();
+                    //Locker.GetComponent<Image>().sprite = LockerFrames[0];
+                    //LockerOpened = false;
+                    //currentFinishedStepNumber++;
+                    //State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("CAVA", "<s><color=grey>CAVA</color></s>");
+                    //if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
+                    //{
+                    //    //Debug.Log("replace");
+                    //    Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
+                    //    currentSprite++;
+                    //}
+                    //IsGameFinished();
                 }
             }
-            else
+        }
+    }
+
+    //左边豆子点击事件
+    public void OnClickLeftBeans()
+    {
+        if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.LeftBeans)
+        {
+            currentFinishedStepNumber++;
+            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("\"魑魅\"", "<s><color=grey>\"魑魅\"</color></s>");
+            if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
             {
-                WrongStep();
+                //Debug.Log("replace");
+                Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
+                currentSprite++;
             }
+            Locker.GetComponent<Image>().sprite = LockerFrames[0];
+            LockerOpened = false;
+            Locker.GetComponent<S_Highlighter>().enabled = true;
+            LeftBeans.SetActive(false);
+            RightBeans.SetActive(false);
+            IsGameFinished();
+        }
+        else
+        {
+            WrongStep();
+            Locker.GetComponent<Image>().sprite = LockerFrames[0];
+            LockerOpened = false;
+            Locker.GetComponent<S_Highlighter>().enabled = true;
+            LeftBeans.SetActive(false);
+            RightBeans.SetActive(false);
+        }
+    }
+
+    //右边豆子点击事件
+    public void OnClickRightBeans()
+    {
+        if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.RigthBeans)
+        {
+            currentFinishedStepNumber++;
+            State.GetComponent<TextMeshProUGUI>().text = State.GetComponent<TextMeshProUGUI>().text.Replace("\"凯撒\"", "<s><color=grey>\"凯撒\"</color></s>");
+            if (currentSprite != currentCoffee.Sprites.Count - 1 && currentCoffee.Sprites[currentSprite + 1].ChangeStep == currentFinishedStepNumber)
+            {
+                //Debug.Log("replace");
+                Cup.GetComponent<Image>().sprite = currentCoffee.Sprites[currentSprite + 1].Pic;
+                currentSprite++;
+            }
+            Locker.GetComponent<Image>().sprite = LockerFrames[0];
+            LockerOpened = false;
+            Locker.GetComponent<S_Highlighter>().enabled = true;
+            LeftBeans.SetActive(false);
+            RightBeans.SetActive(false);
+            IsGameFinished();
+        }
+        else
+        {
+            WrongStep();
+            Locker.GetComponent<Image>().sprite = LockerFrames[0];
+            LockerOpened = false;
+            Locker.GetComponent<S_Highlighter>().enabled = true;
+            LeftBeans.SetActive(false);
+            RightBeans.SetActive(false);
         }
     }
 
@@ -523,7 +632,7 @@ public class S_CoffeeGame : MonoBehaviour
     //手磨点击事件
     public void OnClickShouMo()
     {
-        if (accessor._DioLogueState.date >= MachineAvailableDay)
+        if (accessor._DioLogueState.date >= MachineBrokenDay)
         {
             if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Grind)
             {
@@ -547,7 +656,7 @@ public class S_CoffeeGame : MonoBehaviour
     //咖啡机点击事件
     public void OnClickCoffeeMachine()
     {
-        if (accessor._DioLogueState.date < MachineAvailableDay)
+        if (accessor._DioLogueState.date < MachineBrokenDay)
         {
             if (!GameFinished && currentCoffee.Steps[currentFinishedStepNumber] == S_Steps.Extract)
             {

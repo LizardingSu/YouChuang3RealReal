@@ -16,27 +16,32 @@ public class S_StateManager : MonoBehaviour
 {
     public PlaySceneState State { get; private set; } = PlaySceneState.Log;
 
-    //ËÄ¸öpanel¶ÔÓ¦µÄgameobject
+    //å››ä¸ªpanelå¯¹åº”çš„gameobject
     public GameObject SettingPanel;
     public GameObject LogPanel;
     public GameObject CalendarPanel;
     public GameObject NotePanel;
 
-    //ÓÒ²àÇøÓò
+    //å³ä¾§åŒºåŸŸ
     //public GameObject RightArea;
 
-    ////ÓÒ²àNote½çÃæ
+    ////å³ä¾§Noteç•Œé¢
     //public GameObject NoteScene;
 
-    //SYJÓÚdemo²âÊÔÖĞÊ¹ÓÃµÄÍ¼Æ¬
+    //SYJäºdemoæµ‹è¯•ä¸­ä½¿ç”¨çš„å›¾ç‰‡
     //public Sprite DefaultScene;
     //public Sprite NotePanelScene;
 
     public GameObject MainScene;
     public GameObject NoteScene;
 
-    //ÇĞ»»×´Ì¬Ê±Ê×ÏÈµ÷ÓÃÓÎÏ·³¡¾°ÖĞµ±Ç°×´Ì¬¶ÔÓ¦µÄ×´Ì¬È¡Ïûº¯Êı
-    #region ×´Ì¬È¡Ïûº¯Êı
+    //ä¸åŒå¤©æ•°çš„ä¿¡æ¯ç•Œé¢æ ‡ç­¾ç´ æ
+
+    public Sprite DialogBox1to4;
+    public Sprite DialogBox5to8;
+
+    //åˆ‡æ¢çŠ¶æ€æ—¶é¦–å…ˆè°ƒç”¨æ¸¸æˆåœºæ™¯ä¸­å½“å‰çŠ¶æ€å¯¹åº”çš„çŠ¶æ€å–æ¶ˆå‡½æ•°
+    #region çŠ¶æ€å–æ¶ˆå‡½æ•°
     public void CancelStateSetting()
     {
         SettingPanel.SetActive(false);
@@ -81,8 +86,8 @@ public class S_StateManager : MonoBehaviour
     }
     #endregion
 
-    //×´Ì¬È¡Ïûº¯Êıµ÷ÓÃÍê±ÏºóÔÙµ÷ÓÃ×´Ì¬ÇĞ»»º¯Êı
-    #region ×´Ì¬ÇĞ»»º¯Êı
+    //çŠ¶æ€å–æ¶ˆå‡½æ•°è°ƒç”¨å®Œæ¯•åå†è°ƒç”¨çŠ¶æ€åˆ‡æ¢å‡½æ•°
+    #region çŠ¶æ€åˆ‡æ¢å‡½æ•°
     public void StateSwitchToSetting()
     {
         SettingPanel.SetActive(true);
@@ -114,15 +119,37 @@ public class S_StateManager : MonoBehaviour
         NoteScene.SetActive(true);
         NotePanel.SetActive(true);
         NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("BlackMask").gameObject.SetActive(true);
-        NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("DialogBoxes").gameObject.SetActive(true);
-        NoteScene.transform.Find("Buttons").gameObject.SetActive(true);
+
+        GameObject db = NotePanel.GetComponent<S_NotePanelManager>().NoteScene.transform.Find("DialogBoxes").gameObject;
+        db.SetActive(true);
+
+        GameObject buttons = NoteScene.transform.Find("Buttons").gameObject;
+        buttons.SetActive(true);
+
         NotePanel.transform.Find("DefaultText").gameObject.SetActive(true);
         //NoteScene.SetActive(true);
         State = PlaySceneState.Note;
+
+        //æ ¹æ®å¤©æ•°æ”¹å˜æŸäº›ä¸œè¥¿
+        int curDate = (int)GetComponent<S_CentralAccessor>()._DioLogueState.date;
+
+        if (curDate < 5)
+        {
+            db.GetComponent<Image>().sprite = DialogBox1to4;
+            db.transform.Find("æŸœå­").gameObject.SetActive(false);
+            buttons.transform.Find("æŸœå­").gameObject.SetActive(false);
+
+        }
+        else if (curDate > 4 && curDate < 9)
+        {
+            db.GetComponent<Image>().sprite = DialogBox5to8;
+            db.transform.Find("æŸœå­").gameObject.SetActive(true);
+            buttons.transform.Find("æŸœå­").gameObject.SetActive(true);
+        }
     }
     #endregion
 
-    //¸ù¾İStateÑ¡Ôñ¶ÔÓ¦µÄCancel·½·¨£¬¸Ã·½·¨ÓÚSwitchToº¯ÊıÖ®Ç°µ÷ÓÃ
+    //æ ¹æ®Stateé€‰æ‹©å¯¹åº”çš„Cancelæ–¹æ³•ï¼Œè¯¥æ–¹æ³•äºSwitchToå‡½æ•°ä¹‹å‰è°ƒç”¨
     public void CancelCurrentState()
     {
         switch (State)

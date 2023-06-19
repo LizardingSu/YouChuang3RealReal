@@ -91,6 +91,38 @@ MonoBehaviour:
       Pic: {fileID: 21300000, guid: e3d8d5f9ee1817844a9ce3948ed6d830, type: 3}
     - ChangeStep: 3
       Pic: {fileID: 21300000, guid: 0cda40d80cd6c964e8b37124c0c53336, type: 3}
+  - Name: "\u9B51\u9B45SOE\uFF08\u5802\u98DF\uFF09"
+    Steps: 070000000000000001000000
+    Sprites:
+    - ChangeStep: 0
+      Pic: {fileID: 21300000, guid: aa3bc334e17e5fa4abbd69bf6dc2fdb9, type: 3}
+    - ChangeStep: 3
+      Pic: {fileID: 21300000, guid: 2903fde998162bf41bc21888bde23a91, type: 3}
+  - Name: "\u9B51\u9B45SOE\uFF08\u5916\u5E26\uFF09"
+    Steps: 070000000000000001000000
+    Sprites:
+    - ChangeStep: 0
+      Pic: {fileID: 21300000, guid: f83f19a75b478c64d8be731502b2ca0b, type: 3}
+    - ChangeStep: 3
+      Pic: {fileID: 21300000, guid: 1f6579b6d99e2ff4cb636106bc9d854c, type: 3}
+  - Name: "\u51EF\u6492\u62FF\u94C1\uFF08\u5802\u98DF\uFF09"
+    Steps: 08000000000000000500000001000000
+    Sprites:
+    - ChangeStep: 0
+      Pic: {fileID: 21300000, guid: 0c93052a379c4b44fa077b01b9baa1bb, type: 3}
+    - ChangeStep: 3
+      Pic: {fileID: 21300000, guid: b50db0c2e0eb6f04b9271c2ca573926b, type: 3}
+    - ChangeStep: 4
+      Pic: {fileID: 21300000, guid: 7e1a0eb7140e28b4abdb0ab004cd1fc2, type: 3}
+  - Name: "\u51EF\u6492\u62FF\u94C1\uFF08\u5916\u5E26\uFF09"
+    Steps: 08000000000000000500000001000000
+    Sprites:
+    - ChangeStep: 0
+      Pic: {fileID: 21300000, guid: 5c52df835239bb242822fe392d4fb9cd, type: 3}
+    - ChangeStep: 3
+      Pic: {fileID: 21300000, guid: 5debc577d7b77024a828ee91397ca488, type: 3}
+    - ChangeStep: 4
+      Pic: {fileID: 21300000, guid: 4c66cdad167d68d4d897a499e2684934, type: 3}
   StepDescription:
   - "\u78E8\u8C46"
   - "\u8403\u53D6"
@@ -99,3 +131,5 @@ MonoBehaviour:
   - "\u51B0"
   - "\u725B\u5976"
   - CAVA
+  - "\"\u9B51\u9B45\""
+  - "\"\u51EF\u6492\""
