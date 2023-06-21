@@ -101,10 +101,16 @@ public class LockOutAnim : MonoBehaviour
         m_chainRect1.GetComponent<Image>().color = new Color(1, 1, 1, 1);
         m_chainRect2.GetComponent<Image>().color = new Color(1, 1, 1, 1);
 
-        if (!lockOut)
-            tipsT.text = "恭喜你通过了这四天！第五天还没做。";
 
-        var inv = new Color(1, 1, 1, 0);
+
+        if (!lockOut && day == 4)
+            tipsT.text = "恭喜你通过了这四天！第五天还没做。";
+        else if (!lockOut && day == 8)
+            tipsT.text = "恭喜你通过了这八天！第九天还没做。";
+        else
+            tipsT.text = "在过去四天里好像还有可以深入的话题，还请再考虑一下。";
+
+            var inv = new Color(1, 1, 1, 0);
         var v = new Color(1, 1, 1, 1);
 
         m_sequence.Append(blackMask.DOAnchorPos3DY(2160.0f, moveUpBlackMaskTime)).AppendCallback(() =>
