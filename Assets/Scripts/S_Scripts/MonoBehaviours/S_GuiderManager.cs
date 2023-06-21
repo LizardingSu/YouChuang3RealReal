@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class S_GuiderManager : MonoBehaviour, IPointerDownHandler
 
     public List<bool> GuiderList = new List<bool>();
 
-    public int GuiderCount = 5;
+    public int GuiderCount = 6;
 
     [Header("½Ì³ÌÍ¼¼¯")]
     public Sprite[] Guider1;
@@ -18,6 +19,7 @@ public class S_GuiderManager : MonoBehaviour, IPointerDownHandler
     public Sprite[] Guider3;
     public Sprite[] Guider4;
     public Sprite[] Guider5;
+    public Sprite[] Guider6;
 
     private Sprite[] curSprites;
 
@@ -71,6 +73,14 @@ public class S_GuiderManager : MonoBehaviour, IPointerDownHandler
             accessor.ProcessManager.SaveGuider();
             return true;
         }
+        if (date == 1 && (idx == 88 || idx == 114) && GuiderList[5])
+        {
+            Debug.Log("wocajjp");
+            StartGuider(Guider6);
+            GuiderList[5] = false;
+            accessor.ProcessManager.SaveGuider();
+            return true;
+        }
 
         return false;
     }
@@ -93,5 +103,12 @@ public class S_GuiderManager : MonoBehaviour, IPointerDownHandler
         curSprites = guiders;
         GetComponent<Image>().sprite = curSprites[0];
         curPage = 0;
+    }
+
+    public void StartGuiderAfter1Sec(Sprite[] guiders)
+    {
+        Sequence s = DOTween.Sequence();
+
+
     }
 }

@@ -58,7 +58,12 @@ public class InputFieldController : MonoBehaviour
             {
                 m_dioState.OnSelectionSelect(Idx, kvp.Value, kvp.Key);
                 return;
-            }       
+            }
+        }
+
+        if (m_processManager.GetComponent<S_CentralAccessor>().GuiderManager.GuideCheck())
+        {
+            return;
         }
     }
 

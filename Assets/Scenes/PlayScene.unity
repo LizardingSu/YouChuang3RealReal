@@ -13341,7 +13341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accessor: {fileID: 1765219807}
   GuiderList: 
-  GuiderCount: 5
+  GuiderCount: 6
   Guider1:
   - {fileID: 21300000, guid: f0e4e1dd7574de343a551518dfdadb58, type: 3}
   - {fileID: 21300000, guid: 9df7fbd069e82c94f8c8664fe308f8c2, type: 3}
@@ -13365,6 +13365,10 @@ MonoBehaviour:
   Guider5:
   - {fileID: 21300000, guid: 482106a49b538b2489e38d927290a907, type: 3}
   - {fileID: 21300000, guid: 729ec3061e5911649a695d1cea6d0eb1, type: 3}
+  Guider6:
+  - {fileID: 21300000, guid: 1b6207b64138fcd42ba09dc7b7044f97, type: 3}
+  - {fileID: 21300000, guid: d4d53f24b798d194db2c2f348eaf238a, type: 3}
+  - {fileID: 21300000, guid: 524abd4299efc0e488787fadf4c26505, type: 3}
 --- !u!1 &1721644476
 GameObject:
   m_ObjectHideFlags: 0
