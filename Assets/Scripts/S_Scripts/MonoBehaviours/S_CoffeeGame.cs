@@ -154,6 +154,8 @@ public class S_CoffeeGame : MonoBehaviour
         //根据天数进行某些初始化
         int date = (int)accessor._DioLogueState.date;
 
+        //Debug.Log("Date:" + date.ToString());
+
         if (date < MachineBrokenDay)
         {
             Grinder.GetComponent<Image>().raycastTarget = true;
