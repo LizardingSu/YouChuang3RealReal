@@ -245,7 +245,7 @@ public class DioLogueState : MonoBehaviour
                     lockOutAnim.LockOutScene((int)date);
                     return;
                 }
-                else if(!lockOut&&date == 4)
+                else if(!lockOut&&date == 8)
                 {
                     lockOutAnim.LockOutScene((int)date,false);
                     return;

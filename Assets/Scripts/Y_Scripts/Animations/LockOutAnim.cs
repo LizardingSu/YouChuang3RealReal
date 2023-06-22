@@ -82,6 +82,8 @@ public class LockOutAnim : MonoBehaviour
 
     public void LockOutScene(int day,bool lockOut = true)
     {
+        Debug.Log("Fuck");
+
         m_sequence = DOTween.Sequence();
 
         //初始化状态
@@ -110,7 +112,7 @@ public class LockOutAnim : MonoBehaviour
         else
             tipsT.text = "在过去四天里好像还有可以深入的话题，还请再考虑一下。";
 
-            var inv = new Color(1, 1, 1, 0);
+        var inv = new Color(1, 1, 1, 0);
         var v = new Color(1, 1, 1, 1);
 
         m_sequence.Append(blackMask.DOAnchorPos3DY(2160.0f, moveUpBlackMaskTime)).AppendCallback(() =>

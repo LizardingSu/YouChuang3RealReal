@@ -75,7 +75,6 @@ public class S_GuiderManager : MonoBehaviour, IPointerDownHandler
         }
         if (date == 1 && (idx == 88 || idx == 114) && GuiderList[5])
         {
-            Debug.Log("wocajjp");
             StartGuider(Guider6);
             GuiderList[5] = false;
             accessor.ProcessManager.SaveGuider();

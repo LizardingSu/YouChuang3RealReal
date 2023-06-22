@@ -174,6 +174,7 @@ public class ResourceController : MonoBehaviour
 
     private void PlayVideo(string path)
     {
+        m_Image.rectTransform.anchoredPosition = new Vector2(0, 0.0f);
         m_Image.color = new Color(1, 1, 1, 1);
 
         m_animator.enabled = true;
