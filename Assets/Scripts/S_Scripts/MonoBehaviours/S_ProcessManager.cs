@@ -268,7 +268,7 @@ public class S_ProcessManager : MonoBehaviour
         }
 
     //Ω´m_Saving–¥»Î”≤≈Ã
-    private void WriteFile(ScriptableObject data, string fileName)
+    public void WriteFile(ScriptableObject data, string fileName)
     {
         if (!Directory.Exists(Application.persistentDataPath + "/ApodaSaving"))
         {

@@ -30,7 +30,7 @@ public class S_MenuManager : MonoBehaviour
     [Range(0f, 100f)]
     public float BreatheRange;
 
-    private Transform ButtonsTransform;
+    public Transform ButtonsTransform;
 
     private Transform HeadLineTransform;
 
