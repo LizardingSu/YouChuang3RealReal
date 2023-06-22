@@ -564,8 +564,10 @@ public class CharacterController : MonoBehaviour
             return;
         }
 
-        left.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
-        right.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
+        if (left.image.color != new Color(1, 1, 1, 0))
+            left.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
+        if (right.image.color != new Color(1, 1, 1, 0))
+            right.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
     }
     private void ChangeColor()
     {

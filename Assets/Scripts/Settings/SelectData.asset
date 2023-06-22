@@ -21,3 +21,15 @@ MonoBehaviour:
     rightChoice: 250
   - SelectID: 3019
     rightChoice: 21
+  - SelectID: 5128
+    rightChoice: 130
+  - SelectID: 5241
+    rightChoice: 243
+  - SelectID: 6104
+    rightChoice: 106
+  - SelectID: 6252
+    rightChoice: 254
+  - SelectID: 7034
+    rightChoice: 36
+  - SelectID: 7236
+    rightChoice: 238
