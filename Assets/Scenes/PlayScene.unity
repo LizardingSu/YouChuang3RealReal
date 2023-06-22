@@ -4473,7 +4473,7 @@ MonoBehaviour:
   GamePanelOriginPosY: 0
   DeltaY: 650
   MachineBrokenDay: 9
-  LockerAvailableDay: 0
+  LockerAvailableDay: 6
   ObjectScene: {fileID: 1572011109}
   PanelSwitcher: {fileID: 524637109}
   LockerFrames:
