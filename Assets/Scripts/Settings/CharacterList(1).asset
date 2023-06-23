@@ -41,3 +41,5 @@ MonoBehaviour:
     name: "\u5C0F\u7C89\u5E3D"
   - id: 13
     name: "\u4F25\u4ED4"
+  - id: 14
+    name: "\u5C0F\u7C89\u515C\u5E3D"
